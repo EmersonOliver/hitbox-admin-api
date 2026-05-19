@@ -6,7 +6,6 @@ import br.com.hitbox.core.gateway.CategoriaGateway;
 import br.com.hitbox.core.gateway.InventarioGateway;
 import br.com.hitbox.core.gateway.StorageGateway;
 import br.com.hitbox.infra.exception.HitboxException;
-import br.com.hitbox.infra.mapper.InventarioEntityMapper;
 import br.com.hitbox.infra.query.InventarioQueryService;
 import br.com.hitbox.interfaces.dto.InventoryResponse;
 import br.com.hitbox.interfaces.mapper.InventoryMapper;
@@ -15,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -82,8 +83,8 @@ public class InventarioUseCase {
         inventory.addImageUrl(imageUrl);
     }
 
-    public Page<Inventory> page(Pageable pageable) {
-        return queryService.page(pageable);
+    public Page<Inventory> page(Pageable pageable, List<Long> idCategorias) {
+        return queryService.page(pageable, idCategorias);
     }
 
     public void delete(Long id) {

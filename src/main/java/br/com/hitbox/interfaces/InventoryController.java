@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/inventory")
 @RequiredArgsConstructor
@@ -47,8 +49,9 @@ public class InventoryController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Inventory>> page(Pageable pageable) {
-        return ResponseEntity.ok(useCase.page(pageable));
+    public ResponseEntity<Page<Inventory>> page(Pageable pageable,
+                                                @RequestParam(required = false) List<Long> idCategorias) {
+        return ResponseEntity.ok(useCase.page(pageable,idCategorias));
     }
 
     @DeleteMapping("delete/{id}")
