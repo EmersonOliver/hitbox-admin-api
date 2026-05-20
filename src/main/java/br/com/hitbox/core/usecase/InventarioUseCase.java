@@ -83,8 +83,8 @@ public class InventarioUseCase {
         inventory.addImageUrl(imageUrl);
     }
 
-    public Page<Inventory> page(Pageable pageable, List<Long> idCategorias) {
-        return queryService.page(pageable, idCategorias);
+    public Page<Inventory> page(Pageable pageable, List<Long> idCategorias, String search) {
+        return queryService.page(pageable, idCategorias, search);
     }
 
     public void delete(Long id) {

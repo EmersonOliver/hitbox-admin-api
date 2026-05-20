@@ -4,6 +4,7 @@ import br.com.hitbox.core.domain.Categoria;
 import br.com.hitbox.infra.enums.InventoryUnit;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
 import java.math.BigDecimal;
 
@@ -52,10 +53,20 @@ public class InventoryEntity {
 
     private BigDecimal cost;
     private String supplier;
+
+    @Column(columnDefinition = "TEXT")
     private String location;
     private String imageUrl;
 
     @Column(nullable = false)
     private Boolean active = true;
+
+    @Formula("""
+CASE
+    WHEN minimum_stock = 0 THEN 100
+    ELSE (quantity / minimum_stock) * 100
+END
+""")
+    private Double stockLevel;
 
 }

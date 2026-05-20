@@ -39,8 +39,10 @@ public class CategoriaController {
     }
 
     @GetMapping("listAll")
-    public ResponseEntity<Page<CategoriaResponse>> listarTodos(Pageable pageable) {
-        var response = queryService.categoriaLista(pageable);
+    public ResponseEntity<Page<CategoriaResponse>> listarTodos(Pageable pageable,
+                                                               @RequestParam(value = "search", required = false)
+                                                               String search) {
+        var response = queryService.categoriaLista(pageable, search);
         return ResponseEntity.ok(response);
     }
 }

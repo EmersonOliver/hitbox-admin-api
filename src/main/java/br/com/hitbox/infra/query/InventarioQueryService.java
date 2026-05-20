@@ -20,10 +20,11 @@ public class InventarioQueryService {
     private final SpringDataInventarioRepository repository;
 
 
-    public Page<Inventory> page(Pageable pageable, List<Long> categoriasIds) {
+    public Page<Inventory> page(Pageable pageable, List<Long> categoriasIds, String search) {
         Specification<InventoryEntity> specification =
                 InventorySpecification.byCategorias(
-                        categoriasIds
+                        categoriasIds,
+                        search
                 );
         return repository.findAll(specification,pageable).map(InventarioEntityMapper::toDomain);
     }

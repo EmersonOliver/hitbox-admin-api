@@ -50,8 +50,9 @@ public class InventoryController {
 
     @GetMapping("/page")
     public ResponseEntity<Page<Inventory>> page(Pageable pageable,
-                                                @RequestParam(required = false) List<Long> idCategorias) {
-        return ResponseEntity.ok(useCase.page(pageable,idCategorias));
+                                                @RequestParam(required = false) List<Long> idCategorias,
+                                                @RequestParam(value = "search", required = false) String search) {
+        return ResponseEntity.ok(useCase.page(pageable,idCategorias, search));
     }
 
     @DeleteMapping("delete/{id}")
