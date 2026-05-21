@@ -2,6 +2,9 @@ package br.com.hitbox.core.gateway;
 
 import br.com.hitbox.core.domain.Inventory;
 import br.com.hitbox.infra.entity.InventoryEntity;
+import br.com.hitbox.infra.enums.TipoCategoria;
+
+import java.util.List;
 
 public interface InventarioGateway {
 
@@ -19,4 +22,5 @@ public interface InventarioGateway {
             String name
     );
 
+    List<Inventory> findAllByCategoria(TipoCategoria tipoCategoria);
 }

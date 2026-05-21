@@ -1,15 +1,19 @@
 package br.com.hitbox.interfaces;
 
-import br.com.hitbox.core.domain.PricingRule;
+import br.com.hitbox.core.domain.ProductPricingContext;
 import br.com.hitbox.core.usecase.PricingRuleUseCase;
 import br.com.hitbox.interfaces.dto.PricingRuleRequest;
 import br.com.hitbox.interfaces.dto.PricingRuleResponse;
+import br.com.hitbox.interfaces.dto.SuggestedPriceResult;
 import br.com.hitbox.interfaces.mapper.PricingRuleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/pricing-rule")
@@ -29,9 +33,33 @@ public class PricingRuleController {
         );
     }
 
+    @PutMapping("/edit")
+    public ResponseEntity<?> save(
+            @RequestParam Long ruleId,
+            @RequestBody PricingRuleRequest request
+    ) {
+        var domain =
+                PricingRuleMapper.toDomain(request);
+        domain.setId(ruleId);
+        return ResponseEntity.ok(
+                useCase.editar(domain)
+        );
+    }
+
     @GetMapping("/page")
     public ResponseEntity<Page<PricingRuleResponse>> getPages(Pageable pageable) {
         var response = useCase.page(pageable).map(PricingRuleMapper::toResponse);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/delete/{ruleId}")
+    public ResponseEntity<Void> deletePricingRule(@PathVariable("ruleId") Long ruleId) {
+        useCase.deleteRule(ruleId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("suggested/price")
+    public ResponseEntity<List<SuggestedPriceResult>> suggestedPriceResultResponse(@RequestBody ProductPricingContext context) {
+        return ResponseEntity.ok(useCase.suggestedPriceRule(context));
     }
 }

@@ -2,6 +2,7 @@ package br.com.hitbox.interfaces;
 
 import br.com.hitbox.core.domain.Inventory;
 import br.com.hitbox.core.usecase.InventarioUseCase;
+import br.com.hitbox.infra.enums.TipoCategoria;
 import br.com.hitbox.interfaces.dto.InventoryRequest;
 import br.com.hitbox.interfaces.mapper.InventoryMapper;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,11 @@ public class InventoryController {
                                                 @RequestParam(required = false) List<Long> idCategorias,
                                                 @RequestParam(value = "search", required = false) String search) {
         return ResponseEntity.ok(useCase.page(pageable,idCategorias, search));
+    }
+
+    @GetMapping("/loadByCategory")
+    public ResponseEntity<List<Inventory>> listAllInventoryByCategory(@RequestParam TipoCategoria tipoCategoria){
+        return ResponseEntity.ok(useCase.listAllByCategoria(tipoCategoria));
     }
 
     @DeleteMapping("delete/{id}")

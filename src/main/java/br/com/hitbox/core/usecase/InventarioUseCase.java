@@ -5,6 +5,7 @@ import br.com.hitbox.core.domain.Inventory;
 import br.com.hitbox.core.gateway.CategoriaGateway;
 import br.com.hitbox.core.gateway.InventarioGateway;
 import br.com.hitbox.core.gateway.StorageGateway;
+import br.com.hitbox.infra.enums.TipoCategoria;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.query.InventarioQueryService;
 import br.com.hitbox.interfaces.dto.InventoryResponse;
@@ -88,7 +89,11 @@ public class InventarioUseCase {
     }
 
     public void delete(Long id) {
-      var entity =  gateway.remover(id);
-      storageGateway.deleteImagem(entity.getImageUrl());
+        var entity = gateway.remover(id);
+        storageGateway.deleteImagem(entity.getImageUrl());
+    }
+
+    public List<Inventory> listAllByCategoria(TipoCategoria tipoCategoria) {
+        return gateway.findAllByCategoria(tipoCategoria);
     }
 }

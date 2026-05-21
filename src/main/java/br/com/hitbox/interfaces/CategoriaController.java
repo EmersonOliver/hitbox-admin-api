@@ -1,6 +1,7 @@
 package br.com.hitbox.interfaces;
 
 import br.com.hitbox.core.usecase.CategoriaUseCase;
+import br.com.hitbox.infra.enums.TipoCategoria;
 import br.com.hitbox.infra.query.CategoriaQueryService;
 import br.com.hitbox.interfaces.dto.CategoriaRecord;
 import br.com.hitbox.interfaces.dto.CategoriaResponse;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("categoria")
@@ -36,6 +39,13 @@ public class CategoriaController {
     public ResponseEntity<Void> removerCategoria(@RequestParam Long id) {
         useCase.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("parametros")
+    public ResponseEntity<List<CategoriaResponse>> listarCategoriasParametrized(
+            @RequestParam TipoCategoria tipoCategoria) {
+        List<CategoriaResponse> response = useCase.listAllCategoriasByType(tipoCategoria);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("listAll")

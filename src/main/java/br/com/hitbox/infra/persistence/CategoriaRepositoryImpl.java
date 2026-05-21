@@ -3,6 +3,7 @@ package br.com.hitbox.infra.persistence;
 import br.com.hitbox.core.domain.Categoria;
 import br.com.hitbox.core.gateway.CategoriaGateway;
 import br.com.hitbox.infra.entity.CategoriaEntity;
+import br.com.hitbox.infra.enums.TipoCategoria;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.jpa.SpringDataCategoriaRepository;
 import br.com.hitbox.infra.mapper.CategoriaEntityMapper;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -53,12 +56,19 @@ public class CategoriaRepositoryImpl implements CategoriaGateway {
     public Categoria buscarPorId(Long id) {
         return jpaRepository.findById(id)
                 .map(CategoriaEntityMapper::toDomain)
-                .orElseThrow(()-> new HitboxException("Falha ao buscar categoria por id!"));
+                .orElseThrow(() -> new HitboxException("Falha ao buscar categoria por id!"));
     }
 
     @Override
     public Page<Categoria> listarTodos(Pageable pageable) {
         return jpaRepository.findAll(pageable)
                 .map(CategoriaEntityMapper::toDomain);
+    }
+
+    @Override
+    public List<Categoria> listAllCategoriasByType(TipoCategoria tipoCategoria) {
+        return jpaRepository.findByCategoriaType(tipoCategoria)
+                .stream().map(CategoriaEntityMapper::toDomain)
+                .toList();
     }
 }

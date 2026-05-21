@@ -2,8 +2,13 @@ package br.com.hitbox.core.usecase;
 
 import br.com.hitbox.core.domain.Categoria;
 import br.com.hitbox.core.gateway.CategoriaGateway;
+import br.com.hitbox.infra.enums.TipoCategoria;
+import br.com.hitbox.interfaces.dto.CategoriaResponse;
+import br.com.hitbox.interfaces.mapper.CategoriaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -24,5 +29,9 @@ public class CategoriaUseCase {
     }
 
 
-
+    public List<CategoriaResponse> listAllCategoriasByType(TipoCategoria tipoCategoria) {
+        return categoriaGateway.listAllCategoriasByType(tipoCategoria)
+                .stream().map(CategoriaMapper::toResponse)
+                .toList();
+    }
 }

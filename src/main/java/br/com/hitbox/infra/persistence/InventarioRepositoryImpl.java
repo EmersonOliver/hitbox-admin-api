@@ -3,13 +3,17 @@ package br.com.hitbox.infra.persistence;
 import br.com.hitbox.core.domain.Inventory;
 import br.com.hitbox.core.gateway.InventarioGateway;
 import br.com.hitbox.infra.entity.InventoryEntity;
+import br.com.hitbox.infra.enums.TipoCategoria;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.jpa.SpringDataInventarioRepository;
 import br.com.hitbox.infra.mapper.InventarioEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +50,20 @@ public class InventarioRepositoryImpl implements InventarioGateway {
     @Override
     public boolean existsByName(String name) {
         return jpaRepository.existsByName(name);
+    }
+
+    @Override
+    public List<Inventory> findAllByCategoria(TipoCategoria tipoCategoria) {
+        Specification<InventoryEntity> specs = (root, query, cBuilder) ->
+        {
+            if (tipoCategoria != null) {
+                return cBuilder.conjunction();
+            }
+            return root.get("categoria").get("tipo").equalTo(tipoCategoria);
+        };
+
+        return jpaRepository.findAll(specs).stream().map(InventarioEntityMapper::toDomain)
+                .toList();
     }
 
 
