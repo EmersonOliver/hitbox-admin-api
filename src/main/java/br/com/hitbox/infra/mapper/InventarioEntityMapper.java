@@ -7,11 +7,12 @@ import br.com.hitbox.infra.entity.InventoryEntity;
 public class InventarioEntityMapper {
 
 
-    public static InventoryEntity toEntity(Inventory domain){
+    public static InventoryEntity toEntity(Inventory domain) {
         return InventoryEntity.builder()
                 .id(domain.getId())
                 .cost(domain.getCost())
                 .name(domain.getName())
+                .unitCost(domain.custoUnitario())
                 .active(domain.getActive())
                 .imageUrl(domain.getImageUrl())
                 .location(domain.getLocation())
@@ -23,11 +24,12 @@ public class InventarioEntityMapper {
                 .build();
     }
 
-    public static Inventory toDomain(InventoryEntity entity){
+    public static Inventory toDomain(InventoryEntity entity) {
         return Inventory.builder()
                 .id(entity.getId())
                 .cost(entity.getCost())
                 .name(entity.getName())
+                .unitCost(entity.getUnitCost())
                 .categoria(CategoriaEntityMapper.toDomain(entity.getCategoria()))
                 .active(entity.getActive())
                 .imageUrl(entity.getImageUrl())
@@ -68,7 +70,9 @@ public class InventarioEntityMapper {
         entity.setMinimumStock(
                 domain.getMinimumStock()
         );
-
+        if(entity.getCost().compareTo(domain.getCost()) != 0){
+            entity.setUnitCost(domain.custoUnitario());
+        }
         entity.setCost(
                 domain.getCost()
         );

@@ -22,5 +22,9 @@ public interface InventarioGateway {
             String name
     );
 
+
+    Inventory findById(Long invetoryId);
+
+
     List<Inventory> findAllByCategoria(TipoCategoria tipoCategoria);
 }

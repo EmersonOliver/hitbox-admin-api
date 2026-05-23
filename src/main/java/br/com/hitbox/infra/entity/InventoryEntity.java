@@ -52,6 +52,8 @@ public class InventoryEntity {
     private BigDecimal  minimumStock;
 
     private BigDecimal cost;
+
+    private BigDecimal unitCost;
     private String supplier;
 
     @Column(columnDefinition = "TEXT")

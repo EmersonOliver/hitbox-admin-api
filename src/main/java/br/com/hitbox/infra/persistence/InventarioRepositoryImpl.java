@@ -8,8 +8,6 @@ import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.jpa.SpringDataInventarioRepository;
 import br.com.hitbox.infra.mapper.InventarioEntityMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +48,13 @@ public class InventarioRepositoryImpl implements InventarioGateway {
     @Override
     public boolean existsByName(String name) {
         return jpaRepository.existsByName(name);
+    }
+
+    @Override
+    public Inventory findById(Long invetoryId) {
+        return this.jpaRepository.findById(invetoryId)
+                .map(InventarioEntityMapper::toDomain)
+                .orElseThrow(() -> new HitboxException("Inventario não encontrado!"));
     }
 
     @Override

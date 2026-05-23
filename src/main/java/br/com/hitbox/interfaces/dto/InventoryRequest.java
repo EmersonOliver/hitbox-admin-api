@@ -15,6 +15,7 @@ public class InventoryRequest {
     private InventoryUnit unit;
     private BigDecimal minimumStock;
     private BigDecimal cost;
+    private BigDecimal unitCost;
     private String supplier;
     private String location;
     private Boolean active;

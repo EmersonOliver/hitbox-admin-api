@@ -27,6 +27,8 @@ public class InventoryResponse {
 
     private BigDecimal cost;
 
+    private BigDecimal unitCost;
+
     private String supplier;
 
     private String location;
