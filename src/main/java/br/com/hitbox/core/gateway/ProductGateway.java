@@ -13,5 +13,4 @@ public interface ProductGateway {
     Product editar(Long productId, Product domain);
     void remover(Long productId);
 
-    Page<Product> listaAllByPage(Pageable pageable, List<Long> idCategorias, String search);
 }

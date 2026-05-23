@@ -7,15 +7,9 @@ import br.com.hitbox.infra.entity.ProductEntity;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.jpa.SpringDataCategoriaRepository;
 import br.com.hitbox.infra.jpa.SpringDataProductRepository;
-import br.com.hitbox.infra.jpa.specification.ProductSpecification;
 import br.com.hitbox.infra.mapper.ProductEntityMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 
 @Repository
@@ -50,9 +44,5 @@ public class ProductRepositoryImpl implements ProductGateway {
 
     }
 
-    @Override
-    public Page<Product> listaAllByPage(Pageable pageable, List<Long> idCategorias,String search) {
-        Specification<ProductEntity> specs = ProductSpecification.byCategorias(idCategorias, search);
-        return jpaRepository.findAll(specs, pageable).map(mapper::toDomain);
-    }
+
 }

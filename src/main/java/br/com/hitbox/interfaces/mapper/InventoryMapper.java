@@ -8,31 +8,34 @@ public class InventoryMapper {
     private InventoryMapper() {
     }
 
-    public static Inventory toDomain(
-            InventoryRequest request) {
-
+    public static Inventory toDomain(InventoryRequest request) {
+        if (request == null) {
+            return null;
+        }
         return Inventory.builder()
                 .name(request.getName())
                 .categoriaId(request.getCategoriaId())
-                .quantity(request.getQuantity())
                 .unit(request.getUnit())
-                .unitCost(request.getUnitCost())
                 .minimumStock(request.getMinimumStock())
-                .cost(request.getCost())
                 .supplier(request.getSupplier())
                 .location(request.getLocation())
                 .active(request.getActive())
                 .build();
     }
 
-    public static InventoryResponse toResponse(
-            Inventory domain
-    ) {
+    public static InventoryResponse toResponse(Inventory domain) {
+        if (domain == null) {
+            return null;
+        }
         return InventoryResponse.builder()
                 .id(domain.getId())
                 .name(domain.getName())
-                .category(domain.getCategoria() != null ? domain.getCategoria().getNome() : null)
-                .categoriaId(domain.getCategoria() != null ? domain.getCategoria().getId() : null)
+                .category(domain.getCategoria() != null
+                                ? domain.getCategoria().getNome()
+                                : null)
+                .categoriaId(domain.getCategoria() != null
+                                ? domain.getCategoria().getId()
+                                : null)
                 .quantity(domain.getQuantity())
                 .unit(domain.getUnit())
                 .minimumStock(domain.getMinimumStock())
@@ -42,6 +45,11 @@ public class InventoryMapper {
                 .location(domain.getLocation())
                 .imageUrl(domain.getImageUrl())
                 .active(domain.getActive())
+                .stockLow(domain.estoqueBaixo())
+                .stockPercentage(domain.percentualEstoque())
+                .movementCount(domain.getMovements() != null
+                                ? domain.getMovements().size()
+                                : 0)
                 .build();
     }
 }

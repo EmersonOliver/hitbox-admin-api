@@ -7,6 +7,7 @@ import br.com.hitbox.core.gateway.CategoriaGateway;
 import br.com.hitbox.core.gateway.InventarioGateway;
 import br.com.hitbox.core.gateway.ProductGateway;
 import br.com.hitbox.core.gateway.StorageGateway;
+import br.com.hitbox.infra.query.ProductQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ public class ProductUseCase {
     private final InventarioGateway inventarioGateway;
     private final ProductGateway productGateway;
     private final StorageGateway storageGateway;
+    private final ProductQueryService queryService;
 
     public Product execute(Product domain, MultipartFile image) {
         uploadImagem(domain, image);
@@ -120,8 +122,7 @@ public class ProductUseCase {
         product.setSku(sku);
     }
 
-
     public Page<Product> listAllPage(Pageable pageable, List<Long> idCategorias, String search) {
-        return productGateway.listaAllByPage(pageable, idCategorias, search);
+        return queryService.listaAllByPage(pageable, idCategorias, search);
     }
 }

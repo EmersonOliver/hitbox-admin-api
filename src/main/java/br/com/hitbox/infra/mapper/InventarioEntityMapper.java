@@ -6,93 +6,73 @@ import br.com.hitbox.infra.entity.InventoryEntity;
 
 public class InventarioEntityMapper {
 
+    private InventarioEntityMapper() {
+    }
 
     public static InventoryEntity toEntity(Inventory domain) {
+        if (domain == null) {
+            return null;
+        }
         return InventoryEntity.builder()
                 .id(domain.getId())
-                .cost(domain.getCost())
                 .name(domain.getName())
-                .unitCost(domain.custoUnitario())
-                .active(domain.getActive())
-                .imageUrl(domain.getImageUrl())
-                .location(domain.getLocation())
-                .unit(domain.getUnit())
-                .categoria(CategoriaEntity.builder().id(domain.getCategoriaId()).build())
-                .minimumStock(domain.getMinimumStock())
+                .categoria(CategoriaEntity.builder()
+                        .id(domain.getCategoriaId())
+                        .build())
                 .quantity(domain.getQuantity())
+                .unit(domain.getUnit())
+                .minimumStock(domain.getMinimumStock())
+                .cost(domain.getCost())
+                .unitCost(domain.getUnitCost())
                 .supplier(domain.getSupplier())
+                .location(domain.getLocation())
+                .imageUrl(domain.getImageUrl())
+                .active(domain.getActive())
                 .build();
     }
 
     public static Inventory toDomain(InventoryEntity entity) {
+        if (entity == null) {
+            return null;
+        }
         return Inventory.builder()
                 .id(entity.getId())
-                .cost(entity.getCost())
                 .name(entity.getName())
-                .unitCost(entity.getUnitCost())
-                .categoria(CategoriaEntityMapper.toDomain(entity.getCategoria()))
-                .active(entity.getActive())
-                .imageUrl(entity.getImageUrl())
-                .location(entity.getLocation())
-                .unit(entity.getUnit())
-                .categoriaId(entity.getCategoria().getId())
-                .minimumStock(entity.getMinimumStock())
+                .categoriaId(entity.getCategoria() != null
+                                ? entity.getCategoria().getId()
+                                : null)
+                .categoria(entity.getCategoria() != null
+                        ? CategoriaEntityMapper.toDomain(entity.getCategoria())
+                        : null)
                 .quantity(entity.getQuantity())
+                .unit(entity.getUnit())
+                .minimumStock(entity.getMinimumStock())
+                .cost(entity.getCost())
+                .unitCost(entity.getUnitCost())
                 .supplier(entity.getSupplier())
+                .location(entity.getLocation())
+                .imageUrl(entity.getImageUrl())
+                .active(entity.getActive())
                 .build();
     }
 
-    public static void updateEntity(
-            Inventory domain,
-            InventoryEntity entity
-    ) {
-
-        entity.setName(
-                domain.getName()
-        );
-
-        entity.setCategoria(
-                CategoriaEntity.builder()
-                        .id(
-                                domain.getCategoriaId()
-                        )
-                        .build()
-        );
-
-        entity.setQuantity(
-                domain.getQuantity()
-        );
-
-        entity.setUnit(
-                domain.getUnit()
-        );
-
-        entity.setMinimumStock(
-                domain.getMinimumStock()
-        );
-        if(entity.getCost().compareTo(domain.getCost()) != 0){
-            entity.setUnitCost(domain.custoUnitario());
+    public static void updateEntity(Inventory domain,
+                                    InventoryEntity entity) {
+        if (domain == null || entity == null) {
+            return;
         }
-        entity.setCost(
-                domain.getCost()
-        );
-
-        entity.setSupplier(
-                domain.getSupplier()
-        );
-
-        entity.setLocation(
-                domain.getLocation()
-        );
-
-        entity.setImageUrl(
-                domain.getImageUrl()
-        );
-
-        entity.setActive(
-                domain.getActive()
-        );
+        entity.setName(domain.getName());
+        entity.setCategoria(CategoriaEntity.builder()
+                        .id(domain.getCategoriaId())
+                        .build());
+        entity.setUnit(domain.getUnit());
+        entity.setMinimumStock(domain.getMinimumStock());
+        entity.setSupplier(domain.getSupplier());
+        entity.setLocation(domain.getLocation());
+        entity.setImageUrl(domain.getImageUrl());
+        entity.setActive(domain.getActive());
+        entity.setQuantity(domain.getQuantity());
+        entity.setUnitCost(domain.getUnitCost());
+        entity.setCost(domain.getCost());
     }
-
-
 }
