@@ -33,6 +33,8 @@ public class InventarioRepositoryImpl implements InventarioGateway {
                 domain,
                 entity
         );
+
+
         jpaRepository.save(entity);
         return InventarioEntityMapper.toDomain(entity);
     }

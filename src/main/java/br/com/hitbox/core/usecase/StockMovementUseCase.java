@@ -56,9 +56,7 @@ public class StockMovementUseCase {
                         .build();
 
         inventory.addMovement(movement);
-
         inventarioGateway.atualizar(inventory);
-
         movementGateway.salvar(movement);
     }
 

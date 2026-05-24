@@ -10,13 +10,17 @@
     @Setter
     public class InventoryRequest {
         private String name;
+
         private Long categoriaId;
+
         private InventoryUnit unit;
+
         private BigDecimal minimumStock;
+
         private String supplier;
+
         private String location;
+
         private Boolean active;
-        private BigDecimal initialQuantity;
-        private BigDecimal initialCost;
 
     }

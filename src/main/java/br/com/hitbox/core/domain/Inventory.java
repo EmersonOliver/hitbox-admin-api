@@ -112,8 +112,10 @@ public class Inventory {
                         movement.getQuantity()
                 );
 
+        BigDecimal custoUnitarioAtual =
+                this.unitCost;
         BigDecimal custoSaida =
-                custoUnitario()
+                custoUnitarioAtual
                         .multiply(
                                 movement.getQuantity()
                         );

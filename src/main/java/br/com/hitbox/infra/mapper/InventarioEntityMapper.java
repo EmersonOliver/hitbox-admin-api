@@ -28,6 +28,7 @@ public class InventarioEntityMapper {
                 .location(domain.getLocation())
                 .imageUrl(domain.getImageUrl())
                 .active(domain.getActive())
+                .unitCost(domain.getUnitCost())
                 .build();
     }
 
@@ -35,12 +36,12 @@ public class InventarioEntityMapper {
         if (entity == null) {
             return null;
         }
-        return Inventory.builder()
+        var inventory  = Inventory.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .categoriaId(entity.getCategoria() != null
-                                ? entity.getCategoria().getId()
-                                : null)
+                        ? entity.getCategoria().getId()
+                        : null)
                 .categoria(entity.getCategoria() != null
                         ? CategoriaEntityMapper.toDomain(entity.getCategoria())
                         : null)
@@ -54,6 +55,12 @@ public class InventarioEntityMapper {
                 .imageUrl(entity.getImageUrl())
                 .active(entity.getActive())
                 .build();
+        StockMovementEntityMapper stockMapper = new StockMovementEntityMapper();
+        var movementsEntity = entity.getMovements();
+        movementsEntity.forEach(item-> {
+            inventory.addMovement(stockMapper.toDomain(item));
+        });
+        return inventory;
     }
 
     public static void updateEntity(Inventory domain,
@@ -71,8 +78,12 @@ public class InventarioEntityMapper {
         entity.setLocation(domain.getLocation());
         entity.setImageUrl(domain.getImageUrl());
         entity.setActive(domain.getActive());
-        entity.setQuantity(domain.getQuantity());
-        entity.setUnitCost(domain.getUnitCost());
-        entity.setCost(domain.getCost());
+        if(!domain.getMovements().isEmpty()){
+            entity.setQuantity(domain.getQuantity());
+            entity.setUnitCost(domain.getUnitCost());
+            entity.setCost(domain.getCost());
+            entity.setUnitCost(domain.getUnitCost());
+        }
+
     }
 }

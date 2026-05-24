@@ -5,6 +5,7 @@ import br.com.hitbox.infra.entity.InventoryEntity;
 import br.com.hitbox.infra.jpa.SpringDataInventarioRepository;
 import br.com.hitbox.infra.jpa.specification.InventorySpecification;
 import br.com.hitbox.infra.mapper.InventarioEntityMapper;
+import br.com.hitbox.infra.mapper.StockMovementEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import java.util.List;
 public class InventarioQueryService {
 
     private final SpringDataInventarioRepository repository;
+    private final StockMovementEntityMapper stockMovementEntityMapper;
 
 
     public Page<Inventory> page(Pageable pageable, List<Long> categoriasIds, String search) {
@@ -26,6 +28,6 @@ public class InventarioQueryService {
                         categoriasIds,
                         search
                 );
-        return repository.findAll(specification,pageable).map(InventarioEntityMapper::toDomain);
+       return repository.findAll(specification,pageable).map(InventarioEntityMapper::toDomain);
     }
 }
