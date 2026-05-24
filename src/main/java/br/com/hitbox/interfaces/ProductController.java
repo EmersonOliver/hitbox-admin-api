@@ -1,8 +1,8 @@
 package br.com.hitbox.interfaces;
 
 import br.com.hitbox.core.usecase.ProductUseCase;
-import br.com.hitbox.interfaces.dto.ProductRequest;
-import br.com.hitbox.interfaces.dto.ProductResponse;
+import br.com.hitbox.interfaces.dto.produto.ProductRequest;
+import br.com.hitbox.interfaces.dto.produto.ProductResponse;
 import br.com.hitbox.interfaces.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

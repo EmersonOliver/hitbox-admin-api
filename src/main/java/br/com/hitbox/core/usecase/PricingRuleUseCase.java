@@ -1,19 +1,16 @@
 package br.com.hitbox.core.usecase;
 
-import br.com.hitbox.core.domain.Categoria;
 import br.com.hitbox.core.domain.PricingRule;
 import br.com.hitbox.core.domain.ProductPricingContext;
-import br.com.hitbox.core.gateway.CategoriaGateway;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.persistence.PricingRuleRepositoryImpl;
 import br.com.hitbox.infra.service.PricingEngineService;
-import br.com.hitbox.interfaces.dto.SuggestedPriceResult;
+import br.com.hitbox.interfaces.dto.precos.SuggestedPriceResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 

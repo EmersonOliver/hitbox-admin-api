@@ -1,9 +1,8 @@
 package br.com.hitbox.infra.service;
 
 import br.com.hitbox.core.domain.PricingRule;
-import br.com.hitbox.core.domain.ProductExtraCost;
 import br.com.hitbox.core.domain.ProductPricingContext;
-import br.com.hitbox.interfaces.dto.SuggestedPriceResult;
+import br.com.hitbox.interfaces.dto.precos.SuggestedPriceResult;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

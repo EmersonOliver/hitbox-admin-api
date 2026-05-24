@@ -1,10 +1,8 @@
 package br.com.hitbox.interfaces.mapper;
 
 import br.com.hitbox.core.domain.Inventory;
-import br.com.hitbox.interfaces.dto.InventoryRequest;
-import br.com.hitbox.interfaces.dto.InventoryResponse;
-
-import java.math.BigDecimal;
+import br.com.hitbox.interfaces.dto.inventario.InventoryRequest;
+import br.com.hitbox.interfaces.dto.inventario.InventoryResponse;
 
 public class InventoryMapper {
     private InventoryMapper() {

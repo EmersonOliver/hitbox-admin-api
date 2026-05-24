@@ -1,4 +1,4 @@
-package br.com.hitbox.interfaces.dto;
+package br.com.hitbox.interfaces.dto.produto;
 
 
 import br.com.hitbox.infra.enums.ConsumptionType;
@@ -11,17 +11,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductMaterialResponse {
-
-    private Long productMaterialId;
-
+public class ProductMaterialRequest {
     private Long inventoryId;
-
-    private String inventoryName;
-
     private BigDecimal quantity;
-
     private ConsumptionType consumptionType;
-
-    private BigDecimal unitCostSnapshot;
 }

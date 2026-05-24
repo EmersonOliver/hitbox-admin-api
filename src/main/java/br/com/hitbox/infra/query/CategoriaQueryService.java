@@ -3,7 +3,7 @@ package br.com.hitbox.infra.query;
 import br.com.hitbox.infra.entity.CategoriaEntity;
 import br.com.hitbox.infra.jpa.SpringDataCategoriaRepository;
 import br.com.hitbox.infra.jpa.specification.CategoriaSpecification;
-import br.com.hitbox.interfaces.dto.CategoriaResponse;
+import br.com.hitbox.interfaces.dto.categoria.CategoriaResponse;
 import br.com.hitbox.interfaces.mapper.CategoriaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

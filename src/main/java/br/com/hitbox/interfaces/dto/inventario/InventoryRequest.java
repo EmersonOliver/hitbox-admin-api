@@ -1,4 +1,4 @@
-    package br.com.hitbox.interfaces.dto;
+    package br.com.hitbox.interfaces.dto.inventario;
 
     import br.com.hitbox.infra.enums.InventoryUnit;
     import lombok.Getter;

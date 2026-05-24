@@ -1,4 +1,4 @@
-package br.com.hitbox.interfaces.dto;
+package br.com.hitbox.interfaces.dto.categoria;
 
 import br.com.hitbox.infra.entity.CategoriaEntity;
 import br.com.hitbox.infra.enums.TipoCategoria;

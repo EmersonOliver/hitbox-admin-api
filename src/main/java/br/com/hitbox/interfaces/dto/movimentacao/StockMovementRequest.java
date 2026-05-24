@@ -1,4 +1,4 @@
-package br.com.hitbox.interfaces.dto;
+package br.com.hitbox.interfaces.dto.movimentacao;
 
 import br.com.hitbox.infra.enums.StockMovementType;
 import lombok.*;

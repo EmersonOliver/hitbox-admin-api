@@ -1,7 +1,7 @@
 package br.com.hitbox.interfaces;
 
 import br.com.hitbox.core.usecase.StockMovementUseCase;
-import br.com.hitbox.interfaces.dto.StockMovementRequest;
+import br.com.hitbox.interfaces.dto.movimentacao.StockMovementRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

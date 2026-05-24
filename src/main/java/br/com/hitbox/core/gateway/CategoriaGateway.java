@@ -3,7 +3,6 @@ package br.com.hitbox.core.gateway;
 
 import br.com.hitbox.core.domain.Categoria;
 import br.com.hitbox.infra.enums.TipoCategoria;
-import br.com.hitbox.interfaces.dto.CategoriaResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

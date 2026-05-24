@@ -1,7 +1,5 @@
-package br.com.hitbox.interfaces.dto;
+package br.com.hitbox.interfaces.dto.precos;
 
-import br.com.hitbox.infra.enums.CalculationType;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,10 +7,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@Builder
-public class PricingRuleResponse {
-
-    private Long id;
+public class PricingRuleRequest {
     private String name;
     private String salesChannel;
     private BigDecimal profitMargin;
@@ -22,4 +17,5 @@ public class PricingRuleResponse {
     private BigDecimal commercialCost;
     private BigDecimal minimumPrice;
     private Boolean active;
+
 }

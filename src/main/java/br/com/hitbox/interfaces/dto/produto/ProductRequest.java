@@ -1,4 +1,4 @@
-package br.com.hitbox.interfaces.dto;
+package br.com.hitbox.interfaces.dto.produto;
 
 import lombok.*;
 

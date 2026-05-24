@@ -1,4 +1,4 @@
-package br.com.hitbox.interfaces.dto;
+package br.com.hitbox.interfaces.dto.precos;
 
 import lombok.Builder;
 import lombok.Getter;

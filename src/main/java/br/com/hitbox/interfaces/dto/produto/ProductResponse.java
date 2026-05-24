@@ -1,6 +1,5 @@
-package br.com.hitbox.interfaces.dto;
+package br.com.hitbox.interfaces.dto.produto;
 
-import br.com.hitbox.core.domain.Categoria;
 import lombok.*;
 
 import java.math.BigDecimal;
