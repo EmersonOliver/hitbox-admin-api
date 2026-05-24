@@ -18,7 +18,11 @@ public class ClienteEntityMapper {
                 .documento(domain.getDocumento())
                 .telefone(domain.getTelefone())
                 .build();
-        var enderecosCliente = domain.getEnderecos().stream().map(enderecoMapper::toEntity).toList();
+        enderecoMapper.setCliente(entity);
+
+        var enderecosCliente = domain.getEnderecos().stream()
+                .map(enderecoMapper::toEntity)
+                .toList();
         entity.setEnderecos(enderecosCliente);
         return entity;
     }

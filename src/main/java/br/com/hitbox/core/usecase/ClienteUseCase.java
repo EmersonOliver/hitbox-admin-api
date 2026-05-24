@@ -37,6 +37,7 @@ public class ClienteUseCase {
         if (existsCliente.isPresent() && !existsCliente.get().getId().equals(clienteId)) {
             throw new HitboxException("Já existe um cliente cadastrado na base!");
         }
+        domain.setId(clienteId);
         var cliente = gateway.editar(domain);
 
         return mapper.domainToResponseCliente(cliente);

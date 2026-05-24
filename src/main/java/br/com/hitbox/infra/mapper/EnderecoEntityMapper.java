@@ -1,12 +1,14 @@
 package br.com.hitbox.infra.mapper;
 
 import br.com.hitbox.core.domain.EnderecoCliente;
+import br.com.hitbox.infra.entity.ClienteEntity;
 import br.com.hitbox.infra.entity.EnderecoClienteEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EnderecoEntityMapper {
 
+    private ClienteEntity clienteEntity;
 
     public EnderecoClienteEntity toEntity(EnderecoCliente domain) {
         return EnderecoClienteEntity.builder()
@@ -18,8 +20,10 @@ public class EnderecoEntityMapper {
                 .complemento(domain.getComplemento())
                 .numero(domain.getNumero())
                 .observacoes(domain.getObservacoes())
+                .cliente(clienteEntity)
                 .build();
     }
+
 
     public EnderecoCliente toDomain(EnderecoClienteEntity entity) {
         return EnderecoCliente.builder()
@@ -35,5 +39,9 @@ public class EnderecoEntityMapper {
                 .build();
     }
 
+    public void setCliente(ClienteEntity cliente) {
+        this.clienteEntity = cliente;
+
+    }
 
 }

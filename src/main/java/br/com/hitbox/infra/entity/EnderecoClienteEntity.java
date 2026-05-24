@@ -41,6 +41,7 @@ public class EnderecoClienteEntity {
 
     private String observacoes;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     private ClienteEntity cliente;
 }

@@ -29,7 +29,7 @@ public class ClienteEntity {
 
     private String telefone;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EnderecoClienteEntity> enderecos;
 
 }

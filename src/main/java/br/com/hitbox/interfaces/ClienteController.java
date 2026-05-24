@@ -34,12 +34,12 @@ public class ClienteController {
     }
 
     @GetMapping("page")
-    public ResponseEntity<Page<ClienteResponse>> listAllClientes(Pageable pageable) {
-        return ResponseEntity.ok(clienteQueryService.listAllClientes(pageable));
+    public ResponseEntity<Page<ClienteResponse>> listAllClientes(Pageable pageable, @RequestParam(required = false) String search) {
+        return ResponseEntity.ok(clienteQueryService.findBySearch(search,pageable));
     }
 
     @GetMapping("{search}")
-    public ResponseEntity<Page<ClienteResponse>> searchCliente(@PathVariable String search, Pageable pageable) {
+    public ResponseEntity<Page<ClienteResponse>> searchCliente(@PathVariable(required = false) String search, Pageable pageable) {
         return ResponseEntity.ok(clienteQueryService.findBySearch(search, pageable));
     }
 

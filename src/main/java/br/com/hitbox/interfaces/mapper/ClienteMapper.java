@@ -34,6 +34,7 @@ public class ClienteMapper {
                         .complemento(item.getComplemento())
                         .observacoes(item.getObservacoes())
                         .cep(item.getCep())
+                        .numero(item.getNumero())
                         .build())
 
                 .toList();
