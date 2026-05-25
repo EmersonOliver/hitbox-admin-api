@@ -28,6 +28,6 @@ public class InventarioQueryService {
                         categoriasIds,
                         search
                 );
-       return repository.findAll(specification,pageable).map(InventarioEntityMapper::toDomain);
+       return repository.findAll(specification,pageable).map(InventarioEntityMapper::toDomainPage);
     }
 }

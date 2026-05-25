@@ -62,6 +62,34 @@ public class InventarioEntityMapper {
         });
         return inventory;
     }
+    public static Inventory toDomainPage(InventoryEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+        var inventory = Inventory.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .categoriaId(entity.getCategoria() != null
+                        ? entity.getCategoria().getId()
+                        : null)
+                .categoria(entity.getCategoria() != null
+                        ? CategoriaEntityMapper.toDomain(entity.getCategoria())
+                        : null)
+                .quantity(entity.getQuantity())
+                .unit(entity.getUnit())
+                .minimumStock(entity.getMinimumStock())
+                .cost(entity.getCost())
+                .unitCost(entity.getUnitCost())
+                .supplier(entity.getSupplier())
+                .location(entity.getLocation())
+                .imageUrl(entity.getImageUrl())
+                .active(entity.getActive())
+                .build();
+        StockMovementEntityMapper stockMapper = new StockMovementEntityMapper();
+        var movementsDomain = entity.getMovements().stream().map(stockMapper::toDomain).toList();
+        inventory.setMovements(movementsDomain);
+        return inventory;
+    }
 
     public static void updateEntity(Inventory domain,
                                     InventoryEntity entity) {

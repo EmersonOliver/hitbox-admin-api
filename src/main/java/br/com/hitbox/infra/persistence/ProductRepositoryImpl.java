@@ -36,12 +36,17 @@ public class ProductRepositoryImpl implements ProductGateway {
 
     @Override
     public Product editar(Long productId, Product domain) {
-        return null;
+        ProductEntity entity = jpaRepository.findById(productId)
+                .orElseThrow(() -> new HitboxException("Produto não encontrado!"));
+        mapper.toEntityUpdate(domain, entity);
+        jpaRepository.save(entity);
+        return mapper.toDomain(entity);
     }
 
     @Override
     public void remover(Long productId) {
-
+        var entityToDelete = jpaRepository.findById(productId).orElseThrow(() -> new HitboxException("Produto não encontrado para exclusão!"));
+        jpaRepository.delete(entityToDelete);
     }
 
 

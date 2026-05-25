@@ -3,6 +3,7 @@ package br.com.hitbox.infra.mapper;
 import br.com.hitbox.core.domain.Inventory;
 import br.com.hitbox.core.domain.Product;
 import br.com.hitbox.core.domain.ProductMaterial;
+import br.com.hitbox.infra.entity.CategoriaEntity;
 import br.com.hitbox.infra.entity.InventoryEntity;
 import br.com.hitbox.infra.entity.ProductEntity;
 import br.com.hitbox.infra.entity.ProductMaterialsEntity;
@@ -209,5 +210,110 @@ public class ProductEntityMapper {
                 )
                 .product(product)
                 .build();
+    }
+
+    public void toEntityUpdate(
+            Product domain,
+            ProductEntity entity
+    ) {
+
+        if (domain == null || entity == null) {
+            return;
+        }
+
+        entity.setName(domain.getName());
+
+        entity.setCategoria(
+                CategoriaEntity.builder()
+                        .id(domain.getCategoriaId())
+                        .build()
+        );
+
+        entity.setImageUrl(domain.getImageUrl());
+
+        /*
+         * =====================================================
+         * MATERIAIS
+         * =====================================================
+         */
+        entity.setDescription(domain.getDescription());
+        entity.setSku(domain.getSku());
+        entity.setProductionWeight(domain.getProductionWeight());
+        entity.setShippingWeight(domain.getShippingWeight());
+        entity.setWidth(domain.getWidth());
+        entity.setHeight(domain.getHeight());
+        entity.setDepth(domain.getDepth());
+        if (domain.getMaterials() == null) {
+            entity.getMaterials().clear();
+            return;
+        }
+
+        /*
+         * Remove materiais que não existem mais
+         */
+        entity.getMaterials().removeIf(entityMat ->
+
+                domain.getMaterials()
+                        .stream()
+                        .noneMatch(domainMat ->
+
+                                domainMat.getProductMaterialId() != null &&
+                                        domainMat.getProductMaterialId()
+                                                .equals(entityMat.getId())
+                        )
+        );
+
+        /*
+         * Atualiza ou adiciona
+         */
+        for (var domainMat : domain.getMaterials()) {
+
+            ProductMaterialsEntity entityMat =
+                    entity.getMaterials()
+                            .stream()
+                            .filter(mat ->
+
+                                    mat.getId() != null &&
+                                            mat.getId()
+                                                    .equals(domainMat.getProductMaterialId())
+                            )
+                            .findFirst()
+                            .orElse(null);
+
+            /*
+             * NOVO MATERIAL
+             */
+            if (entityMat == null) {
+
+                entityMat =
+                        ProductMaterialsEntity.builder()
+                                .product(entity)
+                                .build();
+
+                entity.getMaterials()
+                        .add(entityMat);
+            }
+
+            /*
+             * UPDATE
+             */
+            entityMat.setQuantity(
+                    domainMat.getQuantity()
+            );
+
+            entityMat.setUnitCostSnapshot(
+                    domainMat.getUnitCostSnapshot()
+            );
+
+            entityMat.setConsumptionType(
+                    domainMat.getConsumptionType()
+            );
+
+            entityMat.setInventory(
+                    InventoryEntity.builder()
+                            .id(domainMat.getInventory().getId())
+                            .build()
+            );
+        }
     }
 }

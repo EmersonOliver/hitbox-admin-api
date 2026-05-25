@@ -41,11 +41,33 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping(value = "/edit/{id}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> edit(
+            @RequestPart("data") ProductRequest request,
+            @RequestPart(value = "image", required = false) MultipartFile image,
+            @PathVariable("id") Long productId
+    ) {
+        var domain =
+                mapper.toDomain(request);
+        var edited =
+                productUseCase.editar(domain, image, productId);
+        var response =
+                mapper.toResponse(edited);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("page")
     public ResponseEntity<Page<ProductResponse>> page(Pageable pageable,
                                                       @RequestParam(required = false) List<Long> idCategorias,
                                                       @RequestParam(value = "search", required = false) String search) {
-        var result = productUseCase.listAllPage(pageable,idCategorias, search).map(mapper::toResponse);
+        var result = productUseCase.listAllPage(pageable, idCategorias, search).map(mapper::toResponse);
         return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/delete/{productId}")
+    public ResponseEntity<Void> delete(@PathVariable("productId") Long productId) {
+        productUseCase.delete(productId);
+        return ResponseEntity.ok().build();
     }
 }

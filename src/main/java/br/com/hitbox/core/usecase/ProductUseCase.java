@@ -35,6 +35,11 @@ public class ProductUseCase {
         generateSku(domain);
         return productGateway.salvar(domain);
     }
+    public Product editar(Product domain, MultipartFile image, Long productId) {
+        validarImagem(image, domain);
+        calculateCurrentCost(domain);
+        return productGateway.editar(productId, domain);
+    }
 
     private void uploadImagem(Product product, MultipartFile image) {
         if (image == null || image.isEmpty()) {
@@ -46,6 +51,12 @@ public class ProductUseCase {
         product.addImageUrl(imageUrl);
     }
 
+    private void validarImagem(MultipartFile image, Product product) {
+        if (product.getImageUrl() != null) {
+            storageGateway.deleteImagem(product.getImageUrl());
+        }
+        uploadImagem(product, image);
+    }
 
     private void calculateCurrentCost(
             Product product
@@ -124,5 +135,9 @@ public class ProductUseCase {
 
     public Page<Product> listAllPage(Pageable pageable, List<Long> idCategorias, String search) {
         return queryService.listaAllByPage(pageable, idCategorias, search);
+    }
+
+    public void delete(Long productId) {
+         productGateway.remover(productId);
     }
 }

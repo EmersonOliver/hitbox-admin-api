@@ -74,6 +74,7 @@ public class Inventory {
         this.unitCost =
                 custoUnitario();
 
+
         movements.add(movement);
     }
 
