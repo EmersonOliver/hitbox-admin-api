@@ -3,10 +3,10 @@ package br.com.hitbox.interfaces.mapper;
 import br.com.hitbox.core.domain.Inventory;
 import br.com.hitbox.core.domain.Product;
 import br.com.hitbox.core.domain.ProductMaterial;
-import br.com.hitbox.interfaces.dto.produto.ProductMaterialRequest;
-import br.com.hitbox.interfaces.dto.produto.ProductMaterialResponse;
-import br.com.hitbox.interfaces.dto.produto.ProductRequest;
-import br.com.hitbox.interfaces.dto.produto.ProductResponse;
+import br.com.hitbox.interfaces.dto.request.produto.ProductMaterialRequest;
+import br.com.hitbox.interfaces.dto.response.produto.ProductMaterialResponse;
+import br.com.hitbox.interfaces.dto.request.produto.ProductRequest;
+import br.com.hitbox.interfaces.dto.response.produto.ProductResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

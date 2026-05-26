@@ -3,7 +3,7 @@ package br.com.hitbox.core.usecase;
 import br.com.hitbox.core.domain.Categoria;
 import br.com.hitbox.core.gateway.CategoriaGateway;
 import br.com.hitbox.infra.enums.TipoCategoria;
-import br.com.hitbox.interfaces.dto.categoria.CategoriaResponse;
+import br.com.hitbox.interfaces.dto.response.categoria.CategoriaResponse;
 import br.com.hitbox.interfaces.mapper.CategoriaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

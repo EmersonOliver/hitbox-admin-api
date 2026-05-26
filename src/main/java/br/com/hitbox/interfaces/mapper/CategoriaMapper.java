@@ -2,8 +2,8 @@ package br.com.hitbox.interfaces.mapper;
 
 import br.com.hitbox.core.domain.Categoria;
 import br.com.hitbox.infra.entity.CategoriaEntity;
-import br.com.hitbox.interfaces.dto.categoria.CategoriaRecord;
-import br.com.hitbox.interfaces.dto.categoria.CategoriaResponse;
+import br.com.hitbox.interfaces.dto.request.categoria.CategoriaRecord;
+import br.com.hitbox.interfaces.dto.response.categoria.CategoriaResponse;
 
 public class CategoriaMapper {
 

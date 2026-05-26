@@ -2,9 +2,9 @@ package br.com.hitbox.interfaces;
 
 import br.com.hitbox.core.domain.ProductPricingContext;
 import br.com.hitbox.core.usecase.PricingRuleUseCase;
-import br.com.hitbox.interfaces.dto.precos.PricingRuleRequest;
-import br.com.hitbox.interfaces.dto.precos.PricingRuleResponse;
-import br.com.hitbox.interfaces.dto.precos.SuggestedPriceResult;
+import br.com.hitbox.interfaces.dto.request.pricing.PricingRuleRequest;
+import br.com.hitbox.interfaces.dto.response.pricing.PricingRuleResponse;
+import br.com.hitbox.interfaces.dto.response.pricing.SuggestedPriceResult;
 import br.com.hitbox.interfaces.mapper.PricingRuleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

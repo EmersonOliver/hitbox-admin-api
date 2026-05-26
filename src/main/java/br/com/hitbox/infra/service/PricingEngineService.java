@@ -2,7 +2,7 @@ package br.com.hitbox.infra.service;
 
 import br.com.hitbox.core.domain.PricingRule;
 import br.com.hitbox.core.domain.ProductPricingContext;
-import br.com.hitbox.interfaces.dto.precos.SuggestedPriceResult;
+import br.com.hitbox.interfaces.dto.response.pricing.SuggestedPriceResult;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

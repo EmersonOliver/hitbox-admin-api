@@ -2,10 +2,10 @@ package br.com.hitbox.interfaces.mapper;
 
 import br.com.hitbox.core.domain.Cliente;
 import br.com.hitbox.core.domain.EnderecoCliente;
-import br.com.hitbox.interfaces.dto.cliente.ClienteRequest;
-import br.com.hitbox.interfaces.dto.cliente.ClienteResponse;
-import br.com.hitbox.interfaces.dto.cliente.EnderecoClienteRequest;
-import br.com.hitbox.interfaces.dto.cliente.EnderecoClienteResponse;
+import br.com.hitbox.interfaces.dto.request.cliente.ClienteRequest;
+import br.com.hitbox.interfaces.dto.response.cliente.ClienteResponse;
+import br.com.hitbox.interfaces.dto.request.cliente.EnderecoClienteRequest;
+import br.com.hitbox.interfaces.dto.response.cliente.EnderecoClienteResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

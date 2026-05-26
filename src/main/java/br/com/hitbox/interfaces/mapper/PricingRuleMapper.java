@@ -1,8 +1,8 @@
 package br.com.hitbox.interfaces.mapper;
 
 import br.com.hitbox.core.domain.PricingRule;
-import br.com.hitbox.interfaces.dto.precos.PricingRuleRequest;
-import br.com.hitbox.interfaces.dto.precos.PricingRuleResponse;
+import br.com.hitbox.interfaces.dto.request.pricing.PricingRuleRequest;
+import br.com.hitbox.interfaces.dto.response.pricing.PricingRuleResponse;
 
 public class PricingRuleMapper {
 
