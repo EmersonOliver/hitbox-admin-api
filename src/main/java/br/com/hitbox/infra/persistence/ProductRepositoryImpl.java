@@ -11,6 +11,8 @@ import br.com.hitbox.infra.mapper.ProductEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -47,6 +49,11 @@ public class ProductRepositoryImpl implements ProductGateway {
     public void remover(Long productId) {
         var entityToDelete = jpaRepository.findById(productId).orElseThrow(() -> new HitboxException("Produto não encontrado para exclusão!"));
         jpaRepository.delete(entityToDelete);
+    }
+
+    @Override
+    public Optional<Product> findById(Long productId) {
+        return jpaRepository.findById(productId).map(mapper::toDomain);
     }
 
 

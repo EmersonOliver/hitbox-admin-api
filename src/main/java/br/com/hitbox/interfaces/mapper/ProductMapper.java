@@ -29,6 +29,7 @@ public class ProductMapper {
                 .categoriaId(
                         request.getCategoryId()
                 )
+                .estimatedMinutes(request.getEstimatedMinutes())
                 .productionWeight(
                         request.getProductionWeight()
                 )
@@ -59,6 +60,7 @@ public class ProductMapper {
                 .name(domain.getName())
                 .imageUrl(domain.getImageUrl())
                 .sku(domain.getSku())
+                .estimatedMinutes(domain.getEstimatedMinutes())
                 .categoriaId(domain.getCategoriaId())
                 .categoryName(domain.getCategoriaName())
                 .description(domain.getDescription())

@@ -21,6 +21,7 @@ public class PricingRuleController {
 
     private final PricingRuleUseCase useCase;
 
+
     @PostMapping("/save")
     public ResponseEntity<?> save(
             @RequestBody PricingRuleRequest request
@@ -60,5 +61,22 @@ public class PricingRuleController {
     @PostMapping("suggested/price")
     public ResponseEntity<List<SuggestedPriceResult>> suggestedPriceResultResponse(@RequestBody ProductPricingContext context) {
         return ResponseEntity.ok(useCase.suggestedPriceRule(context));
+    }
+
+    @GetMapping("findAll")
+    public ResponseEntity<List<PricingRuleResponse>> findAllRules() {
+        var response = useCase.findAllRules().stream().map(PricingRuleMapper::toResponse).toList();
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("ruleById/{ruleId}")
+    public ResponseEntity<SuggestedPriceResult> getSuggestedPrice(@PathVariable Long ruleId,
+                                                                  @RequestBody ProductPricingContext context) {
+        var result = useCase.suggestedPriceRule(context)
+                .stream()
+                .filter(rs -> rs.getRuleId().equals(ruleId))
+                .findFirst().orElse(null);
+        return ResponseEntity.ok(result);
+
     }
 }

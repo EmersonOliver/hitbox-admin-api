@@ -55,4 +55,6 @@ public class ItemProductEntity {
 
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal totalSalePrice;
+
+    private Long estimatedMinutes;
 }

@@ -33,4 +33,6 @@ public class ProductResponse {
     private BigDecimal shippingWeight;
 
     private List<ProductMaterialResponse> materials;
+
+    private BigDecimal estimatedMinutes;
 }

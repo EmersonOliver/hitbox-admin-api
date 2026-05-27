@@ -99,4 +99,8 @@ public class PricingRuleUseCase {
     public void deleteRule(Long ruleId) {
         this.repository.deleteRuleBy(ruleId);
     }
+
+    public List<PricingRule> findAllRules() {
+        return repository.findAll();
+    }
 }

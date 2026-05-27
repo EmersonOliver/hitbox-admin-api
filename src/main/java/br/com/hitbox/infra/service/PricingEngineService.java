@@ -233,6 +233,7 @@ public class PricingEngineService {
                 .maintenanceCost(maintenanceCost)
                 .unitPrice(unitPrice)
                 .unitCost(unitCost)
+
                 .build();
     }
 

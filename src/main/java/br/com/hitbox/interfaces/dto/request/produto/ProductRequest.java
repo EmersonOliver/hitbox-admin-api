@@ -22,4 +22,5 @@ public class ProductRequest {
     private BigDecimal height;
     private BigDecimal depth;
     private List<ProductMaterialRequest> materials;
+    private BigDecimal estimatedMinutes;
 }
