@@ -53,6 +53,8 @@ public class ProductEntity {
 
     private LocalDateTime previousCalculatedAt;
 
+    private BigDecimal estimatedMinutes;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id")
     private CategoriaEntity categoria;

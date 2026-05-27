@@ -10,7 +10,7 @@ import br.com.hitbox.infra.enums.StockMovementType;
 import br.com.hitbox.infra.enums.TipoCategoria;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.query.InventarioQueryService;
-import br.com.hitbox.interfaces.dto.inventario.InventoryResponse;
+import br.com.hitbox.interfaces.dto.response.inventario.InventoryResponse;
 import br.com.hitbox.interfaces.mapper.InventoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

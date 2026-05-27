@@ -140,4 +140,8 @@ public class ProductUseCase {
     public void delete(Long productId) {
          productGateway.remover(productId);
     }
+
+    public List<Product> findAll() {
+        return queryService.findAllProducts();
+    }
 }

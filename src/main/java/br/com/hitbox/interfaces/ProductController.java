@@ -1,8 +1,8 @@
 package br.com.hitbox.interfaces;
 
 import br.com.hitbox.core.usecase.ProductUseCase;
-import br.com.hitbox.interfaces.dto.produto.ProductRequest;
-import br.com.hitbox.interfaces.dto.produto.ProductResponse;
+import br.com.hitbox.interfaces.dto.request.produto.ProductRequest;
+import br.com.hitbox.interfaces.dto.response.produto.ProductResponse;
 import br.com.hitbox.interfaces.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -69,5 +69,11 @@ public class ProductController {
     public ResponseEntity<Void> delete(@PathVariable("productId") Long productId) {
         productUseCase.delete(productId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("findAll")
+    public ResponseEntity<List<ProductResponse>> findAllProducts() {
+        var response = productUseCase.findAll().stream().map(mapper::toResponse).toList();
+        return ResponseEntity.ok(response);
     }
 }

@@ -24,4 +24,8 @@ public class ProductQueryService {
         Specification<ProductEntity> specs = ProductSpecification.byCategorias(idCategorias, search);
         return jpaRepository.findAll(specs, pageable).map(mapper::toDomain);
     }
+
+    public List<Product> findAllProducts() {
+        return jpaRepository.findAll().stream().map(mapper::toDomain).toList();
+    }
 }

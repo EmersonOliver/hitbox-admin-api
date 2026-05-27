@@ -30,6 +30,7 @@ public class Product {
     private BigDecimal depth;
     private LocalDateTime calculatedAt;
     private LocalDateTime previousCalculatedAt;
+    private BigDecimal estimatedMinutes;
 
     @Builder.Default
     private List<ProductMaterial> materials =

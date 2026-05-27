@@ -5,7 +5,7 @@ import br.com.hitbox.core.domain.ProductPricingContext;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.persistence.PricingRuleRepositoryImpl;
 import br.com.hitbox.infra.service.PricingEngineService;
-import br.com.hitbox.interfaces.dto.precos.SuggestedPriceResult;
+import br.com.hitbox.interfaces.dto.response.pricing.SuggestedPriceResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -98,5 +98,9 @@ public class PricingRuleUseCase {
 
     public void deleteRule(Long ruleId) {
         this.repository.deleteRuleBy(ruleId);
+    }
+
+    public List<PricingRule> findAllRules() {
+        return repository.findAll();
     }
 }

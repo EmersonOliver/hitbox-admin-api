@@ -1,8 +1,8 @@
 package br.com.hitbox.interfaces.mapper;
 
 import br.com.hitbox.core.domain.Inventory;
-import br.com.hitbox.interfaces.dto.inventario.InventoryRequest;
-import br.com.hitbox.interfaces.dto.inventario.InventoryResponse;
+import br.com.hitbox.interfaces.dto.request.inventario.InventoryRequest;
+import br.com.hitbox.interfaces.dto.response.inventario.InventoryResponse;
 
 public class InventoryMapper {
     private InventoryMapper() {

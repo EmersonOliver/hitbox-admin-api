@@ -62,7 +62,7 @@ public class ProductEntityMapper {
                 .previousCalculatedAt(
                         entity.getPreviousCalculatedAt()
                 )
-
+                .estimatedMinutes(entity.getEstimatedMinutes())
                 .materials(
                         toMaterialDomainList(
                                 entity.getMaterials()
@@ -86,7 +86,7 @@ public class ProductEntityMapper {
                         .name(domain.getName())
                         .sku(domain.getSku())
                         .description(domain.getDescription())
-
+                        .estimatedMinutes(domain.getEstimatedMinutes())
                         .currentCalculatedCost(
                                 domain.getCurrentCalculatedCost()
                         )
@@ -237,12 +237,13 @@ public class ProductEntityMapper {
          * =====================================================
          */
         entity.setDescription(domain.getDescription());
-        entity.setSku(domain.getSku());
+//        entity.setSku(domain.getSku());
         entity.setProductionWeight(domain.getProductionWeight());
         entity.setShippingWeight(domain.getShippingWeight());
         entity.setWidth(domain.getWidth());
         entity.setHeight(domain.getHeight());
         entity.setDepth(domain.getDepth());
+        entity.setEstimatedMinutes(domain.getEstimatedMinutes());
         if (domain.getMaterials() == null) {
             entity.getMaterials().clear();
             return;

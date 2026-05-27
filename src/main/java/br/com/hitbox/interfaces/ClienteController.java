@@ -2,14 +2,15 @@ package br.com.hitbox.interfaces;
 
 import br.com.hitbox.core.usecase.ClienteUseCase;
 import br.com.hitbox.infra.query.ClienteQueryService;
-import br.com.hitbox.interfaces.dto.cliente.ClienteRequest;
-import br.com.hitbox.interfaces.dto.cliente.ClienteResponse;
+import br.com.hitbox.interfaces.dto.request.cliente.ClienteRequest;
+import br.com.hitbox.interfaces.dto.response.cliente.ClienteResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -47,6 +48,12 @@ public class ClienteController {
     public ResponseEntity<Void> delete(@PathVariable UUID clienteId) {
         clienteUseCase.delete(clienteId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("findAll")
+    public ResponseEntity<List<ClienteResponse>> findAll() {
+        var response = clienteQueryService.findAll();
+        return ResponseEntity.ok(response);
     }
 
 }

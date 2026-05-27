@@ -2,9 +2,9 @@ package br.com.hitbox.interfaces;
 
 import br.com.hitbox.core.domain.ProductPricingContext;
 import br.com.hitbox.core.usecase.PricingRuleUseCase;
-import br.com.hitbox.interfaces.dto.precos.PricingRuleRequest;
-import br.com.hitbox.interfaces.dto.precos.PricingRuleResponse;
-import br.com.hitbox.interfaces.dto.precos.SuggestedPriceResult;
+import br.com.hitbox.interfaces.dto.request.pricing.PricingRuleRequest;
+import br.com.hitbox.interfaces.dto.response.pricing.PricingRuleResponse;
+import br.com.hitbox.interfaces.dto.response.pricing.SuggestedPriceResult;
 import br.com.hitbox.interfaces.mapper.PricingRuleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +20,7 @@ import java.util.List;
 public class PricingRuleController {
 
     private final PricingRuleUseCase useCase;
+
 
     @PostMapping("/save")
     public ResponseEntity<?> save(
@@ -60,5 +61,22 @@ public class PricingRuleController {
     @PostMapping("suggested/price")
     public ResponseEntity<List<SuggestedPriceResult>> suggestedPriceResultResponse(@RequestBody ProductPricingContext context) {
         return ResponseEntity.ok(useCase.suggestedPriceRule(context));
+    }
+
+    @GetMapping("findAll")
+    public ResponseEntity<List<PricingRuleResponse>> findAllRules() {
+        var response = useCase.findAllRules().stream().map(PricingRuleMapper::toResponse).toList();
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("ruleById/{ruleId}")
+    public ResponseEntity<SuggestedPriceResult> getSuggestedPrice(@PathVariable Long ruleId,
+                                                                  @RequestBody ProductPricingContext context) {
+        var result = useCase.suggestedPriceRule(context)
+                .stream()
+                .filter(rs -> rs.getRuleId().equals(ruleId))
+                .findFirst().orElse(null);
+        return ResponseEntity.ok(result);
+
     }
 }

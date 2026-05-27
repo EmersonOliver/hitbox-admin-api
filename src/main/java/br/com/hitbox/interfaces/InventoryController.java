@@ -3,7 +3,7 @@ package br.com.hitbox.interfaces;
 import br.com.hitbox.core.domain.Inventory;
 import br.com.hitbox.core.usecase.InventarioUseCase;
 import br.com.hitbox.infra.enums.TipoCategoria;
-import br.com.hitbox.interfaces.dto.inventario.InventoryRequest;
+import br.com.hitbox.interfaces.dto.request.inventario.InventoryRequest;
 import br.com.hitbox.interfaces.mapper.InventoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
