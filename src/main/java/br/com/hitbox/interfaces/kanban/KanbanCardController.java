@@ -36,15 +36,10 @@ public class KanbanCardController {
             @PathVariable("cardId") Long cardId,
             @RequestBody KanbanCardRequest request
     ) {
-
         var domain = mapper.toDomain(request);
-
         domain.setId(cardId);
-
         var result = useCase.update(domain);
-
         var response = mapper.toResponse(result);
-
         return ResponseEntity.ok(response);
     }
 

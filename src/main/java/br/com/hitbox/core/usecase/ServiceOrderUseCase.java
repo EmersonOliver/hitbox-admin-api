@@ -260,7 +260,7 @@ public class ServiceOrderUseCase {
              */
             if (item.getEstimatedMinutes() == null) {
 
-                item.setEstimatedMinutes(0L);
+                item.setEstimatedMinutes(BigDecimal.ZERO);
             }
         }
     }

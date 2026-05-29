@@ -1,8 +1,11 @@
 package br.com.hitbox.infra.mapper.kanban;
 
+import br.com.hitbox.core.domain.kanban.KanbanCard;
 import br.com.hitbox.core.domain.kanban.KanbanColumn;
 import br.com.hitbox.infra.entity.kanban.KanbanColumnEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class KanbanColumnEntityMapper {
@@ -32,6 +35,27 @@ public class KanbanColumnEntityMapper {
                 .columnName(entity.getColumnName())
                 .columnColor(entity.getColumnColor())
                 .columnOrder(entity.getColumnOrder())
+                .cards(
+                 entity.getCards().stream().map(rs->
+                         KanbanCard.builder()
+                                 .id(rs.getId())
+                                 .kanbanColumnId(rs.getKanbanColumn().getId())
+                                 .createdAt(rs.getCreatedAt())
+                                 .blocked(rs.getBlocked())
+                                 .actualMinutes(rs.getActualMinutes())
+                                 .blockedReason(rs.getBlockedReason())
+                                 .estimatedMinutes(rs.getEstimatedMinutes())
+                                 .cardOrder(rs.getCardOrder())
+                                 .finishDatetime(rs.getFinishDatetime())
+                                 .itemProductId(rs.getItem().getId())
+                                 .updatedAt(rs.getUpdatedAt())
+                                 .clientName(rs.getOrder().getCliente().getNome())
+                                 .productName(rs.getItem().getProduct().getName())
+                                 .quantity(rs.getQuantity())
+                                 .build()
+                         ).toList()
+                )
+
                 .build();
     }
 }

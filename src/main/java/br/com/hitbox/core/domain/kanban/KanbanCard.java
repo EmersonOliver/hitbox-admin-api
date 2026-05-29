@@ -29,7 +29,7 @@ public class KanbanCard {
 
     private BigDecimal productionProgress;
 
-    private Long estimatedMinutes;
+    private BigDecimal estimatedMinutes;
 
     private Long actualMinutes;
 
@@ -46,6 +46,11 @@ public class KanbanCard {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private String productName;
+    private String clientName;
+    private BigDecimal quantity;
+
 
     @Builder.Default
     private List<KanbanCardMovement> movements =

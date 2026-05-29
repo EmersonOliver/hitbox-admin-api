@@ -17,6 +17,7 @@ public class KanbanCardMapper {
                 .itemProductId(req.getItemProductId())
                 .serviceOrderId(req.getServiceOrderId())
                 .kanbanColumnId(req.getKanbanColumnId())
+                .quantity(req.getQuantity())
                 .cardOrder(req.getCardOrder())
                 .productionProgress(req.getProductionProgress())
                 .estimatedMinutes(req.getEstimatedMinutes())
@@ -38,6 +39,7 @@ public class KanbanCardMapper {
                 .serviceOrderId(domain.getServiceOrderId())
                 .kanbanColumnId(domain.getKanbanColumnId())
                 .cardOrder(domain.getCardOrder())
+                .quantity(domain.getQuantity())
                 .productionProgress(domain.getProductionProgress())
                 .estimatedMinutes(domain.getEstimatedMinutes())
                 .actualMinutes(domain.getActualMinutes())
@@ -48,6 +50,8 @@ public class KanbanCardMapper {
                 .blocked(domain.getBlocked())
                 .blockedReason(domain.getBlockedReason())
                 .notes(domain.getNotes())
+                .productName(domain.getProductName())
+                .clientName(domain.getClientName())
                 .build();
     }
 }

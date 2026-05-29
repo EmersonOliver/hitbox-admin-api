@@ -1,8 +1,12 @@
 package br.com.hitbox.core.usecase.kanban;
 
+import br.com.hitbox.core.domain.ServiceOrder;
 import br.com.hitbox.core.domain.kanban.KanbanCard;
+import br.com.hitbox.core.gateway.ServiceOrderGateway;
 import br.com.hitbox.core.gateway.kanban.KanbanCardGateway;
+import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import br.com.hitbox.infra.exception.HitboxException;
+import br.com.hitbox.infra.mapper.ServiceOrderEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +18,15 @@ import java.util.List;
 public class KanbanCardUseCase {
 
     private final KanbanCardGateway gateway;
+    private final ServiceOrderGateway serviceOrderGateway;
+    private final ServiceOrderEntityMapper serviceOrderEntityMapper;
 
     public KanbanCard create(KanbanCard card) {
-        return gateway.save(card);
+        var entity = gateway.save(card);
+        var order = serviceOrderGateway.findById(entity.getServiceOrderId()).orElseThrow(() -> new HitboxException("Ordem de serviço não encontrada!"));
+        order.setStatus(ServiceOrderStatus.IN_PRODUCTION);
+        serviceOrderGateway.update(order);
+        return entity;
     }
 
     public KanbanCard move(
@@ -79,15 +89,18 @@ public class KanbanCardUseCase {
     }
 
     public void delete(Long id) {
-
+        KanbanCard findedCard = gateway.findById(id).orElseThrow(() -> new HitboxException("Card não encontrado!"));
+        ServiceOrder order = serviceOrderGateway.findById(findedCard.getServiceOrderId()).orElseThrow(() -> new HitboxException("Ordem de serviço não encontrada"));
+        order.setStatus(ServiceOrderStatus.OPEN);
+        serviceOrderGateway.update(order);
         gateway.delete(id);
     }
 
     public KanbanCard update(KanbanCard domain) {
-    return gateway.update(domain);
+        return gateway.update(domain);
     }
 
     public KanbanCard findById(Long cardId) {
-        return gateway.findById(cardId).orElseThrow(()-> new HitboxException("Produto em risco!"));
+        return gateway.findById(cardId).orElseThrow(() -> new HitboxException("Produto em risco!"));
     }
 }

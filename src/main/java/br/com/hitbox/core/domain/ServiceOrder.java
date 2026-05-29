@@ -93,12 +93,12 @@ public class ServiceOrder {
                         .setScale(2, RoundingMode.HALF_UP);
     }
 
-    public Long getTotalEstimatedMinutes() {
+    public BigDecimal getTotalEstimatedMinutes() {
 
         return items.stream()
                 .map(ItemProduct::getEstimatedMinutes)
                 .filter(minutes -> minutes != null)
-                .reduce(0L, Long::sum);
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Integer getTotalItems() {

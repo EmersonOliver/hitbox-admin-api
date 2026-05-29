@@ -18,7 +18,6 @@ import java.util.UUID;
 public class ServiceOrderRepositoryImpl implements ServiceOrderGateway {
 
     private final SpringDataServiceOrderRepository jpaRepository;
-
     private final ServiceOrderEntityMapper mapper;
 
 

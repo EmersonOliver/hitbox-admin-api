@@ -29,5 +29,5 @@ public class ServiceOrderItemProductResponse {
 
     private BigDecimal totalSalePrice;
 
-    private Long estimatedMinutes;
+    private BigDecimal estimatedMinutes;
 }

@@ -54,6 +54,7 @@ public class KanbanCardEntityMapper {
                 .blocked(domain.getBlocked())
                 .blockedReason(domain.getBlockedReason())
                 .notes(domain.getNotes())
+                .quantity(domain.getQuantity())
                 .build();
     }
 
@@ -95,6 +96,7 @@ public class KanbanCardEntityMapper {
                 .blocked(entity.getBlocked())
                 .blockedReason(entity.getBlockedReason())
                 .notes(entity.getNotes())
+                .quantity(entity.getItem().getQuantity())
                 .build();
     }
 }

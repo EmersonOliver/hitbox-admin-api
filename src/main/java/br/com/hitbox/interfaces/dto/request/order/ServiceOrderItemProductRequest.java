@@ -19,5 +19,5 @@ public class ServiceOrderItemProductRequest {
 
     private BigDecimal salePriceUnit;
 
-    private Long estimatedMinutes;
+    private BigDecimal estimatedMinutes;
 }

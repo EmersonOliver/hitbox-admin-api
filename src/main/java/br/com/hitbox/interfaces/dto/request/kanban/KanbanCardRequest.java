@@ -21,9 +21,11 @@ public class KanbanCardRequest {
 
     private Integer cardOrder;
 
+    private BigDecimal quantity;
+
     private BigDecimal productionProgress;
 
-    private Long estimatedMinutes;
+    private BigDecimal estimatedMinutes;
 
     private Boolean blocked;
 

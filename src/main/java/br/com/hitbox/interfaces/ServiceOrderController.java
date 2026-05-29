@@ -1,7 +1,9 @@
 package br.com.hitbox.interfaces;
 
 import br.com.hitbox.core.usecase.ServiceOrderUseCase;
+import br.com.hitbox.infra.query.ServiceOrderQueryService;
 import br.com.hitbox.interfaces.dto.request.order.ServiceOrderRequest;
+import br.com.hitbox.interfaces.dto.response.order.ServiceOrderItemProductResponse;
 import br.com.hitbox.interfaces.dto.response.order.ServiceOrderResponse;
 import br.com.hitbox.interfaces.mapper.ServiceOrderMapper;
 import br.com.hitbox.infra.enums.ServiceOrderStatus;
@@ -19,6 +21,8 @@ public class ServiceOrderController {
     private final ServiceOrderUseCase useCase;
 
     private final ServiceOrderMapper mapper;
+
+    private final ServiceOrderQueryService queryService;
 
     @PostMapping("create")
     public ResponseEntity<ServiceOrderResponse> create(
@@ -143,4 +147,6 @@ public class ServiceOrderController {
                 mapper.toResponse(result)
         );
     }
+
+
 }

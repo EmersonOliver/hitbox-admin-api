@@ -24,7 +24,7 @@ public class KanbanCardResponse {
 
     private BigDecimal productionProgress;
 
-    private Long estimatedMinutes;
+    private BigDecimal estimatedMinutes;
 
     private Long actualMinutes;
 
@@ -48,6 +48,6 @@ public class KanbanCardResponse {
 
     private String clientName;
 
-    private Long quantity;
+    private BigDecimal quantity;
 
 }

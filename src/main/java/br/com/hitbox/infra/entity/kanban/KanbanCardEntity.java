@@ -67,7 +67,7 @@ public class KanbanCardEntity {
     /**
      * Tempo previsto em minutos
      */
-    private Long estimatedMinutes;
+    private BigDecimal estimatedMinutes;
 
     /**
      * Tempo real gasto
@@ -107,10 +107,12 @@ public class KanbanCardEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private Long productionQuantity;
+    private BigDecimal productionQuantity;
 
     private Long completedQuantity;
 
     private Long failedQuantity;
+
+    private BigDecimal quantity;
 
 }
