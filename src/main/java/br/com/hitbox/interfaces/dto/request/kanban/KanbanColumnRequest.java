@@ -1,5 +1,6 @@
 package br.com.hitbox.interfaces.dto.request.kanban;
 
+import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import lombok.*;
 
 @Getter
@@ -16,5 +17,7 @@ public class KanbanColumnRequest {
     private String columnColor;
 
     private Integer columnOrder;
+
+    private ServiceOrderStatus typeColumn;
 
 }

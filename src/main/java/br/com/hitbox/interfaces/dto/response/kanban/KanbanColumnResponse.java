@@ -1,5 +1,6 @@
 package br.com.hitbox.interfaces.dto.response.kanban;
 
+import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ public class KanbanColumnResponse {
     private Integer columnOrder;
 
     private Integer totalCards;
+
+    private ServiceOrderStatus typeColumn;
 
     @Builder.Default
     private List<KanbanCardResponse> cards = new ArrayList<>();

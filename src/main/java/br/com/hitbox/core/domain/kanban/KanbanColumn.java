@@ -1,5 +1,6 @@
 package br.com.hitbox.core.domain.kanban;
 
+import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class KanbanColumn {
     private Boolean finalColumn;
 
     private Boolean blockedColumn;
+    private ServiceOrderStatus typeColumn;
 
     @Builder.Default
     private List<KanbanCard> cards =

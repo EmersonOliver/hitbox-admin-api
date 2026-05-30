@@ -26,6 +26,7 @@ public class KanbanCardController {
     ) {
 
         var domain = mapper.toDomain(request);
+        domain.setId(request.getId().equals(0L) ?null : request.getId());
         var result = useCase.create(domain);
         var response = mapper.toResponse(result);
         return ResponseEntity.ok(response);

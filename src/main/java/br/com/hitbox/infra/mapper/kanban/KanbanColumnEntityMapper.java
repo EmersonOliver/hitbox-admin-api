@@ -15,12 +15,12 @@ public class KanbanColumnEntityMapper {
         if (domain == null) {
             return null;
         }
-
         return KanbanColumnEntity.builder()
                 .id(domain.getId())
                 .columnName(domain.getColumnName())
                 .columnColor(domain.getColumnColor())
                 .columnOrder(domain.getColumnOrder())
+                .typeColumn(domain.getTypeColumn())
                 .build();
     }
 
@@ -35,28 +35,29 @@ public class KanbanColumnEntityMapper {
                 .columnName(entity.getColumnName())
                 .columnColor(entity.getColumnColor())
                 .columnOrder(entity.getColumnOrder())
+                .typeColumn(entity.getTypeColumn())
                 .cards(
-                 entity.getCards().stream().map(rs->
-                         KanbanCard.builder()
-                                 .id(rs.getId())
-                                 .serviceOrderId(rs.getOrder().getId())
-                                 .kanbanColumnId(rs.getKanbanColumn().getId())
-                                 .createdAt(rs.getCreatedAt())
-                                 .blocked(rs.getBlocked())
-                                 .actualMinutes(rs.getActualMinutes())
-                                 .blockedReason(rs.getBlockedReason())
-                                 .estimatedMinutes(rs.getEstimatedMinutes())
-                                 .cardOrder(rs.getCardOrder())
-                                 .finishDatetime(rs.getFinishDatetime())
-                                 .itemProductId(rs.getItem().getId())
-                                 .updatedAt(rs.getUpdatedAt())
-                                 .productionProgress(rs.getProductionProgress())
-                                 .clientName(rs.getOrder().getCliente().getNome())
-                                 .productName(rs.getItem().getProduct().getName())
-                                 .quantity(rs.getQuantity())
-                                 .notes(rs.getNotes())
-                                 .build()
-                         ).toList()
+                        entity.getCards().stream().map(rs ->
+                                KanbanCard.builder()
+                                        .id(rs.getId())
+                                        .serviceOrderId(rs.getOrder().getId())
+                                        .kanbanColumnId(rs.getKanbanColumn().getId())
+                                        .createdAt(rs.getCreatedAt())
+                                        .blocked(rs.getBlocked())
+                                        .actualMinutes(rs.getActualMinutes())
+                                        .blockedReason(rs.getBlockedReason())
+                                        .estimatedMinutes(rs.getEstimatedMinutes())
+                                        .cardOrder(rs.getCardOrder())
+                                        .finishDatetime(rs.getFinishDatetime())
+                                        .itemProductId(rs.getItem().getId())
+                                        .updatedAt(rs.getUpdatedAt())
+                                        .productionProgress(rs.getProductionProgress())
+                                        .clientName(rs.getOrder().getCliente().getNome())
+                                        .productName(rs.getItem().getProduct().getName())
+                                        .quantity(rs.getQuantity())
+                                        .notes(rs.getNotes())
+                                        .build()
+                        ).toList()
                 )
 
                 .build();

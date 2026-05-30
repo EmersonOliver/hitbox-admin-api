@@ -23,6 +23,7 @@ public class KanbanColumnMapper {
                 .columnName(req.getColumnName())
                 .columnColor(req.getColumnColor())
                 .columnOrder(req.getColumnOrder())
+                .typeColumn(req.getTypeColumn())
                 .build();
     }
 
@@ -38,6 +39,7 @@ public class KanbanColumnMapper {
                 .columnColor(domain.getColumnColor())
                 .columnOrder(domain.getColumnOrder())
                 .cards(domain.getCards().stream().map(cardMapper::toResponse).toList())
+                .typeColumn(domain.getTypeColumn())
                 .build();
     }
 }

@@ -28,11 +28,9 @@ public class KanbanCardMapper {
     }
 
     public KanbanCardResponse toResponse(KanbanCard domain) {
-
         if (domain == null) {
             return null;
         }
-
         return KanbanCardResponse.builder()
                 .id(domain.getId())
                 .itemProductId(domain.getItemProductId())

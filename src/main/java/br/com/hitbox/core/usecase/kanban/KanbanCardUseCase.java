@@ -4,6 +4,7 @@ import br.com.hitbox.core.domain.ServiceOrder;
 import br.com.hitbox.core.domain.kanban.KanbanCard;
 import br.com.hitbox.core.gateway.ServiceOrderGateway;
 import br.com.hitbox.core.gateway.kanban.KanbanCardGateway;
+import br.com.hitbox.core.gateway.kanban.KanbanCardMovementGateway;
 import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.mapper.ServiceOrderEntityMapper;
@@ -19,7 +20,7 @@ public class KanbanCardUseCase {
 
     private final KanbanCardGateway gateway;
     private final ServiceOrderGateway serviceOrderGateway;
-    private final ServiceOrderEntityMapper serviceOrderEntityMapper;
+    private final KanbanCardMovementGateway movementGateway;
 
     public KanbanCard create(KanbanCard card) {
         var entity = gateway.save(card);
@@ -97,6 +98,8 @@ public class KanbanCardUseCase {
     }
 
     public KanbanCard update(KanbanCard domain) {
+        var movements = movementGateway.findByCard(domain.getId());
+        domain.setMovements(movements);
         return gateway.update(domain);
     }
 
