@@ -23,4 +23,7 @@ public class CategoriaQueryService {
                 .map(CategoriaMapper::entityToResponse);
     }
 
+    public Long countAll() {
+        return jpaRepository.count();
+    }
 }

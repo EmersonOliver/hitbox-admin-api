@@ -2,6 +2,7 @@ package br.com.hitbox.infra.entity.kanban;
 
 import br.com.hitbox.infra.entity.ItemProductEntity;
 import br.com.hitbox.infra.entity.ServiceOrderEntity;
+import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -79,6 +80,9 @@ public class KanbanCardEntity {
     private Long failedQuantity;
 
     private BigDecimal quantity;
+
+    @Enumerated(EnumType.STRING)
+    private ServiceOrderStatus statusCard;
 
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<KanbanCardMovementEntity> movements;

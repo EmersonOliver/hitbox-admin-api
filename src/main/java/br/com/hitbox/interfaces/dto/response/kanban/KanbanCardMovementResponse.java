@@ -13,6 +13,8 @@ public class KanbanCardMovementResponse {
 
     private Long id;
 
+    private Long serviceOrderId;
+
     private Long cardId;
 
     private Long fromColumnId;

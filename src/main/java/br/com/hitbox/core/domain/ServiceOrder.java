@@ -112,4 +112,8 @@ public class ServiceOrder {
     public List<ItemProduct> getItems() {
         return Collections.unmodifiableList(items);
     }
+
+    public boolean isCanceled() {
+        return ServiceOrderStatus.CANCELED.equals(status);
+    }
 }

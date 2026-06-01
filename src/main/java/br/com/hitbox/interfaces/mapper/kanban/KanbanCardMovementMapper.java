@@ -9,14 +9,13 @@ import org.springframework.stereotype.Component;
 public class KanbanCardMovementMapper {
 
     public KanbanCardMovement toDomain(KanbanCardMovementRequest req) {
-
         if (req == null) {
             return null;
         }
-
         return KanbanCardMovement.builder()
                 .id(req.getId())
                 .cardId(req.getCardId())
+                .serviceOrderId(req.getServiceOrderId())
                 .fromColumnId(req.getFromColumnId())
                 .toColumnId(req.getToColumnId())
                 .build();
@@ -31,6 +30,7 @@ public class KanbanCardMovementMapper {
         return KanbanCardMovementResponse.builder()
                 .id(domain.getId())
                 .cardId(domain.getCardId())
+                .serviceOrderId(domain.getServiceOrderId())
                 .fromColumnId(domain.getFromColumnId())
                 .toColumnId(domain.getToColumnId())
                 .movedAt(domain.getMovedAt())

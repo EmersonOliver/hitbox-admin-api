@@ -7,6 +7,9 @@ import br.com.hitbox.core.gateway.CategoriaGateway;
 import br.com.hitbox.core.gateway.InventarioGateway;
 import br.com.hitbox.core.gateway.ProductGateway;
 import br.com.hitbox.core.gateway.StorageGateway;
+import br.com.hitbox.infra.entity.PricingRuleEntity;
+import br.com.hitbox.infra.exception.HitboxException;
+import br.com.hitbox.infra.query.PricingRuleQueryService;
 import br.com.hitbox.infra.query.ProductQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,16 +31,27 @@ public class ProductUseCase {
     private final ProductGateway productGateway;
     private final StorageGateway storageGateway;
     private final ProductQueryService queryService;
+    private final PricingRuleQueryService pricingRuleQueryService;
 
     public Product execute(Product domain, MultipartFile image) {
         uploadImagem(domain, image);
         calculateCurrentCost(domain);
         generateSku(domain);
+        validateRulePrice(domain);
         return productGateway.salvar(domain);
     }
+
+    private void validateRulePrice(Product domain) {
+        BigDecimal minimunCost = pricingRuleQueryService.findById(domain.getPrincingRuleId())
+                .map(PricingRuleEntity::getMinimumPrice)
+                .orElseThrow(() -> new HitboxException("Regra de preço não encontrada!"));
+        domain.setCurrentSalePrice(minimunCost);
+    }
+
     public Product editar(Product domain, MultipartFile image, Long productId) {
         validarImagem(image, domain);
         calculateCurrentCost(domain);
+        validateRulePrice(domain);
         return productGateway.editar(productId, domain);
     }
 
@@ -138,7 +152,7 @@ public class ProductUseCase {
     }
 
     public void delete(Long productId) {
-         productGateway.remover(productId);
+        productGateway.remover(productId);
     }
 
     public List<Product> findAll() {

@@ -3,6 +3,7 @@ package br.com.hitbox.interfaces.dto.request.kanban;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter

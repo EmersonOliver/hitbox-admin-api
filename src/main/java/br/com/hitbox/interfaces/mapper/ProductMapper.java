@@ -29,6 +29,7 @@ public class ProductMapper {
                 .categoriaId(
                         request.getCategoryId()
                 )
+                .princingRuleId(request.getPricingRuleId())
                 .estimatedMinutes(request.getEstimatedMinutes())
                 .productionWeight(
                         request.getProductionWeight()
@@ -60,6 +61,8 @@ public class ProductMapper {
                 .name(domain.getName())
                 .imageUrl(domain.getImageUrl())
                 .sku(domain.getSku())
+                .currentSalePrice(domain.getCurrentSalePrice())
+                .pricingRuleId(domain.getPrincingRuleId())
                 .estimatedMinutes(domain.getEstimatedMinutes())
                 .categoriaId(domain.getCategoriaId())
                 .categoryName(domain.getCategoriaName())

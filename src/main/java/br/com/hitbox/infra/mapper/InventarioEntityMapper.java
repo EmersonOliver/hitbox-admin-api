@@ -57,8 +57,9 @@ public class InventarioEntityMapper {
                 .build();
         StockMovementEntityMapper stockMapper = new StockMovementEntityMapper();
         var movementsEntity = entity.getMovements();
+
         movementsEntity.forEach(item-> {
-            inventory.addMovement(stockMapper.toDomain(item));
+            inventory.getMovements().add(stockMapper.toDomain(item));
         });
         return inventory;
     }

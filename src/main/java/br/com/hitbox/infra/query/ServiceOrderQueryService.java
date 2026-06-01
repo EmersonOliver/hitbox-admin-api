@@ -30,4 +30,7 @@ public class ServiceOrderQueryService {
                 .map(responseMapper::toResponse).toList();
     }
 
+    public Long countAll() {
+        return this.jpaRepository.count();
+    }
 }

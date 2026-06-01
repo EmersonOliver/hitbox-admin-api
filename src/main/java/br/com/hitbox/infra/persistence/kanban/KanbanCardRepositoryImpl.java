@@ -52,4 +52,9 @@ public class KanbanCardRepositoryImpl implements KanbanCardGateway {
 
         return mapper.toDomain(jpaRepository.save(entity));
     }
+
+    @Override
+    public List<KanbanCard> findByServiceOrderId(Long serviceOrderId) {
+        return jpaRepository.findByServiceOrderId(serviceOrderId).stream().map(mapper::toDomain).toList();
+    }
 }

@@ -38,4 +38,8 @@ public class ClienteQueryService {
         var clienteDomain = jpaRepository.findAll().stream().map(mapper::toDomain);
         return clienteDomain.map(responseMapper::domainToResponseCliente).toList();
     }
+
+    public Long countAll() {
+        return jpaRepository.count();
+    }
 }

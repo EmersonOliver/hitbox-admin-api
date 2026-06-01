@@ -115,4 +115,11 @@ public class ServiceOrderRepositoryImpl implements ServiceOrderGateway {
 
         return jpaRepository.existsById(id);
     }
+
+    @Override
+    public void updateStatus(Long serviceOrderId, ServiceOrderStatus status) {
+        var serviceOrder = jpaRepository.findById(serviceOrderId).orElseThrow(() -> new IllegalArgumentException("Houve um erro"));
+        serviceOrder.setStatus(status);
+        jpaRepository.save(serviceOrder);
+    }
 }
