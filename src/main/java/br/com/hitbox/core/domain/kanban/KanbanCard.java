@@ -1,5 +1,6 @@
 package br.com.hitbox.core.domain.kanban;
 
+import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -29,7 +30,7 @@ public class KanbanCard {
 
     private BigDecimal productionProgress;
 
-    private Long estimatedMinutes;
+    private BigDecimal estimatedMinutes;
 
     private Long actualMinutes;
 
@@ -46,6 +47,13 @@ public class KanbanCard {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private String productName;
+    private String clientName;
+    private BigDecimal quantity;
+
+    private ServiceOrderStatus statusCard;
+
 
     @Builder.Default
     private List<KanbanCardMovement> movements =

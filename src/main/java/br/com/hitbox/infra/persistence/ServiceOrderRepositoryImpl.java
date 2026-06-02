@@ -18,7 +18,6 @@ import java.util.UUID;
 public class ServiceOrderRepositoryImpl implements ServiceOrderGateway {
 
     private final SpringDataServiceOrderRepository jpaRepository;
-
     private final ServiceOrderEntityMapper mapper;
 
 
@@ -115,5 +114,12 @@ public class ServiceOrderRepositoryImpl implements ServiceOrderGateway {
     public boolean existsById(Long id) {
 
         return jpaRepository.existsById(id);
+    }
+
+    @Override
+    public void updateStatus(Long serviceOrderId, ServiceOrderStatus status) {
+        var serviceOrder = jpaRepository.findById(serviceOrderId).orElseThrow(() -> new IllegalArgumentException("Houve um erro"));
+        serviceOrder.setStatus(status);
+        jpaRepository.save(serviceOrder);
     }
 }

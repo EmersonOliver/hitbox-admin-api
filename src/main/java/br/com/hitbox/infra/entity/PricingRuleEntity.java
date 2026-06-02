@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 public class PricingRuleEntity {
 
     @Id
+    @Column(name = "pricing_rule_id")
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "sq_pricing_rule_id"

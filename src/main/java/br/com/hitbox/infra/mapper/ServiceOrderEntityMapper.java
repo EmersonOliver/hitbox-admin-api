@@ -1,5 +1,6 @@
 package br.com.hitbox.infra.mapper;
 
+import br.com.hitbox.core.domain.Cliente;
 import br.com.hitbox.core.domain.ServiceOrder;
 import br.com.hitbox.infra.entity.ClienteEntity;
 import br.com.hitbox.infra.entity.ServiceOrderEntity;
@@ -73,6 +74,8 @@ public class ServiceOrderEntityMapper {
                                 ? entity.getCliente().getId()
                                 : null
                 )
+                .cliente(Cliente.builder().nome(entity.getCliente()
+                        .getNome()).build())
                 .status(entity.getStatus())
                 .totalSalePrice(entity.getTotalSalePrice())
                 .totalProfit(entity.getTotalProfit())

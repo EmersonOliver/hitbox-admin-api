@@ -15,4 +15,6 @@ public interface KanbanCardGateway {
     void delete(Long id);
 
     KanbanCard update(KanbanCard domain);
+
+    List<KanbanCard> findByServiceOrderId(Long serviceOrderId);
 }

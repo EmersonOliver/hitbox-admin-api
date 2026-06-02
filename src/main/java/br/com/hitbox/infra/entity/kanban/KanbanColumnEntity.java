@@ -1,5 +1,6 @@
 package br.com.hitbox.infra.entity.kanban;
 
+import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +38,9 @@ public class KanbanColumnEntity {
     @Column(nullable = false)
     private Integer columnOrder;
 
+    @Enumerated(EnumType.STRING)
+    private ServiceOrderStatus typeColumn;
+
     @Builder.Default
     @OneToMany(
             mappedBy = "kanbanColumn",
@@ -46,6 +50,12 @@ public class KanbanColumnEntity {
     @OrderBy("cardOrder ASC")
     private List<KanbanCardEntity> cards =
             new ArrayList<>();
+
+    @OneToMany(mappedBy = "fromColumn", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<KanbanCardMovementEntity> fromColumns;
+
+    @OneToMany(mappedBy = "toColumn", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<KanbanCardMovementEntity> toColumns;
 
     private Boolean finalColumn;
 

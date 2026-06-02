@@ -1,40 +1,42 @@
 package br.com.hitbox.infra.mapper.kanban;
 
 import br.com.hitbox.core.domain.kanban.KanbanCard;
+import br.com.hitbox.infra.entity.ClienteEntity;
 import br.com.hitbox.infra.entity.ItemProductEntity;
 import br.com.hitbox.infra.entity.ServiceOrderEntity;
 import br.com.hitbox.infra.entity.kanban.KanbanCardEntity;
 import br.com.hitbox.infra.entity.kanban.KanbanColumnEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class KanbanCardEntityMapper {
 
-    public KanbanCardEntity toEntity(KanbanCard domain) {
+    private final KanbanCardMovementEntityMapper kanbanCardMovementEntityMapper;
 
+    public KanbanCardEntity toEntity(KanbanCard domain) {
         if (domain == null) {
             return null;
         }
-
         return KanbanCardEntity.builder()
                 .id(domain.getId())
-
-                .item(
-                        domain.getItemProductId() != null
+                .item(domain.getItemProductId() != null
                                 ? ItemProductEntity.builder()
                                   .id(domain.getItemProductId())
                                   .build()
                                 : null
                 )
-
                 .order(
                         domain.getServiceOrderId() != null
                                 ? ServiceOrderEntity.builder()
                                   .id(domain.getServiceOrderId())
+                                  .cliente(ClienteEntity.builder()
+                                           .nome(domain.getClientName())
+                                           .build())
                                   .build()
                                 : null
                 )
-
                 .kanbanColumn(
                         domain.getKanbanColumnId() != null
                                 ? KanbanColumnEntity.builder()
@@ -54,6 +56,9 @@ public class KanbanCardEntityMapper {
                 .blocked(domain.getBlocked())
                 .blockedReason(domain.getBlockedReason())
                 .notes(domain.getNotes())
+                .quantity(domain.getQuantity())
+                .movements(domain.getMovements().stream().map(kanbanCardMovementEntityMapper::toEntity)
+                        .toList())
                 .build();
     }
 
@@ -65,25 +70,21 @@ public class KanbanCardEntityMapper {
 
         return KanbanCard.builder()
                 .id(entity.getId())
-
                 .itemProductId(
                         entity.getItem() != null
                                 ? entity.getItem().getId()
                                 : null
                 )
-
                 .serviceOrderId(
                         entity.getOrder() != null
                                 ? entity.getOrder().getId()
                                 : null
                 )
-
                 .kanbanColumnId(
                         entity.getKanbanColumn() != null
                                 ? entity.getKanbanColumn().getId()
                                 : null
                 )
-
                 .cardOrder(entity.getCardOrder())
                 .productionProgress(entity.getProductionProgress())
                 .estimatedMinutes(entity.getEstimatedMinutes())
@@ -95,6 +96,9 @@ public class KanbanCardEntityMapper {
                 .blocked(entity.getBlocked())
                 .blockedReason(entity.getBlockedReason())
                 .notes(entity.getNotes())
+                .quantity(entity.getItem().getQuantity())
+                .clientName(entity.getOrder().getCliente().getNome())
+                .movements(entity.getMovements().stream().map(kanbanCardMovementEntityMapper::toDomain).toList())
                 .build();
     }
 }

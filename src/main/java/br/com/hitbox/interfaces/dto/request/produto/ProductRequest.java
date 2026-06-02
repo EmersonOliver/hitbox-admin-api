@@ -13,6 +13,7 @@ import java.util.List;
 public class ProductRequest {
 
     private String name;
+    private Long pricingRuleId;
     private String imageUrl;
     private String description;
     private Long categoryId;

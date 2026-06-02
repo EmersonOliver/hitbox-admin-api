@@ -14,6 +14,8 @@ public class ProductResponse {
 
     private Long productId;
 
+    private Long pricingRuleId;
+
     private String name;
 
     private Long categoriaId;
@@ -27,6 +29,8 @@ public class ProductResponse {
     private String description;
 
     private BigDecimal currentCalculatedCost;
+
+    private BigDecimal currentSalePrice;
 
     private BigDecimal productionWeight;
 

@@ -3,6 +3,7 @@ package br.com.hitbox.interfaces.dto.request.kanban;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,9 +22,11 @@ public class KanbanCardRequest {
 
     private Integer cardOrder;
 
+    private BigDecimal quantity;
+
     private BigDecimal productionProgress;
 
-    private Long estimatedMinutes;
+    private BigDecimal estimatedMinutes;
 
     private Boolean blocked;
 

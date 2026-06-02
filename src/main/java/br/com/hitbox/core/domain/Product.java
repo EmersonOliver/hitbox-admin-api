@@ -16,12 +16,14 @@ public class Product {
 
     private Long productId;
     private Long categoriaId;
+    private Long princingRuleId;
     private String imageUrl;
     private String name;
     private String sku;
     private String description;
     private String categoriaName;
     private BigDecimal currentCalculatedCost;
+    private BigDecimal currentSalePrice;
     private BigDecimal previousCalculatedCost;
     private BigDecimal productionWeight;
     private BigDecimal shippingWeight;

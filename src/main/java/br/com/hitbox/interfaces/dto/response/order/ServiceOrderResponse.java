@@ -29,7 +29,7 @@ public class ServiceOrderResponse {
 
     private BigDecimal totalProfit;
 
-    private Long totalEstimatedMinutes;
+    private BigDecimal totalEstimatedMinutes;
 
     private LocalDateTime createdAt;
 

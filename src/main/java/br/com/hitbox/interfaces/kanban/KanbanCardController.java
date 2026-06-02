@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("kanban/card")
@@ -26,6 +27,7 @@ public class KanbanCardController {
     ) {
 
         var domain = mapper.toDomain(request);
+        domain.setId(!Objects.isNull(request.getId()) && request.getId().equals(0L) ?null : request.getId());
         var result = useCase.create(domain);
         var response = mapper.toResponse(result);
         return ResponseEntity.ok(response);
@@ -36,15 +38,10 @@ public class KanbanCardController {
             @PathVariable("cardId") Long cardId,
             @RequestBody KanbanCardRequest request
     ) {
-
         var domain = mapper.toDomain(request);
-
         domain.setId(cardId);
-
         var result = useCase.update(domain);
-
         var response = mapper.toResponse(result);
-
         return ResponseEntity.ok(response);
     }
 

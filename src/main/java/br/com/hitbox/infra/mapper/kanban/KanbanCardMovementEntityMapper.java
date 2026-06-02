@@ -1,6 +1,7 @@
 package br.com.hitbox.infra.mapper.kanban;
 
 import br.com.hitbox.core.domain.kanban.KanbanCardMovement;
+import br.com.hitbox.infra.entity.ServiceOrderEntity;
 import br.com.hitbox.infra.entity.kanban.KanbanCardEntity;
 import br.com.hitbox.infra.entity.kanban.KanbanCardMovementEntity;
 import br.com.hitbox.infra.entity.kanban.KanbanColumnEntity;
@@ -17,15 +18,16 @@ public class KanbanCardMovementEntityMapper {
 
         return KanbanCardMovementEntity.builder()
                 .id(domain.getId())
-
                 .card(
                         domain.getCardId() != null
                                 ? KanbanCardEntity.builder()
                                   .id(domain.getCardId())
+                                  .order(ServiceOrderEntity.builder()
+                                         .id(domain.getServiceOrderId())
+                                         .build())
                                   .build()
                                 : null
                 )
-
                 .fromColumn(
                         domain.getFromColumnId() != null
                                 ? KanbanColumnEntity.builder()
@@ -33,7 +35,6 @@ public class KanbanCardMovementEntityMapper {
                                   .build()
                                 : null
                 )
-
                 .toColumn(
                         domain.getToColumnId() != null
                                 ? KanbanColumnEntity.builder()
@@ -41,7 +42,6 @@ public class KanbanCardMovementEntityMapper {
                                   .build()
                                 : null
                 )
-
                 .movedAt(domain.getMovedAt())
                 .build();
     }
@@ -54,7 +54,7 @@ public class KanbanCardMovementEntityMapper {
 
         return KanbanCardMovement.builder()
                 .id(entity.getId())
-
+                .serviceOrderId(entity.getCard().getOrder().getId())
                 .cardId(
                         entity.getCard() != null
                                 ? entity.getCard().getId()

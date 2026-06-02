@@ -29,7 +29,7 @@ public class ItemProduct {
 
     private BigDecimal totalSalePrice;
 
-    private Long estimatedMinutes;
+    private BigDecimal estimatedMinutes;
 
     public void recalculateTotals() {
 

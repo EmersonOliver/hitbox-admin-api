@@ -3,10 +3,7 @@ package br.com.hitbox.infra.mapper;
 import br.com.hitbox.core.domain.Inventory;
 import br.com.hitbox.core.domain.Product;
 import br.com.hitbox.core.domain.ProductMaterial;
-import br.com.hitbox.infra.entity.CategoriaEntity;
-import br.com.hitbox.infra.entity.InventoryEntity;
-import br.com.hitbox.infra.entity.ProductEntity;
-import br.com.hitbox.infra.entity.ProductMaterialsEntity;
+import br.com.hitbox.infra.entity.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -30,8 +27,10 @@ public class ProductEntityMapper {
                                 : null
                 )
                 .imageUrl(entity.getImageUrl())
+                .princingRuleId(entity.getPricingRule().getId())
                 .name(entity.getName())
                 .sku(entity.getSku())
+                .currentSalePrice(entity.getPricingRule().getMinimumPrice())
                 .description(entity.getDescription())
                 .categoriaName(entity.getCategoria().getNome())
                 .categoriaId(entity.getCategoria().getId())
@@ -90,27 +89,25 @@ public class ProductEntityMapper {
                         .currentCalculatedCost(
                                 domain.getCurrentCalculatedCost()
                         )
-
+                        .pricingRule(PricingRuleEntity.builder()
+                                .id(domain.getPrincingRuleId())
+                                .minimumPrice(domain.getCurrentSalePrice())
+                                .build())
                         .previousCalculatedCost(
                                 domain.getPreviousCalculatedCost()
                         )
-
                         .productionWeight(
                                 domain.getProductionWeight()
                         )
-
                         .shippingWeight(
                                 domain.getShippingWeight()
                         )
-
                         .width(domain.getWidth())
                         .height(domain.getHeight())
                         .depth(domain.getDepth())
-
                         .calculatedAt(
                                 domain.getCalculatedAt()
                         )
-
                         .previousCalculatedAt(
                                 domain.getPreviousCalculatedAt()
                         )
@@ -228,6 +225,10 @@ public class ProductEntityMapper {
                         .id(domain.getCategoriaId())
                         .build()
         );
+        entity.setPricingRule(PricingRuleEntity.builder()
+                        .id(domain.getPrincingRuleId())
+                        .minimumPrice(domain.getCurrentSalePrice())
+                .build());
 
         entity.setImageUrl(domain.getImageUrl());
 

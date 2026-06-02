@@ -2,6 +2,7 @@ package br.com.hitbox.infra.entity.kanban;
 
 import br.com.hitbox.infra.entity.ItemProductEntity;
 import br.com.hitbox.infra.entity.ServiceOrderEntity;
+import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,72 +34,36 @@ public class KanbanCardEntity {
     @Column(name = "kanban_card_id")
     private Long id;
 
-    /**
-     * Produto da OS
-     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_product_id")
     private ItemProductEntity item;
 
-    /**
-     * Ordem de serviço principal
-     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_order_id")
     private ServiceOrderEntity order;
 
-    /**
-     * Coluna atual do Kanban
-     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kanban_column_id")
     private KanbanColumnEntity kanbanColumn;
 
-    /**
-     * Ordem visual do card dentro da coluna
-     */
     private Integer cardOrder;
 
-    /**
-     * Progresso manual
-     */
     @Column(precision = 5, scale = 2)
     private BigDecimal productionProgress;
 
-    /**
-     * Tempo previsto em minutos
-     */
-    private Long estimatedMinutes;
+    private BigDecimal estimatedMinutes;
 
-    /**
-     * Tempo real gasto
-     */
     private Long actualMinutes;
 
-    /**
-     * Início produção
-     */
     private LocalDateTime startDatetime;
 
-    /**
-     * Finalização produção
-     */
     private LocalDateTime finishDatetime;
 
-    /**
-     * Card bloqueado?
-     */
     private Boolean blocked;
 
-    /**
-     * Motivo do bloqueio
-     */
     @Column(length = 1000)
     private String blockedReason;
 
-    /**
-     * Observações operacionais
-     */
     @Column(columnDefinition = "TEXT")
     private String notes;
 
@@ -107,10 +73,19 @@ public class KanbanCardEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private Long productionQuantity;
+    private BigDecimal productionQuantity;
 
     private Long completedQuantity;
 
     private Long failedQuantity;
+
+    private BigDecimal quantity;
+
+    @Enumerated(EnumType.STRING)
+    private ServiceOrderStatus statusCard;
+
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<KanbanCardMovementEntity> movements;
+
 
 }

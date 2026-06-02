@@ -1,5 +1,6 @@
 package br.com.hitbox.infra.entity;
 
+import br.com.hitbox.core.domain.PricingRule;
 import br.com.hitbox.core.domain.ProductMaterial;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,6 +27,10 @@ public class ProductEntity {
     )
     @Column(name = "product_id")
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "pricing_rule_id")
+    private PricingRuleEntity pricingRule;
 
     private String name;
 

@@ -30,4 +30,6 @@ public interface ServiceOrderGateway {
     );
 
     boolean existsById(Long id);
+
+    void updateStatus(Long serviceOrderId, ServiceOrderStatus status);
 }

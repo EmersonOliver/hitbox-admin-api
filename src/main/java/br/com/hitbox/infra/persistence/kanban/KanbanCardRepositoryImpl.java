@@ -6,6 +6,7 @@ import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.jpa.kanban.SpringDataKanbanCardRepository;
 import br.com.hitbox.infra.mapper.kanban.KanbanCardEntityMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class KanbanCardRepositoryImpl implements KanbanCardGateway {
 
     private final SpringDataKanbanCardRepository jpaRepository;
@@ -49,5 +51,10 @@ public class KanbanCardRepositoryImpl implements KanbanCardGateway {
         var entity = mapper.toEntity(domain);
 
         return mapper.toDomain(jpaRepository.save(entity));
+    }
+
+    @Override
+    public List<KanbanCard> findByServiceOrderId(Long serviceOrderId) {
+        return jpaRepository.findByServiceOrderId(serviceOrderId).stream().map(mapper::toDomain).toList();
     }
 }

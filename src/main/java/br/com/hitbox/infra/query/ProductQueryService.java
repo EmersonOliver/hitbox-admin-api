@@ -28,4 +28,8 @@ public class ProductQueryService {
     public List<Product> findAllProducts() {
         return jpaRepository.findAll().stream().map(mapper::toDomain).toList();
     }
+
+    public Long countAll() {
+        return jpaRepository.count();
+    }
 }
