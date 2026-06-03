@@ -1,9 +1,12 @@
 package br.com.hitbox.infra.entity;
 
+import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -11,9 +14,14 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "pricing_rule")
+@Table(name = "pricing_rule", indexes =
+@Index(name = "idx_pricing_rule_company", columnList = "company_id,name"))
 @SequenceGenerator(name = "sq_pricing_rule_id", sequenceName = "seq_pricing_rule_id", allocationSize = 1)
-public class PricingRuleEntity {
+@Filter(
+        name = "tenantFilter",
+        condition = "company_id = :companyId"
+)
+public class PricingRuleEntity extends TenantEntity {
 
     @Id
     @Column(name = "pricing_rule_id")

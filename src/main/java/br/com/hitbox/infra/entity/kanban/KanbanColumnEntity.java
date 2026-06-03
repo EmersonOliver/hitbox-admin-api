@@ -1,11 +1,14 @@
 package br.com.hitbox.infra.entity.kanban;
 
+import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,13 +16,22 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "kanban_column")
+@Table(name = "kanban_column", indexes = {
+        @Index(
+                name = "idx_kanban_column_company",
+                columnList = "company_id,column_order"
+        )
+})
 @SequenceGenerator(
         name = "sq_kanban_column_id",
         sequenceName = "seq_kanban_column_id",
         allocationSize = 1
 )
-public class KanbanColumnEntity {
+@Filter(
+        name = "tenantFilter",
+        condition = "company_id = :companyId"
+)
+public class KanbanColumnEntity extends TenantEntity {
 
     @Id
     @Column(name = "kanban_column_id")
@@ -62,4 +74,5 @@ public class KanbanColumnEntity {
     private Boolean initialColumn;
 
     private Boolean blockedColumn;
+
 }

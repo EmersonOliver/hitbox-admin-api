@@ -1,8 +1,10 @@
 package br.com.hitbox.infra.entity;
 
+import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import br.com.hitbox.infra.enums.ConsumptionType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
 
 import java.math.BigDecimal;
 
@@ -12,9 +14,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "product_material")
+@Table(name = "product_material", indexes = @Index(
+        name = "idx_product_materials_company", columnList = "company_id,inventario_id,product_id"
+))
 @SequenceGenerator(name = "sq_product_material_id", sequenceName = "seq_product_material_id", allocationSize = 1)
-public class ProductMaterialsEntity {
+@Filter(
+        name = "tenantFilter",
+        condition = "company_id = :companyId"
+)
+public class ProductMaterialsEntity extends TenantEntity {
 
     @Id
     @GeneratedValue(

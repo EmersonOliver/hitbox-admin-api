@@ -2,15 +2,18 @@ package br.com.hitbox.infra.entity.kanban;
 
 import br.com.hitbox.infra.entity.ItemProductEntity;
 import br.com.hitbox.infra.entity.ServiceOrderEntity;
+import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,13 +21,19 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "kanban_card")
+@Table(name = "kanban_card", indexes = @Index(
+        name = "idx_kanban_card_company", columnList = "company_id,item_product_id,service_order_id,kanban_column_id"
+))
 @SequenceGenerator(
         name = "sq_kanban_card_id",
         sequenceName = "seq_kanban_card_id",
         allocationSize = 1
 )
-public class KanbanCardEntity {
+@Filter(
+        name = "tenantFilter",
+        condition = "company_id = :companyId"
+)
+public class KanbanCardEntity extends TenantEntity {
 
     @Id
     @GeneratedValue(
@@ -86,6 +95,5 @@ public class KanbanCardEntity {
 
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<KanbanCardMovementEntity> movements;
-
 
 }

@@ -1,8 +1,10 @@
 package br.com.hitbox.infra.entity;
 
+import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import br.com.hitbox.infra.enums.TipoCategoria;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
 
 @Getter
 @Setter
@@ -10,18 +12,24 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "categoria", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_categoria_nome", columnNames = "nome")
-})
 @SequenceGenerator(name = "sq_categoria_id", sequenceName = "seq_categoria_id", allocationSize = 1)
-public class CategoriaEntity {
+@Table(name = "categoria", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_categoria_nome", columnNames = {"company_id","nome"}),
+}, indexes = {
+        @Index(name = "idx_categoria_company", columnList = "company_id,nome")
+})
+@Filter(
+        name = "tenantFilter",
+        condition = "company_id = :companyId"
+)
+public class CategoriaEntity extends TenantEntity {
 
     @Id
     @Column(name = "categoria_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_categoria_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,length = 120)
     private String nome;
 
     @Enumerated(EnumType.STRING)
@@ -30,5 +38,6 @@ public class CategoriaEntity {
     private String descricao;
 
     private Boolean ativo;
+
 
 }

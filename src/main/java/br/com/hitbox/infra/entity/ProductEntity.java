@@ -2,12 +2,15 @@ package br.com.hitbox.infra.entity;
 
 import br.com.hitbox.core.domain.PricingRule;
 import br.com.hitbox.core.domain.ProductMaterial;
+import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,10 +18,15 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "product")
+@Table(name = "product", indexes = @Index(
+        name = "idx_product_name_company", columnList = "company_id,name,pricing_rule_id"
+))
 @SequenceGenerator(name = "sq_product_id", sequenceName = "seq_product_id", allocationSize = 1)
-public class ProductEntity {
-
+@Filter(
+        name = "tenantFilter",
+        condition = "company_id = :companyId"
+)
+public class ProductEntity extends TenantEntity {
 
     @Id
     @GeneratedValue(
@@ -70,4 +78,5 @@ public class ProductEntity {
             orphanRemoval = true
     )
     private List<ProductMaterialsEntity> materials;
+
 }

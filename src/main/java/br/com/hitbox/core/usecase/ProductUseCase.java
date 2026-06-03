@@ -52,7 +52,7 @@ public class ProductUseCase {
         validarImagem(image, domain);
         calculateCurrentCost(domain);
         validateRulePrice(domain);
-        return productGateway.editar(productId, domain);
+            return productGateway.editar(productId, domain);
     }
 
     private void uploadImagem(Product product, MultipartFile image) {

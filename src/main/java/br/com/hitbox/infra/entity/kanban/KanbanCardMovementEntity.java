@@ -1,8 +1,10 @@
 package br.com.hitbox.infra.entity.kanban;
 
 
+import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
 
 import java.time.LocalDateTime;
 
@@ -12,13 +14,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "kanban_card_movement")
+@Table(name = "kanban_card_movement", indexes = @Index(
+        name = "idx_kanban_card_movement_company",
+        columnList = "company_id, kanban_card_id, from_column_id,to_column_id"
+))
 @SequenceGenerator(
         name = "sq_kanban_card_movement_id",
         sequenceName = "seq_kanban_card_movement_id",
         allocationSize = 1
 )
-public class KanbanCardMovementEntity {
+@Filter(
+        name = "tenantFilter",
+        condition = "company_id = :companyId"
+)
+public class KanbanCardMovementEntity extends TenantEntity {
 
     @Id
     @Column(name = "kanban_card_movement_id")

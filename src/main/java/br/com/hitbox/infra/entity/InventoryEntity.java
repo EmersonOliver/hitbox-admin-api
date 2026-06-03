@@ -1,14 +1,17 @@
 package br.com.hitbox.infra.entity;
 
 import br.com.hitbox.core.domain.Categoria;
+import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import br.com.hitbox.infra.enums.InventoryUnit;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.Formula;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,10 +20,14 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "inventario", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_inventario_name", columnNames = "name")
-})
+        @UniqueConstraint(name = "uk_inventario_name", columnNames = {"company_id","name"})
+}, indexes = @Index(name = "idx_inventario_name_company", columnList = "company_id,name"))
 @SequenceGenerator(name = "sq_inventario_id", sequenceName = "seq_inventario_id", allocationSize = 1)
-public class InventoryEntity {
+@Filter(
+        name = "tenantFilter",
+        condition = "company_id = :companyId"
+)
+public class InventoryEntity extends TenantEntity {
 
     @Id
     @Column(name = "inventario_id")
@@ -108,5 +115,4 @@ public class InventoryEntity {
                 END
             """)
     private Double stockLevel;
-
 }

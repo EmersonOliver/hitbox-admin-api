@@ -1,21 +1,29 @@
 package br.com.hitbox.infra.entity;
 
+import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import br.com.hitbox.infra.enums.StockMovementType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Filter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "stock_movement")
+@Table(name = "stock_movement", indexes = @Index(
+        name = "idx_stock_movement_company", columnList = "company_id,inventario_id"
+))
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @SequenceGenerator(name = "sq_stock_movement_id", sequenceName = "seq_stock_movement_id", allocationSize = 1)
-public class StockMovementEntity {
+@Filter(
+        name = "tenantFilter",
+        condition = "company_id = :companyId"
+)
+public class StockMovementEntity extends TenantEntity {
     @Id
     @Column(name = "movement_stock_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_stock_movement_id")
