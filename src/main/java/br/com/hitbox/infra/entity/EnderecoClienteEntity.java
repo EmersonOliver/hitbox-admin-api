@@ -4,13 +4,14 @@ import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import br.com.hitbox.infra.enums.TipoEnderecoCliente;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Filter;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "endereco_cliente", indexes = @Index(name = "idx_cliente_endereco_company", columnList = "company_id, cliente_id"))
 @SequenceGenerator(name = "sq_endereco_cliente_id", sequenceName = "seq_endereco_cliente_id", allocationSize = 1)

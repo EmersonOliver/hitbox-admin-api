@@ -5,6 +5,7 @@ import br.com.hitbox.core.domain.ProductMaterial;
 import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Filter;
 
 import java.math.BigDecimal;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "product", indexes = @Index(
         name = "idx_product_name_company", columnList = "company_id,name,pricing_rule_id"

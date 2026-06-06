@@ -3,6 +3,7 @@ package br.com.hitbox.core.domain.kanban;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -22,4 +23,5 @@ public class KanbanCardMovement {
     private Long toColumnId;
 
     private LocalDateTime movedAt;
+    private UUID companyId;
 }

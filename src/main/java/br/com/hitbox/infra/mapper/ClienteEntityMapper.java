@@ -17,6 +17,7 @@ public class ClienteEntityMapper {
                 .email(domain.getEmail())
                 .documento(domain.getDocumento())
                 .telefone(domain.getTelefone())
+                .companyId(domain.getCompanyId())
                 .build();
         enderecoMapper.setCliente(entity);
 
@@ -34,6 +35,7 @@ public class ClienteEntityMapper {
                 .nome(entity.getNome())
                 .telefone(entity.getTelefone())
                 .documento(entity.getDocumento())
+                .companyId(entity.getCompanyId())
                 .build();
         entity.getEnderecos().forEach(item ->
                 domain.addEndereco(enderecoMapper.toDomain(item)));

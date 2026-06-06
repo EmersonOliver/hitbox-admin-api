@@ -29,6 +29,7 @@ public class InventarioEntityMapper {
                 .imageUrl(domain.getImageUrl())
                 .active(domain.getActive())
                 .unitCost(domain.getUnitCost())
+                .companyId(domain.getCompanyId())
                 .build();
     }
 
@@ -36,7 +37,7 @@ public class InventarioEntityMapper {
         if (entity == null) {
             return null;
         }
-        var inventory  = Inventory.builder()
+        var inventory = Inventory.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .categoriaId(entity.getCategoria() != null
@@ -54,15 +55,17 @@ public class InventarioEntityMapper {
                 .location(entity.getLocation())
                 .imageUrl(entity.getImageUrl())
                 .active(entity.getActive())
+                .companyId(entity.getCompanyId())
                 .build();
         StockMovementEntityMapper stockMapper = new StockMovementEntityMapper();
         var movementsEntity = entity.getMovements();
 
-        movementsEntity.forEach(item-> {
+        movementsEntity.forEach(item -> {
             inventory.getMovements().add(stockMapper.toDomain(item));
         });
         return inventory;
     }
+
     public static Inventory toDomainPage(InventoryEntity entity) {
         if (entity == null) {
             return null;
@@ -85,6 +88,7 @@ public class InventarioEntityMapper {
                 .location(entity.getLocation())
                 .imageUrl(entity.getImageUrl())
                 .active(entity.getActive())
+                .companyId(entity.getCompanyId())
                 .build();
         StockMovementEntityMapper stockMapper = new StockMovementEntityMapper();
         var movementsDomain = entity.getMovements().stream().map(stockMapper::toDomain).toList();
@@ -99,15 +103,16 @@ public class InventarioEntityMapper {
         }
         entity.setName(domain.getName());
         entity.setCategoria(CategoriaEntity.builder()
-                        .id(domain.getCategoriaId())
-                        .build());
+                .id(domain.getCategoriaId())
+                .build());
         entity.setUnit(domain.getUnit());
         entity.setMinimumStock(domain.getMinimumStock());
         entity.setSupplier(domain.getSupplier());
         entity.setLocation(domain.getLocation());
         entity.setImageUrl(domain.getImageUrl());
         entity.setActive(domain.getActive());
-        if(!domain.getMovements().isEmpty()){
+        entity.setCompanyId(domain.getCompanyId());
+        if (!domain.getMovements().isEmpty()) {
             entity.setQuantity(domain.getQuantity());
             entity.setUnitCost(domain.getUnitCost());
             entity.setCost(domain.getCost());

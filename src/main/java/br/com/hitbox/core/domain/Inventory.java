@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -23,7 +24,7 @@ public class Inventory {
     private Long categoriaId;
 
     private Categoria categoria;
-
+    private UUID companyId;
     @Builder.Default
     private BigDecimal quantity =
             BigDecimal.ZERO;

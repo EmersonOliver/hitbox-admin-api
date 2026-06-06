@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,4 +22,5 @@ public class PricingRule {
     private BigDecimal commercialCost;
     private BigDecimal minimumPrice;
     private Boolean active;
+    private UUID companyId;
 }

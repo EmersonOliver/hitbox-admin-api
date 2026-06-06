@@ -27,6 +27,7 @@ public class KanbanCardEntityMapper {
                                   .build()
                                 : null
                 )
+                .companyId(domain.getCompanyId())
                 .order(
                         domain.getServiceOrderId() != null
                                 ? ServiceOrderEntity.builder()
@@ -41,6 +42,7 @@ public class KanbanCardEntityMapper {
                         domain.getKanbanColumnId() != null
                                 ? KanbanColumnEntity.builder()
                                   .id(domain.getKanbanColumnId())
+                                  .companyId(domain.getCompanyId())
                                   .build()
                                 : null
                 )
@@ -98,6 +100,7 @@ public class KanbanCardEntityMapper {
                 .notes(entity.getNotes())
                 .quantity(entity.getItem().getQuantity())
                 .clientName(entity.getOrder().getCliente().getNome())
+                .companyId(entity.getCompanyId())
                 .movements(entity.getMovements().stream().map(kanbanCardMovementEntityMapper::toDomain).toList())
                 .build();
     }

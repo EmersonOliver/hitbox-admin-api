@@ -11,6 +11,7 @@ public class CategoriaEntityMapper {
                 .nome(domain.getNome())
                 .descricao(domain.getDescricao())
                 .ativo(domain.getAtivo())
+                .companyId(domain.getCompanyId())
                 .build();
     }
 
@@ -21,6 +22,7 @@ public class CategoriaEntityMapper {
                 .tipo(entity.getTipo())
                 .descricao(entity.getDescricao())
                 .ativo(entity.getAtivo())
+                .companyId(entity.getCompanyId())
                 .build();
     }
 }

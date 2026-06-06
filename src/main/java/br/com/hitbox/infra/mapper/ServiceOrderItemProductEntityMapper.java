@@ -29,6 +29,7 @@ public class ServiceOrderItemProductEntityMapper {
                 .salePriceUnit(domain.getSalePriceUnit())
                 .totalSalePrice(domain.getTotalSalePrice())
                 .estimatedMinutes(domain.getEstimatedMinutes())
+                .companyId(domain.getCompanyId())
                 .build();
     }
 
@@ -56,6 +57,7 @@ public class ServiceOrderItemProductEntityMapper {
                                   .productId(entity.getProduct().getId())
                                   .name(entity.getProduct().getName())
                                   .imageUrl(entity.getProduct().getImageUrl())
+                                  .companyId(entity.getCompanyId())
                                   .build()
                                 : null
                 )
@@ -65,6 +67,7 @@ public class ServiceOrderItemProductEntityMapper {
                 .salePriceUnit(entity.getSalePriceUnit())
                 .totalSalePrice(entity.getTotalSalePrice())
                 .estimatedMinutes(entity.getEstimatedMinutes())
+                .companyId(entity.getCompanyId())
                 .build();
     }
 }

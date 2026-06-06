@@ -21,6 +21,7 @@ public class KanbanColumnEntityMapper {
                 .columnColor(domain.getColumnColor())
                 .columnOrder(domain.getColumnOrder())
                 .typeColumn(domain.getTypeColumn())
+                .companyId(domain.getCompanyId())
                 .build();
     }
 
@@ -59,7 +60,7 @@ public class KanbanColumnEntityMapper {
                                         .build()
                         ).toList()
                 )
-
+                .companyId(entity.getCompanyId())
                 .build();
     }
 }

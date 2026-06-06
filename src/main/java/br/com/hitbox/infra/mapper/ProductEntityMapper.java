@@ -67,7 +67,7 @@ public class ProductEntityMapper {
                                 entity.getMaterials()
                         )
                 )
-
+                .companyId(entity.getCompanyId())
                 .build();
     }
 
@@ -112,6 +112,7 @@ public class ProductEntityMapper {
                                 domain.getPreviousCalculatedAt()
                         )
                         .imageUrl(domain.getImageUrl())
+                        .companyId(domain.getCompanyId())
                         .build();
 
         entity.setMaterials(
@@ -191,6 +192,7 @@ public class ProductEntityMapper {
                                 domain.getInventory()
                                         .getId()
                         )
+                        .companyId(domain.getCompanyId())
                         .build();
 
         return ProductMaterialsEntity.builder()
@@ -223,11 +225,13 @@ public class ProductEntityMapper {
         entity.setCategoria(
                 CategoriaEntity.builder()
                         .id(domain.getCategoriaId())
+                        .companyId(domain.getCompanyId())
                         .build()
         );
         entity.setPricingRule(PricingRuleEntity.builder()
-                        .id(domain.getPrincingRuleId())
-                        .minimumPrice(domain.getCurrentSalePrice())
+                .id(domain.getPrincingRuleId())
+                .minimumPrice(domain.getCurrentSalePrice())
+                .companyId(domain.getCompanyId())
                 .build());
 
         entity.setImageUrl(domain.getImageUrl());
@@ -244,6 +248,7 @@ public class ProductEntityMapper {
         entity.setWidth(domain.getWidth());
         entity.setHeight(domain.getHeight());
         entity.setDepth(domain.getDepth());
+        entity.setCompanyId(domain.getCompanyId());
         entity.setEstimatedMinutes(domain.getEstimatedMinutes());
         if (domain.getMaterials() == null) {
             entity.getMaterials().clear();
@@ -262,6 +267,9 @@ public class ProductEntityMapper {
                                 domainMat.getProductMaterialId() != null &&
                                         domainMat.getProductMaterialId()
                                                 .equals(entityMat.getId())
+                                        &&
+                                        domainMat.getCompanyId().equals(entityMat.getCompanyId())
+
                         )
         );
 
@@ -278,6 +286,8 @@ public class ProductEntityMapper {
                                     mat.getId() != null &&
                                             mat.getId()
                                                     .equals(domainMat.getProductMaterialId())
+                                            &&
+                                            mat.getCompanyId().equals(domainMat.getCompanyId())
                             )
                             .findFirst()
                             .orElse(null);
@@ -290,6 +300,7 @@ public class ProductEntityMapper {
                 entityMat =
                         ProductMaterialsEntity.builder()
                                 .product(entity)
+                                .companyId(entity.getCompanyId())
                                 .build();
 
                 entity.getMaterials()
@@ -314,6 +325,7 @@ public class ProductEntityMapper {
             entityMat.setInventory(
                     InventoryEntity.builder()
                             .id(domainMat.getInventory().getId())
+                            .companyId(domainMat.getCompanyId())
                             .build()
             );
         }

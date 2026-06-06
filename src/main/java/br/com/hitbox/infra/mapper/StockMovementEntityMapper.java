@@ -86,6 +86,7 @@ public class StockMovementEntityMapper {
                 .movementDate(
                         entity.getMovementDate()
                 )
+                .companyId(entity.getCompanyId())
                 .build();
     }
 
