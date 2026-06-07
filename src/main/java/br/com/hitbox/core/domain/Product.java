@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -33,7 +34,7 @@ public class Product {
     private LocalDateTime calculatedAt;
     private LocalDateTime previousCalculatedAt;
     private BigDecimal estimatedMinutes;
-
+    private UUID companyId;
     @Builder.Default
     private List<ProductMaterial> materials =
             new ArrayList<>();

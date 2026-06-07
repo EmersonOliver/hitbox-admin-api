@@ -21,4 +21,5 @@ public class EnderecoCliente {
     private String cidade;
     private String complemento;
     private String observacoes;
+    private UUID companyId;
 }

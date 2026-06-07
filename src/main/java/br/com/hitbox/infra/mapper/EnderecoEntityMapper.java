@@ -21,6 +21,7 @@ public class EnderecoEntityMapper {
                 .numero(domain.getNumero())
                 .observacoes(domain.getObservacoes())
                 .cliente(clienteEntity)
+                .companyId(domain.getCompanyId())
                 .build();
     }
 
@@ -36,6 +37,7 @@ public class EnderecoEntityMapper {
                 .complemento(entity.getComplemento())
                 .bairro(entity.getBairro())
                 .tipo(entity.getTipo())
+                .companyId(entity.getCompanyId())
                 .build();
     }
 

@@ -31,6 +31,7 @@ public class ServiceOrderEntityMapper {
                                           .build()
                                         : null
                         )
+                        .companyId(domain.getCompanyId())
                         .status(domain.getStatus())
                         .totalSalePrice(domain.getTotalSalePrice())
                         .totalProfit(domain.getTotalProfit())
@@ -51,6 +52,7 @@ public class ServiceOrderEntityMapper {
                                         itemMapper.toEntity(item);
 
                                 itemEntity.setServiceOrder(entity);
+                                itemEntity.setCompanyId(entity.getCompanyId());
 
                                 return itemEntity;
                             })

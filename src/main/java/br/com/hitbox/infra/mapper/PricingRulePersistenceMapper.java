@@ -23,6 +23,7 @@ public class PricingRulePersistenceMapper {
                 .marketplaceFee(entity.getMarketplaceFee())
                 .cardFee(entity.getCardFee())
                 .active(entity.getActive())
+                .companyId(entity.getCompanyId())
                 .build();
     }
 
@@ -38,6 +39,7 @@ public class PricingRulePersistenceMapper {
                 .marketplaceFee(domain.getMarketplaceFee())
                 .cardFee(domain.getCardFee())
                 .active(domain.getActive())
+                .companyId(domain.getCompanyId())
                 .build();
     }
 }

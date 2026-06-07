@@ -53,6 +53,7 @@ public class StockMovementUseCase {
                         )
                         .observation(observation)
                         .movementDate(LocalDateTime.now())
+                        .companyId(inventory.getCompanyId())
                         .build();
 
         inventory.addMovement(movement);

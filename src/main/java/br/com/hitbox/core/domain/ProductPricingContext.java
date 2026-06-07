@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Builder
 @Getter
@@ -48,4 +49,5 @@ public class ProductPricingContext {
      * extras
      */
     private List<ProductExtraCost> extraCosts;
+    private UUID companyId;
 }

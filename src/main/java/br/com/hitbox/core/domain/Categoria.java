@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,5 +19,7 @@ public class Categoria {
     private TipoCategoria tipo;
     private String descricao;
     private Boolean ativo;
+    private UUID companyId;
+
 
 }

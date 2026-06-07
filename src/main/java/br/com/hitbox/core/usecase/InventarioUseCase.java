@@ -52,11 +52,17 @@ public class InventarioUseCase {
     }
 
     private void validarImagem(MultipartFile image, Inventory inventory) {
-        if (inventory.getImageUrl() != null) {
-            storageGateway.deleteImagem(inventory.getImageUrl());
+        if (image != null && !image.isEmpty()) {
+            if (inventory.getImageUrl() != null) {
+                storageGateway.deleteImagem(
+                        inventory.getImageUrl()
+                );
+            }
+            uploadImagem(
+                    inventory,
+                    image
+            );
         }
-        uploadImagem(inventory, image);
-
     }
 
     private void validarDuplicidade(Inventory inventory) {

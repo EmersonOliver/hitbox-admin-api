@@ -1,7 +1,10 @@
 package br.com.hitbox.infra.entity;
 
+import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Filter;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,10 +13,14 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
-@Table(name = "cliente")
-public class ClienteEntity {
+@Table(name = "cliente", indexes = @Index(name = "idx_cliente_company", columnList = "company_id"))
+@Filter(
+        name = "tenantFilter",
+        condition = "company_id = :companyId"
+)
+public class ClienteEntity extends TenantEntity {
 
     @Id
     @Column(name = "cliente_id")

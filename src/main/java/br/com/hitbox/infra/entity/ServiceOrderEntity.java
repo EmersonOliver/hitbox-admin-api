@@ -1,20 +1,24 @@
 package br.com.hitbox.infra.entity;
 
+import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Filter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "service_order")
 @SequenceGenerator(
@@ -22,7 +26,11 @@ import java.util.List;
         sequenceName = "seq_service_order_id",
         allocationSize = 1
 )
-public class ServiceOrderEntity {
+@Filter(
+        name = "tenantFilter",
+        condition = "company_id = :companyId"
+)
+public class ServiceOrderEntity extends TenantEntity {
 
     @Id
     @Column(name = "service_order_id")

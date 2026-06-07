@@ -3,6 +3,7 @@ package br.com.hitbox.core.domain;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -30,7 +31,7 @@ public class ItemProduct {
     private BigDecimal totalSalePrice;
 
     private BigDecimal estimatedMinutes;
-
+    private UUID companyId;
     public void recalculateTotals() {
 
         if (quantity == null) {

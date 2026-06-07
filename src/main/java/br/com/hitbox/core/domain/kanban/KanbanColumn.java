@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -27,6 +28,7 @@ public class KanbanColumn {
 
     private Boolean blockedColumn;
     private ServiceOrderStatus typeColumn;
+    private UUID companyId;
 
     @Builder.Default
     private List<KanbanCard> cards =

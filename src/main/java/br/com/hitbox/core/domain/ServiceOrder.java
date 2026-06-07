@@ -2,6 +2,7 @@ package br.com.hitbox.core.domain;
 
 import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -41,6 +42,7 @@ public class ServiceOrder {
     private LocalDateTime finishedAt;
 
     private String observations;
+    private UUID companyId;
 
     /*
      * =========================

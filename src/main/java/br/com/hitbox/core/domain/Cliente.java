@@ -18,6 +18,7 @@ public class Cliente {
     private String documento;
     private String email;
     private String telefone;
+    private UUID companyId;
 
     @Builder.Default
     private List<EnderecoCliente> enderecos = new ArrayList<>();
