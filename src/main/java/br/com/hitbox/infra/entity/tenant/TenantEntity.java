@@ -1,7 +1,9 @@
 package br.com.hitbox.infra.entity.tenant;
 
+import br.com.hitbox.infra.config.filter.TenantContext;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,4 +32,12 @@ public abstract class TenantEntity {
     @Column(name = "company_id", nullable = false,
             updatable = false)
     private UUID companyId;
+
+    @PrePersist
+    public void prePersist() {
+        if (companyId == null) {
+            companyId =
+                    TenantContext.getCompanyId();
+        }
+    }
 }

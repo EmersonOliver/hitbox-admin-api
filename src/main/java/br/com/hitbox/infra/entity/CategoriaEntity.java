@@ -1,11 +1,16 @@
 package br.com.hitbox.infra.entity;
 
+import br.com.hitbox.infra.config.filter.TenantContext;
 import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import br.com.hitbox.infra.enums.TipoCategoria;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,6 +24,13 @@ import org.hibernate.annotations.Filter;
 }, indexes = {
         @Index(name = "idx_categoria_company", columnList = "company_id,nome")
 })
+@FilterDef(
+        name = "tenantFilter",
+        parameters = @ParamDef(
+                name = "companyId",
+                type = UUID.class
+        )
+)
 @Filter(
         name = "tenantFilter",
         condition = "company_id = :companyId"

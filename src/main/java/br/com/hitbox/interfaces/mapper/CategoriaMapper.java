@@ -35,6 +35,7 @@ public class CategoriaMapper {
                 .tipo(req.tipo())
                 .descricao(req.descricao())
                 .ativo(req.ativo())
+                .companyId(req.companyId())
                 .build();
     }
 }
