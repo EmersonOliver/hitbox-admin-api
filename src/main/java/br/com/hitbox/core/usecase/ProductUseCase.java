@@ -60,7 +60,7 @@ public class ProductUseCase {
             return;
         }
         String imageUrl =
-                storageGateway.salvarImagem(image, "products"
+                storageGateway.salvarImagem(image, "product"
                 );
         product.addImageUrl(imageUrl);
     }

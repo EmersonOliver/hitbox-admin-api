@@ -109,7 +109,7 @@ public class InventarioEntityMapper {
         entity.setMinimumStock(domain.getMinimumStock());
         entity.setSupplier(domain.getSupplier());
         entity.setLocation(domain.getLocation());
-        entity.setImageUrl(domain.getImageUrl());
+        entity.setImageUrl(domain.getImageUrl() == null ? entity.getImageUrl() : domain.getImageUrl());
         entity.setActive(domain.getActive());
         entity.setCompanyId(domain.getCompanyId());
         if (!domain.getMovements().isEmpty()) {

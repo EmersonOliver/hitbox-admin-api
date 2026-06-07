@@ -4,6 +4,7 @@ import br.com.hitbox.infra.entity.tenant.TenantEntity;
 import br.com.hitbox.infra.enums.StockMovementType;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Filter;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 ))
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @SequenceGenerator(name = "sq_stock_movement_id", sequenceName = "seq_stock_movement_id", allocationSize = 1)

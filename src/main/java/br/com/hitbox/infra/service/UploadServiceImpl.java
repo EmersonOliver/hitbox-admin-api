@@ -1,6 +1,7 @@
 package br.com.hitbox.infra.service;
 
 import br.com.hitbox.core.gateway.StorageGateway;
+import br.com.hitbox.infra.config.filter.TenantContext;
 import br.com.hitbox.infra.props.UploadProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,9 @@ public class UploadServiceImpl implements StorageGateway {
     @Override
     public String salvarImagem(MultipartFile file, String folder) {
         try {
+            UUID companyId =
+                    TenantContext.getCompanyId();
+
             String extension =
                     Objects.requireNonNull(
                             file.getOriginalFilename()
@@ -31,27 +35,35 @@ public class UploadServiceImpl implements StorageGateway {
                             file.getOriginalFilename()
                                     .lastIndexOf(".")
                     );
+
             String filename =
                     UUID.randomUUID() + extension;
+
+            String fileKey =
+                    "companies/"
+                            + companyId
+                            + "/"
+                            + folder
+                            + "/"
+                            + filename;
+
             Path uploadPath =
                     Paths.get(
                             properties.getDir(),
-                            folder
+                            fileKey
                     );
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-            Path filePath =
-                    uploadPath.resolve(filename);
+
+            Files.createDirectories(
+                    uploadPath.getParent()
+            );
+
             Files.copy(
                     file.getInputStream(),
-                    filePath,
+                    uploadPath,
                     StandardCopyOption.REPLACE_EXISTING
             );
-            return "/uploads/"
-                    + folder
-                    + "/"
-                    + filename;
+
+            return fileKey;
 
         } catch (Exception e) {
 
@@ -63,14 +75,43 @@ public class UploadServiceImpl implements StorageGateway {
     }
 
     @Override
-    public void deleteImagem(String imageUrl) {
+    public void deleteImagem(String fileKey) {
         try {
 
-            Files.deleteIfExists(Path.of(imageUrl));
+            Path path =
+                    Paths.get(
+                            properties.getDir(),
+                            fileKey
+                    );
+
+            Files.deleteIfExists(path);
 
         } catch (Exception ex) {
-            log.warn("Erro ao remover imagem",
+
+            log.warn(
+                    "Erro ao remover imagem",
                     ex
+            );
+        }
+    }
+
+    @Override
+    public byte[] recuperarImagem(String fileKey) {
+        try {
+
+            Path path =
+                    Paths.get(
+                            properties.getDir(),
+                            fileKey
+                    );
+
+            return Files.readAllBytes(path);
+
+        } catch (Exception e) {
+
+            throw new RuntimeException(
+                    "Erro ao recuperar imagem",
+                    e
             );
         }
     }

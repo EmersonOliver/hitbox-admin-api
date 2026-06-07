@@ -9,5 +9,7 @@ public interface StorageGateway {
             String folder
     );
 
-    void deleteImagem(String imageUrl);
+    void deleteImagem(String fileKey);
+
+    byte[] recuperarImagem(String imageUrl);
 }
