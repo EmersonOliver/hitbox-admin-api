@@ -24,6 +24,7 @@ public class KanbanCardMapper {
                 .blocked(req.getBlocked())
                 .blockedReason(req.getBlockedReason())
                 .notes(req.getNotes())
+                .statusCard(req.getStatus())
                 .build();
     }
 
@@ -50,6 +51,7 @@ public class KanbanCardMapper {
                 .notes(domain.getNotes())
                 .productName(domain.getProductName())
                 .clientName(domain.getClientName())
+                .status(domain.getStatusCard())
                 .build();
     }
 }

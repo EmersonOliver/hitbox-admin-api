@@ -1,5 +1,6 @@
 package br.com.hitbox.interfaces.dto.response.kanban;
 
+import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -50,5 +51,7 @@ public class KanbanCardResponse {
     private String clientName;
 
     private BigDecimal quantity;
+
+    private ServiceOrderStatus status;
 
 }

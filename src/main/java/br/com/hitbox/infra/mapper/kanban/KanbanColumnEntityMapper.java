@@ -57,6 +57,7 @@ public class KanbanColumnEntityMapper {
                                         .productName(rs.getItem().getProduct().getName())
                                         .quantity(rs.getQuantity())
                                         .notes(rs.getNotes())
+                                        .statusCard(rs.getStatusCard())
                                         .build()
                         ).toList()
                 )

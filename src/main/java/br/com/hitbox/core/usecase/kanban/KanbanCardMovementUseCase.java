@@ -6,6 +6,7 @@ import br.com.hitbox.core.domain.kanban.KanbanCardMovement;
 import br.com.hitbox.core.gateway.ServiceOrderGateway;
 import br.com.hitbox.core.gateway.kanban.KanbanCardGateway;
 import br.com.hitbox.core.gateway.kanban.KanbanCardMovementGateway;
+import br.com.hitbox.core.gateway.kanban.KanbanColumnGateway;
 import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import br.com.hitbox.infra.exception.HitboxException;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import static br.com.hitbox.infra.enums.ServiceOrderStatus.*;
 public class KanbanCardMovementUseCase {
 
     private final KanbanCardMovementGateway gateway;
+    private final KanbanColumnGateway columnGateway;
     private final ServiceOrderGateway serviceOrderGateway;
     private final ServiceOrderStatusAggregator aggregator;
     private final KanbanCardGateway cardGateway;
@@ -31,19 +33,29 @@ public class KanbanCardMovementUseCase {
     ) {
         validate(domain);
         domain.setMovedAt(LocalDateTime.now());
-        updateServiceOrderStatus(domain.getServiceOrderId());
+        updateServiceOrderStatus(domain);
+
         return gateway.create(domain);
     }
 
     private void updateServiceOrderStatus(
-            Long serviceOrderId
+            KanbanCardMovement domain
     ) {
-
+        Long serviceOrderId = domain.getServiceOrderId();
+        var toColumn = columnGateway.findById(domain.getToColumnId()).orElseThrow(() -> new HitboxException("Para coluna não encontrado!"));
+        var fromColumn = columnGateway.findById(domain.getFromColumnId()).orElseThrow(() -> new HitboxException("Para coluna não encontrado!"));
         List<KanbanCard> cards =
                 cardGateway.findByServiceOrderId(
                         serviceOrderId
                 );
 
+        cards.forEach(card -> {
+            if (card.getKanbanColumnId().equals(fromColumn.getId())) {
+                card.setStatusCard(toColumn.getTypeColumn());
+            } else if (card.getKanbanColumnId().equals(toColumn.getId())) {
+                card.setStatusCard(fromColumn.getTypeColumn());
+            }
+        });
         ServiceOrderStatus status =
                 aggregator.calculate(cards);
 

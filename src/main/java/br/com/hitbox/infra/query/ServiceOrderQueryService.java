@@ -3,10 +3,13 @@ package br.com.hitbox.infra.query;
 import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.jpa.SpringDataServiceOrderRepository;
+import br.com.hitbox.infra.jpa.projections.ProductRankingProjection;
 import br.com.hitbox.infra.mapper.ServiceOrderEntityMapper;
 import br.com.hitbox.interfaces.dto.response.order.ServiceOrderResponse;
 import br.com.hitbox.interfaces.mapper.ServiceOrderMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,5 +35,9 @@ public class ServiceOrderQueryService {
 
     public Long countAll() {
         return this.jpaRepository.count();
+    }
+
+    public  List<ProductRankingProjection> findTopProducts(Pageable pageable) {
+        return this.jpaRepository.findTopProducts(pageable);
     }
 }

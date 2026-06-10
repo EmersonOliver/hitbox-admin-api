@@ -1,5 +1,6 @@
 package br.com.hitbox.interfaces.dto.request.kanban;
 
+import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -33,5 +34,8 @@ public class KanbanCardRequest {
     private String blockedReason;
 
     private String notes;
+
+    private ServiceOrderStatus status;
+
 
 }

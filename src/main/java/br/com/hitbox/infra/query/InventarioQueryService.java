@@ -34,4 +34,8 @@ public class InventarioQueryService {
     public Long countAll() {
         return repository.count();
     }
+
+    public Page<Inventory> listTopInventory(Pageable pageable){
+        return repository.findAll(pageable).map(InventarioEntityMapper::toDomain);
+    }
 }
