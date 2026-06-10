@@ -61,6 +61,7 @@ public class KanbanCardEntityMapper {
                 .quantity(domain.getQuantity())
                 .movements(domain.getMovements().stream().map(kanbanCardMovementEntityMapper::toEntity)
                         .toList())
+                .statusCard(domain.getStatusCard())
                 .build();
     }
 
@@ -101,6 +102,7 @@ public class KanbanCardEntityMapper {
                 .quantity(entity.getItem().getQuantity())
                 .clientName(entity.getOrder().getCliente().getNome())
                 .companyId(entity.getCompanyId())
+                .statusCard(entity.getStatusCard())
                 .movements(entity.getMovements().stream().map(kanbanCardMovementEntityMapper::toDomain).toList())
                 .build();
     }

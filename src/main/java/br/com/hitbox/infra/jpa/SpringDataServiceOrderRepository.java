@@ -1,9 +1,11 @@
 package br.com.hitbox.infra.jpa;
 
-import br.com.hitbox.core.domain.ServiceOrder;
 import br.com.hitbox.infra.entity.ServiceOrderEntity;
 import br.com.hitbox.infra.enums.ServiceOrderStatus;
+import br.com.hitbox.infra.jpa.projections.ProductRankingProjection;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,5 +25,23 @@ public interface SpringDataServiceOrderRepository extends JpaRepository<ServiceO
             LocalDateTime start,
             LocalDateTime end
     );
+
+
+    @Query("""
+    select
+        i.product.id as productId,
+        i.product.name as productName,
+        i.product.imageUrl as imageUrl,
+        i.product.pricingRule.minimumPrice as price,
+        sum(i.quantity) as totalOrders
+    from ItemProductEntity i
+    group by
+        i.product.id,
+        i.product.name,
+         i.product.pricingRule.minimumPrice,
+         i.product.imageUrl
+    order by sum(i.quantity) desc
+""")
+    List<ProductRankingProjection> findTopProducts(Pageable pageable);
 
 }

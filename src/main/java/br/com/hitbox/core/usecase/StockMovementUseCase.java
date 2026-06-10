@@ -19,7 +19,7 @@ public class StockMovementUseCase {
     private final InventarioGateway inventarioGateway;
     private final StockMovementGateway movementGateway;
 
-    public void movimentar(
+    public void     movimentar(
             Long inventoryId,
             StockMovementType type,
             BigDecimal quantity,
