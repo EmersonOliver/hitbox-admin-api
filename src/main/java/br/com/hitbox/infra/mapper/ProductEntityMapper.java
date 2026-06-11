@@ -11,6 +11,7 @@ import java.util.List;
 
 @Component
 public class ProductEntityMapper {
+
     public Product toDomain(
             ProductEntity entity
     ) {
@@ -26,14 +27,15 @@ public class ProductEntityMapper {
                                 ? entity.getCategoria().getId()
                                 : null
                 )
+
                 .imageUrl(entity.getImageUrl())
                 .princingRuleId(entity.getPricingRule().getId())
                 .name(entity.getName())
                 .sku(entity.getSku())
                 .currentSalePrice(entity.getPricingRule().getMinimumPrice())
                 .description(entity.getDescription())
-                .categoriaName(entity.getCategoria().getNome())
-                .categoriaId(entity.getCategoria().getId())
+                .categoryName(entity.getCategoria().getNome())
+                .category(CategoriaEntityMapper.toDomain(entity.getCategoria()))
                 .currentCalculatedCost(
                         entity.getCurrentCalculatedCost()
                 )

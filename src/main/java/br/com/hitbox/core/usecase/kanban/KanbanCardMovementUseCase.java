@@ -1,6 +1,6 @@
 package br.com.hitbox.core.usecase.kanban;
 
-import br.com.hitbox.core.domain.aggregator.ServiceOrderStatusAggregator;
+import br.com.hitbox.core.aggregator.ServiceOrderStatusAggregator;
 import br.com.hitbox.core.domain.kanban.KanbanCard;
 import br.com.hitbox.core.domain.kanban.KanbanCardMovement;
 import br.com.hitbox.core.gateway.ServiceOrderGateway;
@@ -14,9 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static br.com.hitbox.infra.enums.ServiceOrderStatus.*;
 
 @Component
 @RequiredArgsConstructor
@@ -43,19 +40,23 @@ public class KanbanCardMovementUseCase {
     ) {
         Long serviceOrderId = domain.getServiceOrderId();
         var toColumn = columnGateway.findById(domain.getToColumnId()).orElseThrow(() -> new HitboxException("Para coluna não encontrado!"));
-        var fromColumn = columnGateway.findById(domain.getFromColumnId()).orElseThrow(() -> new HitboxException("Para coluna não encontrado!"));
         List<KanbanCard> cards =
                 cardGateway.findByServiceOrderId(
                         serviceOrderId
                 );
 
-        cards.forEach(card -> {
-            if (card.getKanbanColumnId().equals(fromColumn.getId())) {
-                card.setStatusCard(toColumn.getTypeColumn());
-            } else if (card.getKanbanColumnId().equals(toColumn.getId())) {
-                card.setStatusCard(fromColumn.getTypeColumn());
-            }
-        });
+        cards.stream()
+                .filter(card ->
+                        card.getId().equals(domain.getCardId()))
+                .findFirst()
+                .ifPresent(card -> {
+                    card.setKanbanColumnId(
+                            toColumn.getId()
+                    );
+                    card.setStatusCard(
+                            toColumn.getTypeColumn()
+                    );
+                });
         ServiceOrderStatus status =
                 aggregator.calculate(cards);
 

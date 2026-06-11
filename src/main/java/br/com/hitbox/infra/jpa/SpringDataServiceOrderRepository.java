@@ -35,6 +35,7 @@ public interface SpringDataServiceOrderRepository extends JpaRepository<ServiceO
         i.product.pricingRule.minimumPrice as price,
         sum(i.quantity) as totalOrders
     from ItemProductEntity i
+    where i.serviceOrder.status <> 'CANCELED'
     group by
         i.product.id,
         i.product.name,
