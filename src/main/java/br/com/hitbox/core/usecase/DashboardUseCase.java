@@ -7,6 +7,7 @@ import br.com.hitbox.interfaces.dashboard.dto.DashboardResponse;
 import br.com.hitbox.interfaces.dashboard.dto.ProductScore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,10 +26,14 @@ public class DashboardUseCase {
                 serviceOrderQueryService.findTopProducts(
                         PageRequest.of(0, 5)
                 );
-
-        if (ranking.isEmpty()) {
+        var topInventorys =
+                inventarioQueryService.listTopInventory(PageRequest.of(0, 5,
+                                Sort.by("quantity").ascending()))
+                        .getContent();
+        if (ranking.isEmpty() && !topInventorys.isEmpty()) {
             return DashboardResponse.builder()
                     .topProducts(List.of())
+                    .topInventorys(topInventorys)
                     .build();
         }
         long maxOrders =
@@ -61,9 +66,7 @@ public class DashboardUseCase {
                                     .build();
                         })
                         .toList();
-        var topInventorys =
-                inventarioQueryService.listTopInventory(PageRequest.of(0, 5))
-                        .getContent();
+
         return DashboardResponse.builder()
                 .topProducts(scores)
                 .topInventorys(topInventorys)

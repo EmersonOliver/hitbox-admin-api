@@ -4,6 +4,7 @@ import br.com.hitbox.interfaces.dashboard.dto.MonthlyProductionDTO;
 import br.com.hitbox.interfaces.dashboard.dto.MonthlyRevenueDTO;
 import br.com.hitbox.interfaces.dashboard.dto.ProductMetricsDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductDashboardRepository {
@@ -16,4 +17,6 @@ public interface ProductDashboardRepository {
     Integer ranking(Long productId);
 
     Long countRankedProducts();
+
+    BigDecimal countDelivered(Long productId);
 }
