@@ -49,7 +49,6 @@ public class KanbanCardRepositoryImpl implements KanbanCardGateway {
     @Override
     public KanbanCard update(KanbanCard domain) {
         var entity = mapper.toEntity(domain);
-
         return mapper.toDomain(jpaRepository.save(entity));
     }
 

@@ -3,6 +3,7 @@ package br.com.hitbox.infra.mapper.kanban;
 import br.com.hitbox.core.domain.kanban.KanbanCard;
 import br.com.hitbox.infra.entity.ClienteEntity;
 import br.com.hitbox.infra.entity.ItemProductEntity;
+import br.com.hitbox.infra.entity.ProductEntity;
 import br.com.hitbox.infra.entity.ServiceOrderEntity;
 import br.com.hitbox.infra.entity.kanban.KanbanCardEntity;
 import br.com.hitbox.infra.entity.kanban.KanbanColumnEntity;
@@ -22,10 +23,13 @@ public class KanbanCardEntityMapper {
         return KanbanCardEntity.builder()
                 .id(domain.getId())
                 .item(domain.getItemProductId() != null
-                                ? ItemProductEntity.builder()
-                                  .id(domain.getItemProductId())
-                                  .build()
-                                : null
+                        ? ItemProductEntity.builder()
+                          .id(domain.getItemProductId())
+                          .product(ProductEntity.builder()
+                                   .name(domain.getProductName())
+                                   .build())
+                          .build()
+                        : null
                 )
                 .companyId(domain.getCompanyId())
                 .order(
@@ -103,6 +107,8 @@ public class KanbanCardEntityMapper {
                 .clientName(entity.getOrder().getCliente().getNome())
                 .companyId(entity.getCompanyId())
                 .statusCard(entity.getStatusCard())
+                .productName(entity.getItem().getProduct().getName())
+                .createdAt(entity.getCreatedAt())
                 .movements(entity.getMovements().stream().map(kanbanCardMovementEntityMapper::toDomain).toList())
                 .build();
     }

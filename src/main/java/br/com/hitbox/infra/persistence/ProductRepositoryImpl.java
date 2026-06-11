@@ -53,6 +53,7 @@ public class ProductRepositoryImpl implements ProductGateway {
 
     @Override
     public Optional<Product> findById(Long productId) {
+
         return jpaRepository.findById(productId).map(mapper::toDomain);
     }
 

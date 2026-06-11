@@ -65,7 +65,7 @@ public class ProductMapper {
                 .pricingRuleId(domain.getPrincingRuleId())
                 .estimatedMinutes(domain.getEstimatedMinutes())
                 .categoriaId(domain.getCategoriaId())
-                .categoryName(domain.getCategoriaName())
+                .categoryName(domain.getCategoryName())
                 .description(domain.getDescription())
                 .currentCalculatedCost(
                         domain.getCurrentCalculatedCost()

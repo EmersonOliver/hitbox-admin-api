@@ -22,7 +22,7 @@ public class Product {
     private String name;
     private String sku;
     private String description;
-    private String categoriaName;
+    private String categoryName;
     private BigDecimal currentCalculatedCost;
     private BigDecimal currentSalePrice;
     private BigDecimal previousCalculatedCost;
@@ -35,6 +35,8 @@ public class Product {
     private LocalDateTime previousCalculatedAt;
     private BigDecimal estimatedMinutes;
     private UUID companyId;
+
+    private Categoria category;
     @Builder.Default
     private List<ProductMaterial> materials =
             new ArrayList<>();
