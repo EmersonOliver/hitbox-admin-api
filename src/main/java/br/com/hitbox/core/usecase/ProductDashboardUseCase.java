@@ -1,6 +1,8 @@
 package br.com.hitbox.core.usecase;
+
 import br.com.hitbox.core.aggregator.ProductDashboardAggregate;
 import br.com.hitbox.infra.query.ProductDashboardQueryService;
+import br.com.hitbox.infra.query.ServiceOrderQueryService;
 import br.com.hitbox.interfaces.dashboard.dto.ProductDashboardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,6 +14,8 @@ public class ProductDashboardUseCase {
     private final ProductDashboardQueryService queryService;
 
     private final ProductDashboardAggregate aggregate;
+
+
 
     public ProductDashboardResponse execute(
             Long productId
@@ -40,6 +44,7 @@ public class ProductDashboardUseCase {
                 metrics,
                 ranking,
                 popularityScore,
+                queryService.delivered(productId),
                 productionHistory,
                 revenueHistory
         );

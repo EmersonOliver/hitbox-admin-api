@@ -136,6 +136,8 @@ public class SpringDataProductDashboardRepositoryImpl   implements ProductDashbo
                 : 0;
     }
 
+
+
     @Override
     public Long countRankedProducts() {
 
@@ -144,5 +146,21 @@ public class SpringDataProductDashboardRepositoryImpl   implements ProductDashbo
         from ItemProductEntity i
         """, Long.class)
                 .getSingleResult();
+    }
+
+    @Override
+    public BigDecimal countDelivered(Long productId) {
+      return
+                em.createQuery("""
+                                select sum(i.quantity)
+                                from ItemProductEntity i
+                                
+                                where i.serviceOrder.status  = 'DELIVERED' and i.product.id = :productId
+                                
+                                """,
+                        BigDecimal.class
+                )  .setParameter("productId", productId)
+                        .getSingleResult();
+
     }
 }

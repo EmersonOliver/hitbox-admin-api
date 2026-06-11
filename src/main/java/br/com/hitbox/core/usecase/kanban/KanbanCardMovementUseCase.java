@@ -3,11 +3,15 @@ package br.com.hitbox.core.usecase.kanban;
 import br.com.hitbox.core.aggregator.ServiceOrderStatusAggregator;
 import br.com.hitbox.core.domain.kanban.KanbanCard;
 import br.com.hitbox.core.domain.kanban.KanbanCardMovement;
+import br.com.hitbox.core.gateway.InventarioGateway;
+import br.com.hitbox.core.gateway.ProductGateway;
 import br.com.hitbox.core.gateway.ServiceOrderGateway;
 import br.com.hitbox.core.gateway.kanban.KanbanCardGateway;
 import br.com.hitbox.core.gateway.kanban.KanbanCardMovementGateway;
 import br.com.hitbox.core.gateway.kanban.KanbanColumnGateway;
+import br.com.hitbox.core.usecase.StockMovementUseCase;
 import br.com.hitbox.infra.enums.ServiceOrderStatus;
+import br.com.hitbox.infra.enums.StockMovementType;
 import br.com.hitbox.infra.exception.HitboxException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,6 +28,10 @@ public class KanbanCardMovementUseCase {
     private final ServiceOrderGateway serviceOrderGateway;
     private final ServiceOrderStatusAggregator aggregator;
     private final KanbanCardGateway cardGateway;
+    private final InventarioGateway inventarioGateway;
+
+    private final StockMovementUseCase stockMovementUseCase;
+    private final ProductGateway productGateway;
 
     public KanbanCardMovement create(
             KanbanCardMovement domain
@@ -64,7 +72,46 @@ public class KanbanCardMovementUseCase {
                 serviceOrderId,
                 status
         );
+
+        movementStock(cards, status);
     }
+
+    private void movementStock(List<KanbanCard> cards, ServiceOrderStatus status) {
+//        if (status.equals(ServiceOrderStatus.DELIVERED)) {
+        for (KanbanCard c : cards) {
+
+            if (c.getStatusCard().equals(ServiceOrderStatus.DELIVERED)) {
+                var serviceOrder = serviceOrderGateway.findById(c.getServiceOrderId())
+                        .orElseThrow(() -> new HitboxException("Ordem de Serviço não encontrada!"));
+
+                var productByServiceOrder = serviceOrder.getItems().stream()
+                        .map(i ->
+                                productGateway.findById(i.getProductId()).orElseThrow(() -> new HitboxException("Produto não encontrado pelo id"))
+                        ).toList();
+
+                productByServiceOrder.forEach(item -> {
+                    var materialsInventory =
+                            item.getMaterials();
+
+                    for (var material : materialsInventory) {
+
+                        var inventory = material.getInventory();
+                        var quantity = material.getQuantity().multiply(c.getQuantity());
+                        var movementType = StockMovementType.PRODUCTION_CONSUMPTION;
+                        var cost = material.getUnitCostSnapshot();
+                        stockMovementUseCase.movimentar(
+                                inventory.getId(),
+                                movementType,
+                                quantity,
+                                cost,
+                                "Saída de produção do item " + item.getName());
+                    }
+                });
+            }
+        }
+//        }
+    }
+
 
     public KanbanCardMovement findById(
             Long movementId

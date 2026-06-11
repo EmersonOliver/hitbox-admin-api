@@ -5,6 +5,7 @@ import br.com.hitbox.core.domain.StockMovement;
 import br.com.hitbox.core.gateway.InventarioGateway;
 import br.com.hitbox.core.gateway.StockMovementGateway;
 import br.com.hitbox.infra.enums.StockMovementType;
+import br.com.hitbox.infra.exception.HitboxException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,8 @@ public class StockMovementUseCase {
 
         Inventory inventory =
                 inventarioGateway.findById(inventoryId);
+
+
 
         BigDecimal unitCost =
                 calcularCustoUnitario(

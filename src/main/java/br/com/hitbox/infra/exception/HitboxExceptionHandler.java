@@ -1,6 +1,8 @@
 package br.com.hitbox.infra.exception;
 
+import br.com.hitbox.core.domain.Inventory;
 import br.com.hitbox.interfaces.error.ApiError;
+import br.com.hitbox.interfaces.error.BusinessErrorApi;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -60,6 +62,31 @@ public class HitboxExceptionHandler {
                 request.getRequestURI(),
                 LocalDateTime.now()
         );
+        log.error("HitboxExceptionHandler.dataIntegrityViolationExceptionHandler--> MessageError {}", ex.getMessage(), ex);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(error);
+    }
+
+    @ExceptionHandler(HitboxBusinessException.class)
+    public ResponseEntity<BusinessErrorApi<Long, Object>> hitboxBusinessException(
+            HitboxBusinessException ex,
+            HttpServletRequest request) {
+        Long id = 0L;
+        if (ex.getType().equals(Inventory.class)) {
+            var inventory = (Inventory) ex.getEntity();
+            id = inventory.getId();
+        }
+
+        BusinessErrorApi<Long, Object> error = new BusinessErrorApi<>(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                LocalDateTime.now(),
+                id,
+                ex.getEntity()
+        );
+
         log.error("HitboxExceptionHandler.dataIntegrityViolationExceptionHandler--> MessageError {}", ex.getMessage(), ex);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -8,6 +8,7 @@ import br.com.hitbox.core.gateway.InventarioGateway;
 import br.com.hitbox.core.gateway.StorageGateway;
 import br.com.hitbox.infra.enums.StockMovementType;
 import br.com.hitbox.infra.enums.TipoCategoria;
+import br.com.hitbox.infra.exception.HitboxBusinessException;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.query.InventarioQueryService;
 import br.com.hitbox.interfaces.dto.response.inventario.InventoryResponse;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -141,5 +143,14 @@ public class InventarioUseCase {
                         .build();
 
         inventory.addMovement(movement);
+    }
+
+    public Boolean validateInventoryAvailable(Long id, BigDecimal quantity) {
+        var inventory = gateway.findById(id);
+            if (inventory.estoqueInsuficiente(quantity)) {
+            String message = MessageFormat.format("{0} está com estoque insuficiente! Contém {1} Un/Kg/Gr, faça uma movimentação do seu estoque!", inventory.getName(), inventory.getQuantity(), quantity);
+            throw new HitboxBusinessException(message, inventory, Inventory.class);
+        }
+        return Boolean.TRUE;
     }
 }

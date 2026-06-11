@@ -1,8 +1,10 @@
 package br.com.hitbox.interfaces.dashboard;
 
 import br.com.hitbox.core.usecase.DashboardUseCase;
+import br.com.hitbox.core.usecase.InventoryDashboardUseCase;
 import br.com.hitbox.core.usecase.ProductDashboardUseCase;
 import br.com.hitbox.interfaces.dashboard.dto.DashboardResponse;
+import br.com.hitbox.interfaces.dashboard.dto.InventoryDashboardResponse;
 import br.com.hitbox.interfaces.dashboard.dto.ProductDashboardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ public class DashboardController {
 
     private final DashboardUseCase dashboardUseCase;
     private final ProductDashboardUseCase productDashboardUseCase;
+    private final InventoryDashboardUseCase inventoryDashboardUseCase;
 
     @GetMapping
     public DashboardResponse dashboardResponse() {
@@ -28,6 +31,12 @@ public class DashboardController {
     public ResponseEntity<ProductDashboardResponse> productDashboard(@PathVariable("id") Long id) {
 
         var result = productDashboardUseCase.execute(id);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("inventory/{id}")
+    public ResponseEntity<InventoryDashboardResponse> inventoryDashboard(@PathVariable("id") Long id) {
+        var result = inventoryDashboardUseCase.dashboard(id);
         return ResponseEntity.ok(result);
     }
 }

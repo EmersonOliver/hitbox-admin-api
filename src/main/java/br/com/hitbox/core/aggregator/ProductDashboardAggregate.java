@@ -15,6 +15,7 @@ public class ProductDashboardAggregate {
             ProductMetricsDTO metrics,
             Integer ranking,
             Integer popularityScore,
+            BigDecimal delivered,
             List<MonthlyProductionDTO> productionHistory,
             List<MonthlyRevenueDTO> revenueHistory
     ) {
@@ -49,10 +50,10 @@ public class ProductDashboardAggregate {
         return ProductDashboardResponse.builder()
                 .product(product)
                 .soldQuantity(0L)
+                .deliveredQuantity(delivered!= null ? delivered.longValue() : 0L)
                 .producedQuantity(
                         metrics.getProducedQuantity()
                 )
-
                 .soldQuantity(
                         metrics.getSoldQuantity()
                 )

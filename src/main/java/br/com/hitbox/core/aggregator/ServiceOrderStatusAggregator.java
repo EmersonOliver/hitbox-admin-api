@@ -55,16 +55,27 @@ public class ServiceOrderStatusAggregator {
             return ServiceOrderStatus.FINISHED;
         }
 
-        if(hasOpen && hasInProduction){
-            return ServiceOrderStatus.IN_PRODUCTION;
-        }
-        if(hasOpen && hasFinished){
-            return ServiceOrderStatus.IN_PRODUCTION;
-        }
-        if(hasOpen && hasCanceled){
-            return ServiceOrderStatus.PARTIALLY_FINISHED;
+        if (cards.stream()
+                .allMatch(c ->
+                        c.getStatusCard() ==
+                                ServiceOrderStatus.DELIVERED)) {
+
+            return ServiceOrderStatus.DELIVERED;
         }
 
+        if (cards.stream().allMatch(c -> c.getStatusCard() == ServiceOrderStatus.CANCELED)) {
+            return ServiceOrderStatus.CANCELED;
+        }
+
+        if ((hasOpen && hasInProduction) || (!hasOpen && hasInProduction)) {
+            return ServiceOrderStatus.IN_PRODUCTION;
+        }
+        if ((hasOpen && hasFinished) || (!hasOpen && hasFinished)) {
+            return ServiceOrderStatus.FINISHED;
+        }
+        if((hasOpen && hasCanceled) || (!hasOpen && hasCanceled)){
+            return ServiceOrderStatus.PARTIALLY_FINISHED;
+        }
         return ServiceOrderStatus.OPEN;
     }
 }

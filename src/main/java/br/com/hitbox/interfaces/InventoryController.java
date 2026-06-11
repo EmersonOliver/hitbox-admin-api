@@ -13,7 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/inventory")
@@ -53,17 +56,25 @@ public class InventoryController {
     public ResponseEntity<Page<Inventory>> page(Pageable pageable,
                                                 @RequestParam(required = false) List<Long> idCategorias,
                                                 @RequestParam(value = "search", required = false) String search) {
-        return ResponseEntity.ok(useCase.page(pageable,idCategorias, search));
+        return ResponseEntity.ok(useCase.page(pageable, idCategorias, search));
     }
 
     @GetMapping("/loadByCategory")
-    public ResponseEntity<List<Inventory>> listAllInventoryByCategory(@RequestParam TipoCategoria tipoCategoria){
+    public ResponseEntity<List<Inventory>> listAllInventoryByCategory(@RequestParam TipoCategoria tipoCategoria) {
         return ResponseEntity.ok(useCase.listAllByCategoria(tipoCategoria));
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> deleteInventario(@PathVariable Long id){
+    public ResponseEntity<Void> deleteInventario(@PathVariable Long id) {
         useCase.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+
+    @GetMapping("/available/{id}")
+    public ResponseEntity<Map<String, Object>> validInventoryAvailable(@PathVariable Long id, @RequestParam BigDecimal quantity) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("available", useCase.validateInventoryAvailable(id, quantity));
+        return ResponseEntity.ok(result);
     }
 }
