@@ -20,7 +20,7 @@ public class StockMovementUseCase {
     private final InventarioGateway inventarioGateway;
     private final StockMovementGateway movementGateway;
 
-    public void     movimentar(
+    public void movimentar(
             Long inventoryId,
             StockMovementType type,
             BigDecimal quantity,
@@ -30,8 +30,6 @@ public class StockMovementUseCase {
 
         Inventory inventory =
                 inventarioGateway.findById(inventoryId);
-
-
 
         BigDecimal unitCost =
                 calcularCustoUnitario(
@@ -69,7 +67,6 @@ public class StockMovementUseCase {
             BigDecimal totalCost,
             Inventory inventory
     ) {
-
         if (
                 totalCost == null ||
                         quantity == null ||
@@ -78,7 +75,6 @@ public class StockMovementUseCase {
 
             return inventory.getUnitCost();
         }
-
         return totalCost.divide(
                 quantity,
                 4,
@@ -92,15 +88,12 @@ public class StockMovementUseCase {
             BigDecimal totalCost,
             Inventory inventory
     ) {
-
         if (
                 type == StockMovementType.ENTRY ||
                         type == StockMovementType.ADJUSTMENT
         ) {
-
             return totalCost;
         }
-
         return inventory.getUnitCost()
                 .multiply(quantity);
     }
