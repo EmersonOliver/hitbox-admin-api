@@ -213,8 +213,7 @@ public class Inventory {
     }
 
     public boolean estoqueInsuficiente(BigDecimal requiredQuantity) {
-        return this.quantity.compareTo(requiredQuantity) <= 0;
-    }
+        return requiredQuantity.compareTo(this.quantity) > 0;    }
 
     public BigDecimal percentualEstoque() {
 

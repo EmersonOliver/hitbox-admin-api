@@ -3,8 +3,13 @@ package br.com.hitbox.interfaces;
 import br.com.hitbox.core.domain.Inventory;
 import br.com.hitbox.core.usecase.InventarioUseCase;
 import br.com.hitbox.infra.enums.TipoCategoria;
+import br.com.hitbox.infra.query.InventarioQueryService;
 import br.com.hitbox.interfaces.dto.request.inventario.InventoryRequest;
+import br.com.hitbox.interfaces.dto.request.inventario.StockMovementValidateRequest;
+import br.com.hitbox.interfaces.dto.response.inventario.InventarioInsuficienteResponse;
+import br.com.hitbox.interfaces.dto.response.inventario.StockMovementResponse;
 import br.com.hitbox.interfaces.mapper.InventoryMapper;
+import br.com.hitbox.interfaces.mapper.StockMovementMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,10 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/inventory")
@@ -24,6 +28,8 @@ import java.util.Map;
 public class InventoryController {
 
     private final InventarioUseCase useCase;
+    private final InventarioQueryService inventarioQueryService;
+    private final StockMovementMapper mapper;
 
     @PostMapping(
             value = "/save",
@@ -71,10 +77,32 @@ public class InventoryController {
     }
 
 
-    @GetMapping("/available/{id}")
-    public ResponseEntity<Map<String, Object>> validInventoryAvailable(@PathVariable Long id, @RequestParam BigDecimal quantity) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("available", useCase.validateInventoryAvailable(id, quantity));
-        return ResponseEntity.ok(result);
+    @PostMapping("/available")
+    public ResponseEntity<List<InventarioInsuficienteResponse>> validInventoryAvailable(
+            @RequestBody List<StockMovementValidateRequest> request
+    ) {
+        List<InventarioInsuficienteResponse> response = new ArrayList<>();
+        request.forEach(req -> {
+            var result = useCase.validateInventoryAvailable(req.getInventoryId(), req.getQuantity());
+            response.add(result);
+        });
+        var hasInvalid = response.stream()
+                .anyMatch(rs -> !Objects.isNull(rs.getMessage()));
+        if (hasInvalid) {
+            return ResponseEntity.badRequest().body(response.stream().filter(
+                    rs -> Boolean.FALSE.equals(rs.getValid())).toList());
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{inventoryId}/movements")
+    public Page<StockMovementResponse> findMovements(
+            @PathVariable Long inventoryId,
+            Pageable pageable
+    ) {
+        return inventarioQueryService.findMovements(
+                inventoryId,
+                pageable
+        ).map(mapper::toResponse);
     }
 }

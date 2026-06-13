@@ -8,9 +8,9 @@ import br.com.hitbox.core.gateway.InventarioGateway;
 import br.com.hitbox.core.gateway.StorageGateway;
 import br.com.hitbox.infra.enums.StockMovementType;
 import br.com.hitbox.infra.enums.TipoCategoria;
-import br.com.hitbox.infra.exception.HitboxBusinessException;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.query.InventarioQueryService;
+import br.com.hitbox.interfaces.dto.response.inventario.InventarioInsuficienteResponse;
 import br.com.hitbox.interfaces.dto.response.inventario.InventoryResponse;
 import br.com.hitbox.interfaces.mapper.InventoryMapper;
 import lombok.RequiredArgsConstructor;
@@ -145,12 +145,38 @@ public class InventarioUseCase {
         inventory.addMovement(movement);
     }
 
-    public Boolean validateInventoryAvailable(Long id, BigDecimal quantity) {
+//    public Boolean validateInventoryAvailable(Long id, BigDecimal quantity) {
+//        var inventory = gateway.findById(id);
+//            if (inventory.estoqueInsuficiente(quantity)) {
+//            String message = MessageFormat.format(
+//                    "{0} está com estoque insuficiente! " +
+//                            "Contém {1} {3} e você precisa de {2}, faça uma movimentação do seu estoque!",
+//                    inventory.getName(), inventory.getQuantity(), quantity.subtract(inventory.getQuantity()), inventory.getUnit().name().toLowerCase());
+//            throw new HitboxBusinessException(message, inventory, Inventory.class);
+//        }
+//        return Boolean.TRUE;
+//    }
+
+    public InventarioInsuficienteResponse validateInventoryAvailable(Long id, BigDecimal quantity) {
         var inventory = gateway.findById(id);
-            if (inventory.estoqueInsuficiente(quantity)) {
-            String message = MessageFormat.format("{0} está com estoque insuficiente! Contém {1} Un/Kg/Gr, faça uma movimentação do seu estoque!", inventory.getName(), inventory.getQuantity(), quantity);
-            throw new HitboxBusinessException(message, inventory, Inventory.class);
+        if (inventory.estoqueInsuficiente(quantity)) {
+            String message = MessageFormat.format(
+                    "{0} está com estoque insuficiente! " +
+                            "Contém {1} {3} e você precisa de {2}, faça uma movimentação do seu estoque!",
+                    inventory.getName(), inventory.getQuantity(), quantity.subtract(inventory.getQuantity()), inventory.getUnit().name().toLowerCase());
+            return InventarioInsuficienteResponse.builder()
+                    .valid(Boolean.FALSE)
+                    .message(message)
+                    .id(inventory.getId())
+                    .inventory(inventory)
+                    .build();
         }
-        return Boolean.TRUE;
+        return InventarioInsuficienteResponse
+                .builder()
+                .valid(Boolean.TRUE)
+                .id(inventory.getId())
+                .inventory(inventory)
+                .build();
+
     }
 }

@@ -64,6 +64,7 @@ public class KanbanCardMovementUseCase {
                     card.setStatusCard(
                             toColumn.getTypeColumn()
                     );
+                    movementStock(card);
                 });
         ServiceOrderStatus status =
                 aggregator.calculate(cards);
@@ -73,43 +74,58 @@ public class KanbanCardMovementUseCase {
                 status
         );
 
-        movementStock(cards, status);
     }
 
-    private void movementStock(List<KanbanCard> cards, ServiceOrderStatus status) {
-//        if (status.equals(ServiceOrderStatus.DELIVERED)) {
-        for (KanbanCard c : cards) {
+    private void movementStock(KanbanCard card) {
 
-            if (c.getStatusCard().equals(ServiceOrderStatus.DELIVERED)) {
-                var serviceOrder = serviceOrderGateway.findById(c.getServiceOrderId())
-                        .orElseThrow(() -> new HitboxException("Ordem de Serviço não encontrada!"));
+        var serviceOrder = serviceOrderGateway.findById(card.getServiceOrderId())
+                .orElseThrow(() -> new HitboxException("Ordem de Serviço não encontrada!"));
 
-                var productByServiceOrder = serviceOrder.getItems().stream()
-                        .map(i ->
-                                productGateway.findById(i.getProductId()).orElseThrow(() -> new HitboxException("Produto não encontrado pelo id"))
-                        ).toList();
+        var productByServiceOrder = serviceOrder.getItems().stream()
+                .map(i ->
+                        productGateway.findById(i.getProductId())
+                                .orElseThrow(() -> new HitboxException("Produto não encontrado pelo id"))
+                ).toList();
 
-                productByServiceOrder.forEach(item -> {
-                    var materialsInventory =
-                            item.getMaterials();
+        if (card.getStatusCard().equals(ServiceOrderStatus.DELIVERED)) {
 
-                    for (var material : materialsInventory) {
+            productByServiceOrder.forEach(item -> {
+                var materialsInventory =
+                        item.getMaterials();
 
-                        var inventory = material.getInventory();
-                        var quantity = material.getQuantity().multiply(c.getQuantity());
-                        var movementType = StockMovementType.PRODUCTION_CONSUMPTION;
-                        var cost = material.getUnitCostSnapshot();
-                        stockMovementUseCase.movimentar(
-                                inventory.getId(),
-                                movementType,
-                                quantity,
-                                cost,
-                                "Saída de produção do item " + item.getName());
-                    }
-                });
-            }
+                for (var material : materialsInventory) {
+
+                    var inventory = material.getInventory();
+                    var quantity = material.getQuantity().multiply(card.getQuantity());
+                    var movementType = StockMovementType.PRODUCTION_CONSUMPTION;
+                    var cost = material.getUnitCostSnapshot();
+                    stockMovementUseCase.movimentar(
+                            inventory.getId(),
+                            movementType,
+                            quantity,
+                            cost,
+                            "Saída de produção do item " + item.getName());
+                }
+            });
+        } else if(card.getStatusCard().equals(ServiceOrderStatus.CANCELED)) {
+            productByServiceOrder.forEach(item -> {
+                var materialsInventory =
+                        item.getMaterials();
+
+                for (var material : materialsInventory) {
+                    var inventory = material.getInventory();
+                    var quantity = material.getQuantity().multiply(card.getQuantity());
+                    var movementType = StockMovementType.ENTRY;
+                    var cost = material.getUnitCostSnapshot();
+                    stockMovementUseCase.movimentar(
+                            inventory.getId(),
+                            movementType,
+                            quantity,
+                            cost,
+                            "Retornando recursos de produção do item " + item.getName());
+                }
+            });
         }
-//        }
     }
 
 
