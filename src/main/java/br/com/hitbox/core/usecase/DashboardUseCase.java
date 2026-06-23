@@ -29,11 +29,15 @@ public class DashboardUseCase {
         var topInventorys =
                 inventarioQueryService.listTopInventory(PageRequest.of(0, 5,
                                 Sort.by("quantity").ascending()))
-                        .getContent();
+                        ;
         if (ranking.isEmpty() && !topInventorys.isEmpty()) {
             return DashboardResponse.builder()
-                    .topProducts(List.of())
-                    .topInventorys(topInventorys)
+                    .topProducts(null)
+                    .topInventorys(topInventorys.getContent())
+                    .build();
+        }
+        if (ranking.isEmpty() && topInventorys.isEmpty()) {
+            return DashboardResponse.builder()
                     .build();
         }
         long maxOrders =
@@ -69,7 +73,7 @@ public class DashboardUseCase {
 
         return DashboardResponse.builder()
                 .topProducts(scores)
-                .topInventorys(topInventorys)
+                .topInventorys(topInventorys.getContent())
                 .build();
     }
 
