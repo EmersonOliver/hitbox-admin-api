@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class PricingRuleController {
     private final PricingRuleUseCase useCase;
 
 
+    @PreAuthorize("hasAuthority('CALCULATION_CREATE')")
     @PostMapping("/save")
     public ResponseEntity<?> save(
             @RequestBody PricingRuleRequest request
@@ -33,6 +35,7 @@ public class PricingRuleController {
         );
     }
 
+    @PreAuthorize("hasAuthority('CALCULATION_UPDATE')")
     @PutMapping("/edit")
     public ResponseEntity<?> save(
             @RequestParam Long ruleId,
@@ -46,29 +49,34 @@ public class PricingRuleController {
         );
     }
 
+    @PreAuthorize("hasAuthority('CALCULATION_VIEW')")
     @GetMapping("/page")
     public ResponseEntity<Page<PricingRuleResponse>> getPages(Pageable pageable) {
         var response = useCase.page(pageable).map(PricingRuleMapper::toResponse);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('CALCULATION_DELETE')")
     @DeleteMapping("/delete/{ruleId}")
     public ResponseEntity<Void> deletePricingRule(@PathVariable("ruleId") Long ruleId) {
         useCase.deleteRule(ruleId);
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasAnyAuthority('CALCULATION_VIEW','PRODUCT_VIEW')")
     @PostMapping("suggested/price")
     public ResponseEntity<List<SuggestedPriceResult>> suggestedPriceResultResponse(@RequestBody ProductPricingContext context) {
         return ResponseEntity.ok(useCase.suggestedPriceRule(context));
     }
 
+    @PreAuthorize("hasAnyAuthority('CALCULATION_VIEW','PRODUCT_VIEW', 'SERVICE_ORDER_VIEW')")
     @GetMapping("findAll")
     public ResponseEntity<List<PricingRuleResponse>> findAllRules() {
         var response = useCase.findAllRules().stream().map(PricingRuleMapper::toResponse).toList();
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyAuthority('CALCULATION_VIEW','PRODUCT_VIEW', 'SERVICE_ORDER_VIEW')")
     @PostMapping("ruleById/{ruleId}")
     public ResponseEntity<SuggestedPriceResult> getSuggestedPrice(@PathVariable Long ruleId,
                                                                   @RequestBody ProductPricingContext context) {

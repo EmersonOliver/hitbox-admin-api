@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +32,7 @@ public class InventoryController {
     private final InventarioQueryService inventarioQueryService;
     private final StockMovementMapper mapper;
 
+    @PreAuthorize("hasAuthority('INVENTORY_CREATE')")
     @PostMapping(
             value = "/save",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
@@ -43,6 +45,7 @@ public class InventoryController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('INVENTORY_UPDATE')")
     @PutMapping(
             value = "/edit/{idInventario}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
@@ -58,6 +61,7 @@ public class InventoryController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('INVENTORY_VIEW')")
     @GetMapping("/page")
     public ResponseEntity<Page<Inventory>> page(Pageable pageable,
                                                 @RequestParam(required = false) List<Long> idCategorias,
@@ -65,11 +69,13 @@ public class InventoryController {
         return ResponseEntity.ok(useCase.page(pageable, idCategorias, search));
     }
 
+    @PreAuthorize("hasAnyAuthority('INVENTORY_VIEW', 'PRODUCT_VIEW')")
     @GetMapping("/loadByCategory")
     public ResponseEntity<List<Inventory>> listAllInventoryByCategory(@RequestParam TipoCategoria tipoCategoria) {
         return ResponseEntity.ok(useCase.listAllByCategoria(tipoCategoria));
     }
 
+    @PreAuthorize("hasAuthority('INVENTORY_DELETE')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteInventario(@PathVariable Long id) {
         useCase.delete(id);
@@ -77,6 +83,7 @@ public class InventoryController {
     }
 
 
+    @PreAuthorize("hasAnyAuthority('INVENTORY_VIEW','SERVICE_ORDER_VIEW')")
     @PostMapping("/available")
     public ResponseEntity<List<InventarioInsuficienteResponse>> validInventoryAvailable(
             @RequestBody List<StockMovementValidateRequest> request
@@ -95,6 +102,7 @@ public class InventoryController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('INVENTORY_VIEW')")
     @GetMapping("/{inventoryId}/movements")
     public Page<StockMovementResponse> findMovements(
             @PathVariable Long inventoryId,

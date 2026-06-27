@@ -7,6 +7,7 @@ import br.com.hitbox.interfaces.dto.response.kanban.KanbanCardResponse;
 import br.com.hitbox.interfaces.mapper.kanban.KanbanCardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class KanbanCardController {
 
     private final KanbanCardMapper mapper;
 
+    @PreAuthorize("hasAuthority('PRODUCTION_CREATE')")
     @PostMapping("create")
     public ResponseEntity<KanbanCardResponse> createCard(
             @RequestBody KanbanCardRequest request
@@ -33,6 +35,7 @@ public class KanbanCardController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCTION_UPDATE')")
     @PutMapping("edit/{cardId}")
     public ResponseEntity<KanbanCardResponse> editCard(
             @PathVariable("cardId") Long cardId,
@@ -45,6 +48,7 @@ public class KanbanCardController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCTION_VIEW')")
     @GetMapping("find/{cardId}")
     public ResponseEntity<KanbanCardResponse> findById(
             @PathVariable("cardId") Long cardId
@@ -57,6 +61,7 @@ public class KanbanCardController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCTION_VIEW')")
     @GetMapping("find-all")
     public ResponseEntity<List<KanbanCardResponse>> findAll() {
 
@@ -69,6 +74,7 @@ public class KanbanCardController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCTION_DELETE')")
     @DeleteMapping("delete/{cardId}")
     public ResponseEntity<Void> deleteCard(
             @PathVariable("cardId") Long cardId

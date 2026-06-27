@@ -9,6 +9,7 @@ import br.com.hitbox.interfaces.mapper.ServiceOrderMapper;
 import br.com.hitbox.infra.enums.ServiceOrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class ServiceOrderController {
 
     private final ServiceOrderQueryService queryService;
 
+    @PreAuthorize("hasAuthority('SERVICE_ORDER_CREATE')")
     @PostMapping("create")
     public ResponseEntity<ServiceOrderResponse> create(
             @RequestBody ServiceOrderRequest request
@@ -40,6 +42,7 @@ public class ServiceOrderController {
         );
     }
 
+    @PreAuthorize("hasAuthority('SERVICE_ORDER_UPDATE')")
     @PutMapping("update/{orderId}")
     public ResponseEntity<ServiceOrderResponse> update(
             @PathVariable("orderId") Long orderId,
@@ -59,6 +62,7 @@ public class ServiceOrderController {
         );
     }
 
+    @PreAuthorize("hasAuthority('SERVICE_ORDER_DELETE')")
     @DeleteMapping("delete/{orderId}")
     public ResponseEntity<Void> delete(
             @PathVariable("orderId") Long orderId
@@ -69,6 +73,7 @@ public class ServiceOrderController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAuthority('SERVICE_ORDER_VIEW')")
     @GetMapping("find-all")
     public ResponseEntity<List<ServiceOrderResponse>> findAll() {
 
@@ -81,6 +86,7 @@ public class ServiceOrderController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SERVICE_ORDER_VIEW')")
     @GetMapping("find-by-id/{orderId}")
     public ResponseEntity<ServiceOrderResponse> findById(
             @PathVariable("orderId") Long orderId
@@ -93,8 +99,7 @@ public class ServiceOrderController {
                 mapper.toResponse(result)
         );
     }
-
-
+    @PreAuthorize("hasAnyAuthority('SERVICE_ORDER_VIEW', 'PRODUCTION_VIEW')")
     @GetMapping("find-by-status/{status}")
     public ResponseEntity<List<ServiceOrderResponse>> findByStatus(
             @PathVariable("status") ServiceOrderStatus status
@@ -109,6 +114,7 @@ public class ServiceOrderController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('SERVICE_ORDER_UPDATE')")
     @PatchMapping("start-production/{orderId}")
     public ResponseEntity<ServiceOrderResponse> startProduction(
             @PathVariable("orderId") Long orderId
@@ -122,6 +128,7 @@ public class ServiceOrderController {
         );
     }
 
+    @PreAuthorize("hasAuthority('SERVICE_ORDER_UPDATE')")
     @PatchMapping("finish/{orderId}")
     public ResponseEntity<ServiceOrderResponse> finish(
             @PathVariable("orderId") Long orderId
@@ -135,6 +142,7 @@ public class ServiceOrderController {
         );
     }
 
+    @PreAuthorize("hasAuthority('SERVICE_ORDER_UPDATE')")
     @PatchMapping("cancel/{orderId}")
     public ResponseEntity<ServiceOrderResponse> cancel(
             @PathVariable("orderId") Long orderId

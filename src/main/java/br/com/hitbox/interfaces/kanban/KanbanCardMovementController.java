@@ -6,6 +6,7 @@ import br.com.hitbox.interfaces.dto.response.kanban.KanbanCardMovementResponse;
 import br.com.hitbox.interfaces.mapper.kanban.KanbanCardMovementMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class KanbanCardMovementController {
 
     private final KanbanCardMovementMapper mapper;
 
+    @PreAuthorize("hasAuthority('PRODUCTION_CREATE')")
     @PostMapping("create")
     public ResponseEntity<KanbanCardMovementResponse> createMovement(
             @RequestBody KanbanCardMovementRequest request
@@ -33,6 +35,7 @@ public class KanbanCardMovementController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCTION_VIEW')")
     @GetMapping("find/{movementId}")
     public ResponseEntity<KanbanCardMovementResponse> findById(
             @PathVariable("movementId") Long movementId
@@ -45,6 +48,7 @@ public class KanbanCardMovementController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCTION_VIEW')")
     @GetMapping("find-all")
     public ResponseEntity<List<KanbanCardMovementResponse>> findAll() {
 
@@ -57,6 +61,7 @@ public class KanbanCardMovementController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCTION_VIEW')")
     @GetMapping("find-by-card/{cardId}")
     public ResponseEntity<List<KanbanCardMovementResponse>> findByCard(
             @PathVariable("cardId") Long cardId
@@ -68,6 +73,7 @@ public class KanbanCardMovementController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCTION_DELETE')")
     @DeleteMapping("delete/{movementId}")
     public ResponseEntity<Void> deleteMovement(
             @PathVariable("movementId") Long movementId

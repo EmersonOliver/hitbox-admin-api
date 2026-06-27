@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +23,14 @@ public class CategoriaController {
     private final CategoriaUseCase useCase;
     private final CategoriaQueryService queryService;
 
+    @PreAuthorize("hasAuthority('CATEGORY_CREATE')")
     @PostMapping("create")
     public ResponseEntity<Void> criarCategoria(@RequestBody CategoriaRecord req) {
         useCase.salvarCategoria(CategoriaMapper.toDomain(req));
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasAuthority('CATEGORY_UPDATE')")
     @PutMapping("update")
     public ResponseEntity<Void> atualizarCategoria(@RequestParam Long id, @RequestBody CategoriaRecord req) {
         useCase.atualizarCategoria(id
@@ -35,12 +38,14 @@ public class CategoriaController {
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasAuthority('CATEGORY_DELETE')")
     @DeleteMapping("remove")
     public ResponseEntity<Void> removerCategoria(@RequestParam Long id) {
         useCase.delete(id);
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasAnyAuthority('CATEGORY_VIEW','SERVICE_ORDER_VIEW', 'INVENTORY_VIEW', 'PRODUCT_VIEW')")
     @GetMapping("parametros")
     public ResponseEntity<List<CategoriaResponse>> listarCategoriasParametrized(
             @RequestParam TipoCategoria tipoCategoria) {
@@ -48,6 +53,7 @@ public class CategoriaController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyAuthority('CATEGORY_VIEW','SERVICE_ORDER_VIEW', 'INVENTORY_VIEW', 'PRODUCT_VIEW')")
     @GetMapping("listAll")
     public ResponseEntity<Page<CategoriaResponse>> listarTodos(Pageable pageable,
                                                                @RequestParam(value = "search", required = false)

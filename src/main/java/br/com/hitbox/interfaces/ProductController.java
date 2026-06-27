@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +24,7 @@ public class ProductController {
     private final ProductUseCase productUseCase;
     private final ProductMapper mapper;
 
-
+    @PreAuthorize("hasAuthority('PRODUCT_CREATE')")
     @PostMapping(value = "/save",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> save(
@@ -41,6 +42,7 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCT_UPDATE')")
     @PutMapping(value = "/edit/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> edit(
@@ -57,6 +59,7 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCT_VIEW')")
     @GetMapping("page")
     public ResponseEntity<Page<ProductResponse>> page(Pageable pageable,
                                                       @RequestParam(required = false) List<Long> idCategorias,
@@ -65,12 +68,14 @@ public class ProductController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCT_DELETE')")
     @DeleteMapping("/delete/{productId}")
     public ResponseEntity<Void> delete(@PathVariable("productId") Long productId) {
         productUseCase.delete(productId);
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasAnyAuthority('PRODUCT_VIEW', 'SERVICE_ORDER_VIEW')")
     @GetMapping("findAll")
     public ResponseEntity<List<ProductResponse>> findAllProducts() {
         var response = productUseCase.findAll().stream().map(mapper::toResponse).toList();

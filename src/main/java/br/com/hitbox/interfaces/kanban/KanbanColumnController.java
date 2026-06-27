@@ -7,6 +7,7 @@ import br.com.hitbox.interfaces.dto.response.kanban.KanbanColumnResponse;
 import br.com.hitbox.interfaces.mapper.kanban.KanbanColumnMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class KanbanColumnController {
 
     private final KanbanColumnMapper mapper;
 
+    @PreAuthorize("hasAuthority('PRODUCTION_CREATE')")
     @PostMapping("create")
     public ResponseEntity<KanbanColumnResponse> createColumn(
             @RequestBody KanbanColumnRequest request) {
@@ -29,6 +31,7 @@ public class KanbanColumnController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCTION_UPDATE')")
     @PutMapping("edit/{columnId}")
     public ResponseEntity<KanbanColumnResponse> editColumn(
             @PathVariable("columnId") Long columnId,
@@ -41,6 +44,7 @@ public class KanbanColumnController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCTION_VIEW')")
     @GetMapping("find/{columnId}")
     public ResponseEntity<KanbanColumnResponse> findById(
             @PathVariable("columnId") Long columnId
@@ -53,6 +57,7 @@ public class KanbanColumnController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCTION_VIEW')")
     @GetMapping("find-all")
     public ResponseEntity<List<KanbanColumnResponse>> findAll() {
 
@@ -65,6 +70,7 @@ public class KanbanColumnController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAuthority('PRODUCTION_DELETE')")
     @DeleteMapping("delete/{columnId}")
     public ResponseEntity<Void> deleteColumn(
             @PathVariable("columnId") Long columnId

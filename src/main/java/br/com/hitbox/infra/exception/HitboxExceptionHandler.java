@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -39,15 +40,19 @@ public class HitboxExceptionHandler {
             Exception ex,
             HttpServletRequest request) {
 
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        if (ex instanceof AuthorizationDeniedException) {
+            status = HttpStatus.BAD_REQUEST;
+        }
         ApiError error = new ApiError(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                status.value(),
                 ex.getMessage(),
                 request.getRequestURI(),
                 LocalDateTime.now()
         );
         log.error("HitboxExceptionHandler.handlerException--> MessageError {}", ex.getMessage(), ex);
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .status(status)
                 .body(error);
     }
 
