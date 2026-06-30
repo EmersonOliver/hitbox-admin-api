@@ -51,8 +51,8 @@ public class PricingRuleRepositoryImpl {
                 .orElseThrow(() -> new HitboxException("Nenhuma regra encontrada!"));
 
         var existsRule = this.repository.findByNameAndChannel(
-                domain.getName().toUpperCase(),
-                domain.getSalesChannel().toUpperCase());
+                domain.getName().toUpperCase()
+        );
 
         if (existsRule.isPresent() && !existsRule.get().getId().equals(domain.getId())) {
             throw new HitboxException(
@@ -63,10 +63,7 @@ public class PricingRuleRepositoryImpl {
         pricingRule.setMinimumPrice(domain.getMinimumPrice());
         pricingRule.setActive(domain.getActive());
         pricingRule.setCardFee(domain.getCardFee());
-        pricingRule.setCommercialCost(domain.getCommercialCost());
-        pricingRule.setOperationalCost(domain.getOperationalCost());
         pricingRule.setMarketplaceFee(domain.getMarketplaceFee());
-        pricingRule.setSalesChannel(domain.getSalesChannel());
         pricingRule.setProfitMargin(domain.getProfitMargin());
 
         pricingRule = repository.save(pricingRule);

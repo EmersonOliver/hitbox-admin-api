@@ -10,24 +10,83 @@ import java.math.BigDecimal;
 @Setter
 @Builder
 public class SuggestedPriceResult {
+
+    /*
+     * Regra
+     */
     private Long ruleId;
+
     private String ruleName;
-    private String salesChannel;
+
+    /*
+     * Custos Produção
+     */
+
     private BigDecimal productionCost;
-    private BigDecimal baseCost;
+
     private BigDecimal filamentCost;
+
     private BigDecimal machineCost;
-    private BigDecimal maintenanceCost;
+
+    private BigDecimal laborCost;
+
+    private BigDecimal energyCost;
+
     private BigDecimal extrasCost;
+
+    /*
+     * Custos Indiretos
+     */
+
+    private BigDecimal maintenanceCost;
+
+    private BigDecimal indirectCost;
+
+    private BigDecimal administrativeCost;
+
+    /*
+     * Resultado
+     */
+
+    private BigDecimal baseCost;
+
     private BigDecimal unitCost;
+
     private BigDecimal unitPrice;
+
     private BigDecimal suggestedPrice;
+
+    /*
+     * Lucro
+     */
+
     private BigDecimal profitValue;
-    private BigDecimal marketplaceFeeValue;
-    private BigDecimal cardFeeValue;
-    private BigDecimal marginPercentage;
-    private BigDecimal feePercentage;
-    private BigDecimal totalFeesValue;
+
     private BigDecimal liquidProfit;
 
+    /*
+     * Taxas Calculadas
+     */
+
+    private BigDecimal marketplaceFeeValue;
+
+    private BigDecimal cardFeeValue;
+
+    private BigDecimal taxFeeValue;
+
+    private BigDecimal pixFeeValue;
+
+    private BigDecimal gatewayFeeValue;
+
+    private BigDecimal otherFeeValue;
+
+    /*
+     * Totais
+     */
+
+    private BigDecimal totalMarginPercent;
+
+    private BigDecimal totalFeesPercent;
+
+    private BigDecimal totalFeesValue;
 }
