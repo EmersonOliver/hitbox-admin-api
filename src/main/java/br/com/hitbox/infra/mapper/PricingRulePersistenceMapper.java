@@ -21,7 +21,7 @@ public class PricingRulePersistenceMapper {
                 .companyId(entity.getCompanyId())
 
                 .name(entity.getName())
-
+                .lastUpdate(entity.getLastUpdate())
                 .active(entity.getActive())
 
                 .minimumPrice(

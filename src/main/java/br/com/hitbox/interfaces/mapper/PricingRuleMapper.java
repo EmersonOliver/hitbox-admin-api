@@ -93,7 +93,7 @@ public class PricingRuleMapper {
                 .maintenanceRate(domain.getMaintenanceRate())
                 .indirectCost(domain.getIndirectCost())
                 .administrativeCost(domain.getAdministrativeCost())
-
+                .lastUpdate(domain.getLastUpdate())
                 /*
                  * Margens
                  */

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -36,6 +37,7 @@ public class PricingRuleResponse {
     private BigDecimal pixFee;
     private BigDecimal gatewayFee;
     private BigDecimal otherFee;
+    private LocalDateTime lastUpdate;
 
     private List<PricingVariableResponse> variables;
 }

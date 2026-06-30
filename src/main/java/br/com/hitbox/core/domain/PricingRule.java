@@ -4,6 +4,7 @@ import br.com.hitbox.infra.enums.CalculationType;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ public class PricingRule {
     private String name;
 
     private Boolean active;
-
+    private LocalDateTime lastUpdate;
     private BigDecimal minimumPrice;
 
     /*
@@ -53,4 +54,6 @@ public class PricingRule {
     private BigDecimal otherFee;
 
     private List<PricingVariable> variables;
+
+
 }

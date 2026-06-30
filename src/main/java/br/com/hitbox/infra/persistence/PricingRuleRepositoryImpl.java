@@ -1,6 +1,7 @@
 package br.com.hitbox.infra.persistence;
 
 import br.com.hitbox.core.domain.PricingRule;
+import br.com.hitbox.infra.config.filter.TenantContext;
 import br.com.hitbox.infra.entity.PricingRuleEntity;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.jpa.SpringDataCategoriaRepository;
