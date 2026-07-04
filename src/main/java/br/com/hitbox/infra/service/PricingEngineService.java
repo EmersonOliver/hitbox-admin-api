@@ -16,10 +16,6 @@ public class PricingEngineService {
             PricingRule rule
     ) {
 
-        /*
-         * QUANTIDADE
-         */
-
         BigDecimal quantity =
                 BigDecimal.valueOf(
                         context.getQuantity() == null
@@ -38,13 +34,23 @@ public class PricingEngineService {
                         );
 
         /*
-         * MÁQUINA
+         * HORA MÁQUINA
          */
 
         BigDecimal machineCost =
                 safe(context.getPrintHours())
                         .multiply(
-                                safe(context.getMachineHourCost())
+                                safe(rule.getMachineHourCost())
+                        );
+
+        /*
+         * MÃO DE OBRA
+         */
+
+        BigDecimal laborCost =
+                safe(context.getPrintHours())
+                        .multiply(
+                                safe(rule.getLaborHourCost())
                         );
 
         /*
@@ -52,14 +58,10 @@ public class PricingEngineService {
          */
 
         BigDecimal energyCost =
-                safe(context.getEnergyCost());
-
-        /*
-         * EMBALAGEM
-         */
-
-        BigDecimal packagingCost =
-                safe(context.getPackagingCost());
+                safe(context.getPrintHours())
+                        .multiply(
+                                safe(rule.getEnergyCostPerHour())
+                        );
 
         /*
          * EXTRAS
@@ -72,54 +74,23 @@ public class PricingEngineService {
                 );
 
         /*
-         * CUSTOS REGRA
+         * CUSTO DE PRODUÇÃO
          */
 
-        BigDecimal operationalCost =
-                safe(rule.getOperationalCost());
-
-        BigDecimal commercialCost =
-                safe(rule.getCommercialCost());
-
-        /*
-         * CUSTO BASE
-         */
-
-        BigDecimal baseCost =
+        BigDecimal productionCost =
                 filamentCost
                         .add(machineCost)
+                        .add(laborCost)
                         .add(energyCost)
-                        .add(packagingCost)
-                        .add(extrasCost)
-                        .add(operationalCost)
-                        .add(commercialCost);
+                        .add(extrasCost);
 
         /*
          * MANUTENÇÃO
          */
 
-        BigDecimal maintenancePercentage =
-                safe(context.getMaintenancePercentage());
-
         BigDecimal maintenanceCost =
-                baseCost.multiply(
-                        maintenancePercentage.divide(
-                                BigDecimal.valueOf(100),
-                                4,
-                                RoundingMode.HALF_UP
-                        )
-                );
-
-        baseCost =
-                baseCost.add(maintenanceCost);
-
-        /*
-         * LUCRO
-         */
-
-        BigDecimal marginMultiplier =
-                BigDecimal.ONE.add(
-                        safe(rule.getProfitMargin())
+                productionCost.multiply(
+                        safe(rule.getMaintenanceRate())
                                 .divide(
                                         BigDecimal.valueOf(100),
                                         4,
@@ -127,25 +98,85 @@ public class PricingEngineService {
                                 )
                 );
 
+        /*
+         * CUSTOS INDIRETOS
+         */
+
+        BigDecimal indirectCost =
+                safe(rule.getIndirectCost());
+
+        BigDecimal administrativeCost =
+                safe(rule.getAdministrativeCost());
+
+        /*
+         * CUSTO BASE
+         */
+
+        BigDecimal baseCost =
+                productionCost
+                        .add(maintenanceCost)
+                        .add(indirectCost)
+                        .add(administrativeCost);
+
+        /*
+         * MARGENS
+         */
+
+        BigDecimal totalMarginPercent =
+                safe(rule.getProfitMargin())
+                        .add(
+                                safe(rule.getSafetyMargin())
+                        )
+                        .add(
+                                safe(rule.getCommercialCommission())
+                        )
+                        .add(
+                                safe(rule.getLossReserve())
+                        );
+
         BigDecimal priceWithMargin =
                 baseCost.multiply(
-                        marginMultiplier
+                        BigDecimal.ONE.add(
+                                totalMarginPercent.divide(
+                                        BigDecimal.valueOf(100),
+                                        4,
+                                        RoundingMode.HALF_UP
+                                )
+                        )
                 );
 
         /*
          * TAXAS
          */
 
-        BigDecimal totalFees =
+        BigDecimal totalFeesPercent =
                 safe(rule.getMarketplaceFee())
                         .add(
                                 safe(rule.getCardFee())
                         )
-                        .divide(
-                                BigDecimal.valueOf(100),
-                                4,
-                                RoundingMode.HALF_UP
+                        .add(
+                                safe(rule.getTaxFee())
+                        )
+                        .add(
+                                safe(rule.getPixFee())
+                        )
+                        .add(
+                                safe(rule.getGatewayFee())
+                        )
+                        .add(
+                                safe(rule.getOtherFee())
                         );
+
+        BigDecimal totalFees =
+                totalFeesPercent.divide(
+                        BigDecimal.valueOf(100),
+                        4,
+                        RoundingMode.HALF_UP
+                );
+
+        /*
+         * PREÇO FINAL
+         */
 
         BigDecimal finalPrice =
                 priceWithMargin.divide(
@@ -155,7 +186,33 @@ public class PricingEngineService {
                 );
 
         /*
-         * PREÇO MÍNIMO
+         * MARKUP MÍNIMO
+         */
+
+        BigDecimal minimumMarkupPrice =
+                baseCost.multiply(
+                        BigDecimal.ONE.add(
+                                safe(rule.getMinimumMarkup())
+                                        .divide(
+                                                BigDecimal.valueOf(100),
+                                                4,
+                                                RoundingMode.HALF_UP
+                                        )
+                        )
+                );
+
+        if (
+                finalPrice.compareTo(
+                        minimumMarkupPrice
+                ) < 0
+        ) {
+
+            finalPrice =
+                    minimumMarkupPrice;
+        }
+
+        /*
+         * PREÇO MÍNIMO ABSOLUTO
          */
 
         if (
@@ -175,23 +232,39 @@ public class PricingEngineService {
          */
 
         BigDecimal marketplaceFeeValue =
-                finalPrice.multiply(
-                        safe(rule.getMarketplaceFee())
-                                .divide(
-                                        BigDecimal.valueOf(100),
-                                        4,
-                                        RoundingMode.HALF_UP
-                                )
+                calculateFee(
+                        finalPrice,
+                        rule.getMarketplaceFee()
                 );
 
         BigDecimal cardFeeValue =
-                finalPrice.multiply(
-                        safe(rule.getCardFee())
-                                .divide(
-                                        BigDecimal.valueOf(100),
-                                        4,
-                                        RoundingMode.HALF_UP
-                                )
+                calculateFee(
+                        finalPrice,
+                        rule.getCardFee()
+                );
+
+        BigDecimal taxFeeValue =
+                calculateFee(
+                        finalPrice,
+                        rule.getTaxFee()
+                );
+
+        BigDecimal pixFeeValue =
+                calculateFee(
+                        finalPrice,
+                        rule.getPixFee()
+                );
+
+        BigDecimal gatewayFeeValue =
+                calculateFee(
+                        finalPrice,
+                        rule.getGatewayFee()
+                );
+
+        BigDecimal otherFeeValue =
+                calculateFee(
+                        finalPrice,
+                        rule.getOtherFee()
                 );
 
         /*
@@ -202,7 +275,11 @@ public class PricingEngineService {
                 finalPrice
                         .subtract(baseCost)
                         .subtract(marketplaceFeeValue)
-                        .subtract(cardFeeValue);
+                        .subtract(cardFeeValue)
+                        .subtract(taxFeeValue)
+                        .subtract(pixFeeValue)
+                        .subtract(gatewayFeeValue)
+                        .subtract(otherFeeValue);
 
         BigDecimal unitCost =
                 baseCost.divide(
@@ -219,32 +296,63 @@ public class PricingEngineService {
                 );
 
         return SuggestedPriceResult.builder()
+
                 .ruleId(rule.getId())
                 .ruleName(rule.getName())
-                .salesChannel(rule.getSalesChannel())
-                .productionCost(baseCost)
+
+                .productionCost(productionCost)
                 .baseCost(baseCost)
+
+                .filamentCost(filamentCost)
+                .machineCost(machineCost)
+                .laborCost(laborCost)
+                .energyCost(energyCost)
+
+                .maintenanceCost(maintenanceCost)
+                .indirectCost(indirectCost)
+                .administrativeCost(administrativeCost)
+
                 .suggestedPrice(finalPrice)
+
                 .profitValue(profitValue)
+
                 .marketplaceFeeValue(marketplaceFeeValue)
                 .cardFeeValue(cardFeeValue)
-                .machineCost(machineCost)
-                .filamentCost(filamentCost)
-                .maintenanceCost(maintenanceCost)
-                .unitPrice(unitPrice)
+                .taxFeeValue(taxFeeValue)
+                .pixFeeValue(pixFeeValue)
+                .gatewayFeeValue(gatewayFeeValue)
+                .otherFeeValue(otherFeeValue)
+
+                .totalMarginPercent(totalMarginPercent)
+                .totalFeesPercent(totalFeesPercent)
+
                 .unitCost(unitCost)
+                .unitPrice(unitPrice)
 
                 .build();
+    }
+
+    private BigDecimal calculateFee(
+            BigDecimal price,
+            BigDecimal percent
+    ) {
+
+        return price.multiply(
+                safe(percent)
+                        .divide(
+                                BigDecimal.valueOf(100),
+                                4,
+                                RoundingMode.HALF_UP
+                        )
+        );
     }
 
     private BigDecimal calculateExtras(
             ProductPricingContext context,
             BigDecimal quantity
     ) {
-        if (
-                context.getExtraCosts() == null
-        ) {
 
+        if (context.getExtraCosts() == null) {
             return BigDecimal.ZERO;
         }
 
@@ -259,7 +367,9 @@ public class PricingEngineService {
                             extra.isMultiplyByQuantity()
                     ) {
 
-                        return value.multiply(quantity);
+                        return value.multiply(
+                                quantity
+                        );
                     }
 
                     return value;

@@ -1,8 +1,13 @@
 package br.com.hitbox.interfaces;
 
 import br.com.hitbox.core.domain.ProductPricingContext;
+import br.com.hitbox.core.usecase.LoadPricingDraftUseCase;
 import br.com.hitbox.core.usecase.PricingRuleUseCase;
+import br.com.hitbox.core.usecase.SavePricingDraftUseCase;
+import br.com.hitbox.infra.service.UserContextService;
 import br.com.hitbox.interfaces.dto.request.pricing.PricingRuleRequest;
+import br.com.hitbox.interfaces.dto.request.pricing.SavePricingDraftRequest;
+import br.com.hitbox.interfaces.dto.response.pricing.PricingDraftResponse;
 import br.com.hitbox.interfaces.dto.response.pricing.PricingRuleResponse;
 import br.com.hitbox.interfaces.dto.response.pricing.SuggestedPriceResult;
 import br.com.hitbox.interfaces.mapper.PricingRuleMapper;
@@ -21,6 +26,11 @@ import java.util.List;
 public class PricingRuleController {
 
     private final PricingRuleUseCase useCase;
+    private final SavePricingDraftUseCase saveUseCase;
+
+    private final LoadPricingDraftUseCase loadUseCase;
+
+    private final UserContextService userContextService;
 
 
     @PreAuthorize("hasAuthority('CALCULATION_CREATE')")
@@ -86,5 +96,29 @@ public class PricingRuleController {
                 .findFirst().orElse(null);
         return ResponseEntity.ok(result);
 
+    }
+
+    @PostMapping("/draft")
+    public ResponseEntity<Void> saveDraft(
+            @RequestBody SavePricingDraftRequest request
+    ) {
+        saveUseCase.execute(
+                userContextService.getUserId(),
+                userContextService.getCompanyId(),
+                request
+        );
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/draft")
+    public ResponseEntity<PricingDraftResponse> loadDraft() {
+        return ResponseEntity.ok(
+
+                loadUseCase.execute(
+                        userContextService.getUserId(),
+                        userContextService.getCompanyId()
+                )
+        );
     }
 }

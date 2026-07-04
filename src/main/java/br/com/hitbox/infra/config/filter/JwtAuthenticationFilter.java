@@ -1,6 +1,8 @@
 package br.com.hitbox.infra.config.filter;
 
+import br.com.hitbox.infra.security.AuthenticatedUser;
 import br.com.hitbox.infra.security.TokenService;
+import br.com.hitbox.infra.service.AuthenticatedUserPrincipal;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,33 +32,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token =
                 recoverToken(request);
+
+
         if (token != null) {
-            DecodedJWT jwt =
-                    tokenService.decode(token);
-            UUID userId =
-                    UUID.fromString(
-                            jwt.getSubject()
-                    );
-
-            List<String> permissions =
-                    jwt.getClaim("permissions")
-                            .asList(String.class);
-
-            List<GrantedAuthority> authorities =
-                    permissions.stream()
-                            .map(permission -> (GrantedAuthority) new SimpleGrantedAuthority(permission))
-                            .toList();
-
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(
-                            userId,
-                            null,
-                            authorities
-                    );
-
-            SecurityContextHolder
-                    .getContext()
-                    .setAuthentication(auth);
+            this.teste(token);
+//            DecodedJWT jwt =
+//                    tokenService.decode(token);
+//            UUID userId =
+//                    UUID.fromString(
+//                            jwt.getSubject()
+//                    );
+//
+//            List<String> permissions =
+//                    jwt.getClaim("permissions")
+//                            .asList(String.class);
+//
+//            List<GrantedAuthority> authorities =
+//                    permissions.stream()
+//                            .map(permission -> (GrantedAuthority) new SimpleGrantedAuthority(permission))
+//                            .toList();
+//
+//            UsernamePasswordAuthenticationToken auth =
+//                    new UsernamePasswordAuthenticationToken(
+//                            userId,
+//                            null,
+//                            authorities
+//                    );
+//
+//            SecurityContextHolder
+//                    .getContext()
+//                    .setAuthentication(auth);
         }
 
 
@@ -63,6 +69,54 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 request,
                 response
         );
+    }
+
+    private void teste(String token) {
+        DecodedJWT jwt =
+                tokenService.decode(token);
+        UUID userId =
+                UUID.fromString(
+                        jwt.getSubject()
+                );
+
+        UUID companyId = UUID.fromString(jwt.getClaim("X-Company-Id").asString());
+
+        UUID teamId = UUID.fromString(jwt.getClaim("X-Team-Id").asString());
+
+        String email = jwt.getClaim("email").asString();
+
+
+        List<String> permissions =
+                jwt.getClaim("permissions")
+                        .asList(String.class);
+
+        List<GrantedAuthority> authorities =
+                permissions.stream()
+                        .map(permission -> (GrantedAuthority) new SimpleGrantedAuthority(permission))
+                        .toList();
+
+        AuthenticatedUserPrincipal principal =
+                new AuthenticatedUserPrincipal(
+                        AuthenticatedUser.builder()
+                                .userId(userId)
+                                .companyId(companyId)
+                                .teamId(teamId)
+                                .email(email)
+                                .permissions(new HashSet<>(permissions))
+                                .build(),
+                        authorities
+                );
+
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(
+                        principal,
+                        null,
+                        authorities
+                );
+
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(auth);
     }
 
     public String recoverToken(HttpServletRequest httpServletRequest) {

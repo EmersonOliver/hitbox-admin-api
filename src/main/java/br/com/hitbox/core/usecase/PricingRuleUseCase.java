@@ -2,10 +2,13 @@ package br.com.hitbox.core.usecase;
 
 import br.com.hitbox.core.domain.PricingRule;
 import br.com.hitbox.core.domain.ProductPricingContext;
+import br.com.hitbox.core.gateway.PricingRuleDraftGateway;
 import br.com.hitbox.infra.exception.HitboxException;
 import br.com.hitbox.infra.persistence.PricingRuleRepositoryImpl;
 import br.com.hitbox.infra.service.PricingEngineService;
+import br.com.hitbox.infra.service.UserContextService;
 import br.com.hitbox.interfaces.dto.response.pricing.SuggestedPriceResult;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,12 +23,18 @@ public class PricingRuleUseCase {
 
     private final PricingRuleRepositoryImpl repository;
     private final PricingEngineService engineService;
+    private final PricingRuleDraftGateway pricingRuleDraftGateway;
+    private final UserContextService userContextService;
 
+    @Transactional
     public PricingRule salvar(
             PricingRule domain
     ) {
         validar(domain);
-        return repository.salvar(domain);
+        var result = repository.salvar(domain);
+        pricingRuleDraftGateway.delete(userContextService.getUserId(),
+                userContextService.getCompanyId());
+        return result;
     }
 
     public PricingRule editar(

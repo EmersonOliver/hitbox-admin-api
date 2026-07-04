@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface SpringDataPricingRuleRepository extends JpaRepository<PricingRuleEntity, Long> {
 
 
-    @Query("select r from PricingRuleEntity r where upper(r.name)=:name and upper(r.salesChannel)=:salesChannel")
-    Optional<PricingRuleEntity> findByNameAndChannel(@Param("name") String name,@Param("salesChannel") String salesChannel);
+    @Query("select r from PricingRuleEntity r where upper(r.name)=:name")
+    Optional<PricingRuleEntity> findByNameAndChannel(@Param("name") String name);
 
 }
