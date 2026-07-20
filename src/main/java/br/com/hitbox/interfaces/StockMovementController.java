@@ -26,6 +26,7 @@ public class StockMovementController {
                 request.getTotalCost(),
                 request.getObservation()
         );
+
         return ResponseEntity.ok().build();
     }
 }

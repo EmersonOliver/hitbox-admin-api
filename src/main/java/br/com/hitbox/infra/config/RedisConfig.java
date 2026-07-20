@@ -12,7 +12,8 @@ import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
 public class RedisConfig {
-    @Bean
+
+    @Bean("redisObjectMapper")
     public ObjectMapper objectMapper() {
         return JsonMapper.builder()
                 .findAndAddModules()
@@ -22,7 +23,7 @@ public class RedisConfig {
     @Bean
     public RedisTemplate<String, PricingRuleDraft> redisTemplate(
             RedisConnectionFactory connectionFactory,
-            ObjectMapper objectMapper
+            ObjectMapper redisObjectMapper
     ) {
 
         RedisTemplate<String, PricingRuleDraft> template =
@@ -33,7 +34,7 @@ public class RedisConfig {
         );
         JacksonJsonRedisSerializer<PricingRuleDraft> serializer =
                 new JacksonJsonRedisSerializer<>(
-                        objectMapper,
+                        redisObjectMapper,
                         PricingRuleDraft.class
                 );
 
