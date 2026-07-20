@@ -86,7 +86,7 @@ public class PricingRuleUseCase {
             ProductPricingContext context
     ) {
 
-        List<SuggestedPriceResult> suggestedPrices =
+            List<SuggestedPriceResult> suggestedPrices =
                 new ArrayList<>();
 
         var rules = repository.findAll();

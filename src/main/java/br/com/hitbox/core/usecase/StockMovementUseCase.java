@@ -2,10 +2,11 @@ package br.com.hitbox.core.usecase;
 
 import br.com.hitbox.core.domain.Inventory;
 import br.com.hitbox.core.domain.StockMovement;
+import br.com.hitbox.core.domain.events.LowStockEvent;
 import br.com.hitbox.core.gateway.InventarioGateway;
+import br.com.hitbox.core.gateway.LowStockEventGateway;
 import br.com.hitbox.core.gateway.StockMovementGateway;
 import br.com.hitbox.infra.enums.StockMovementType;
-import br.com.hitbox.infra.exception.HitboxException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ public class StockMovementUseCase {
 
     private final InventarioGateway inventarioGateway;
     private final StockMovementGateway movementGateway;
+    private final LowStockEventGateway lowStockEventGateway;
 
     public void movimentar(
             Long inventoryId,
@@ -58,8 +60,25 @@ public class StockMovementUseCase {
                         .build();
 
         inventory.addMovement(movement);
+        validateStockQuantity(inventory);
         inventarioGateway.atualizar(inventory);
         movementGateway.salvar(movement);
+    }
+
+    private void validateStockQuantity(Inventory inventory) {
+        if(inventory.getQuantity().compareTo(inventory.getMinimumStock()) <= 0){
+            var event = LowStockEvent.builder()
+                    .unit(inventory.getUnit().name())
+                    .categoryName(inventory.getCategoria().getNome())
+                    .currentQuantity(inventory.getQuantity().doubleValue())
+                    .minimumQuantity(inventory.getMinimumStock().doubleValue())
+                    .inventoryId(inventory.getId())
+                    .inventoryName(inventory.getName())
+                    .occurredAt(LocalDateTime.now())
+                    .companyId(inventory.getCompanyId())
+                    .build();
+            lowStockEventGateway.execute(event);
+        }
     }
 
     private BigDecimal calcularCustoUnitario(
