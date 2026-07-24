@@ -23,11 +23,8 @@ public class PricingEngineService {
                                 : context.getQuantity()
                 );
 
-        /*
-         * FILAMENTO
-         */
 
-        BigDecimal filamentCost =
+        BigDecimal productCost =
                 safe(context.getFilamentWeight())
                         .multiply(
                                 safe(context.getFilamentCostPerGram())
@@ -78,7 +75,7 @@ public class PricingEngineService {
          */
 
         BigDecimal productionCost =
-                filamentCost
+                productCost
                         .add(machineCost)
                         .add(laborCost)
                         .add(energyCost)
@@ -303,7 +300,7 @@ public class PricingEngineService {
                 .productionCost(productionCost)
                 .baseCost(baseCost)
 
-                .filamentCost(filamentCost)
+                .filamentCost(productCost)
                 .machineCost(machineCost)
                 .laborCost(laborCost)
                 .energyCost(energyCost)

@@ -138,6 +138,9 @@ public class ProductDashboardAggregate {
                         2,
                         RoundingMode.HALF_UP
                 );
+        if(hours.compareTo(BigDecimal.ZERO) == 0){
+            return BigDecimal.ZERO;
+        }
 
         return profit.divide(
                 hours,
